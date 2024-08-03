@@ -25,7 +25,13 @@ public class TouchManager : MonoBehaviour
     private InputAction touchPressAction;
 
     private InputAction touchPressAction2;
-    private Vector3 position;
+    
+
+    // Delegates
+    public delegate void TouchAction();
+
+    public event TouchAction OnTouch;
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -61,20 +67,29 @@ public class TouchManager : MonoBehaviour
     private Vector3 ScreenToWorldPosition(Vector3 touchPosition)
     {
         //Convert touch position to position on the Camera screen.
-        position = CameraMain.ScreenToWorldPoint(new Vector3(touchPosition.x, touchPosition.y, 0f));
-        return new Vector3(position.x, position.y, 0f);
+        touchPosition = CameraMain.ScreenToWorldPoint(new Vector3(touchPosition.x, touchPosition.y, 0f));
+        touchPosition = new Vector3(touchPosition.x, touchPosition.y, 0f);
+        Collider2D collider = Physics2D.OverlapPoint(touchPosition);
+        if (collider != null && collider.gameObject.CompareTag("Note"))
+        {
+            RaiseTouchEvent();  
+        }
+        return touchPosition;
     }
 
     private void TouchPressedTwo(InputAction.CallbackContext context)
     {
-        TouchObjectTwo.transform.position = ScreenToWorldPosition(touchPositionAction.ReadValue<Vector2>());
+        TouchObjectTwo.transform.position = ScreenToWorldPosition(touchPositionAction2.ReadValue<Vector2>());
     }
-    //Destroy object when pressed
+ 
     private void TouchPressed(InputAction.CallbackContext context)
     {
-        TouchObject.transform.position = ScreenToWorldPosition(touchPositionAction.ReadValue<Vector2>());
-        Debug.Log("Touch position" + TouchObject.transform.position);
-        
+        TouchObject.transform.position = ScreenToWorldPosition(touchPositionAction.ReadValue<Vector2>());    
+    
+    }
+    protected virtual void RaiseTouchEvent()
+    {
+        OnTouch?.Invoke();
     }
 
 }
