@@ -4,19 +4,14 @@ using UnityEngine;
 
 public class TouchManager : MonoBehaviour
 {
+    public static TouchManager Instance;
 
-    [SerializeField] private GameObject _JudgementLine;
     //Camera to base touches on
     [SerializeField] private Camera CameraMain; 
     //private GameObject player;
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private float YoffSet;
     [SerializeField] private float XoffSet;
-
-    [SerializeField] private GameObject TouchObject;
-
-    //USED FOR DEBUGGING
-    [SerializeField] private GameObject TouchObjectTwo;
     private InputAction touchPositionAction2;
     //END OF DEBUGGING
     //Action that receives the position of a touch
@@ -34,6 +29,15 @@ public class TouchManager : MonoBehaviour
 
     private void Awake()
     {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         playerInput = GetComponent<PlayerInput>();
         touchPressAction = playerInput.actions["TouchPress"];
         touchPositionAction = playerInput.actions["TouchPosition"];
@@ -43,25 +47,13 @@ public class TouchManager : MonoBehaviour
     private void OnEnable()
     {
         touchPressAction.started += TouchPressed;
-        touchPressAction.canceled += ResetPosition;
         touchPressAction2.started += TouchPressedTwo;
-        touchPressAction2.canceled += ResetPosition2;
     }
 
     private void OnDisable()
     {
         touchPressAction.started -= TouchPressed;
-        touchPressAction.canceled -= ResetPosition;
         touchPressAction2.started -= TouchPressedTwo;
-        touchPressAction2.canceled -= ResetPosition2;
-    }
-    private void ResetPosition(InputAction.CallbackContext context)
-    {
-        TouchObject.transform.position = new Vector3(0f, 0f, 0f);
-    }
-    private void ResetPosition2(InputAction.CallbackContext context)
-    {
-        TouchObjectTwo.transform.position = new Vector3(0f, 0f, 0f);
     }
 
     private Vector3 ScreenToWorldPosition(Vector3 touchPosition)
@@ -79,12 +71,12 @@ public class TouchManager : MonoBehaviour
 
     private void TouchPressedTwo(InputAction.CallbackContext context)
     {
-        TouchObjectTwo.transform.position = ScreenToWorldPosition(touchPositionAction2.ReadValue<Vector2>());
+        ScreenToWorldPosition(touchPositionAction2.ReadValue<Vector2>());
     }
  
     private void TouchPressed(InputAction.CallbackContext context)
     {
-        TouchObject.transform.position = ScreenToWorldPosition(touchPositionAction.ReadValue<Vector2>());    
+        ScreenToWorldPosition(touchPositionAction.ReadValue<Vector2>());    
     
     }
     protected virtual void RaiseTouchEvent()

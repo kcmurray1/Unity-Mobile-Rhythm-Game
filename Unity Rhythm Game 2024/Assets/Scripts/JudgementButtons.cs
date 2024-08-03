@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 public class JudgementButtons : MonoBehaviour {
 
 
@@ -15,6 +14,8 @@ public class JudgementButtons : MonoBehaviour {
     public event NoteHitHandler OnNoteHit;
     public event NoteMissHandler OnNoteMiss;
 
+    private bool hasNote;
+
 
     // Start is called before the first frame update
     void Start()
@@ -28,18 +29,10 @@ public class JudgementButtons : MonoBehaviour {
             OnNoteHit += scoreManager.OnNoteHit;
             OnNoteMiss += scoreManager.OnNoteMiss;
         }
+        hasNote = false;
     }
 
-    void TouchPressed()
-    {
-        if(_overlappedNote != null)
-        {
-            OnNoteHit?.Invoke();
-            Destroy(_overlappedNote);
-        }
-        
-    }
-    
+    // Unsubscribe from touchManager
     void OnDestroy()
     {
         if (touchManager != null)
@@ -48,19 +41,40 @@ public class JudgementButtons : MonoBehaviour {
         }
     }
 
+    // Button was touched
+    void TouchPressed()
+    {
+        if(_overlappedNote != null)
+        {
+            // NOTE: setting hasNote to false here resolves bug where OnTriggerExit2D is called
+            //  after _overlappedNote is destroyed
+            hasNote = false;
+            _DestroyNote();
+            OnNoteHit?.Invoke();
+        }
+        
+    }
+    
+    // Destory overlapping gameObject
+    private void _DestroyNote()
+    {
+        Destroy(_overlappedNote);
+        _overlappedNote = null;
+    }
 
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.CompareTag("Note"))
         {
             _overlappedNote = other.gameObject;
+            hasNote = true;
         }
     }
 
     // Destroy note after leaving judgement button   
     private void OnTriggerExit2D(Collider2D other) {
-        if(other.gameObject.CompareTag("Note"))
+        if(_overlappedNote && hasNote)
         {
-            Destroy(_overlappedNote);
+            _DestroyNote();
             OnNoteMiss?.Invoke();
         }
         
