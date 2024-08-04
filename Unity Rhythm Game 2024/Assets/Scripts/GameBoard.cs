@@ -56,7 +56,7 @@ public class GameBoard : MonoBehaviour
             {
                 Instantiate(LaneObject, _center, Quaternion.identity);
             
-                JudgementButtons center = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButtons>();
+                JudgementButton center = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
                
                 // center.transform.position = new Vector3(0,0,0);
                 center.Initialize(_touchManager, new Vector3(0,0,0), 0);
@@ -65,8 +65,8 @@ public class GameBoard : MonoBehaviour
             Vector3 lanePosition = new Vector3(i * _laneHorizSpacing + _centerHorizOffset, 0, 0);    
             Instantiate(LaneObject, _center + lanePosition, Quaternion.identity);
             Instantiate(LaneObject, _center - lanePosition, Quaternion.identity);
-            JudgementButtons rightButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButtons>();
-            JudgementButtons leftButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButtons>();
+            JudgementButton rightButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
+            JudgementButton leftButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
             rightButton.Initialize(_touchManager, lanePosition, i);
             leftButton.Initialize(_touchManager, lanePosition * Vector2.left, -1);
             // rightButton.transform.position = lanePosition;

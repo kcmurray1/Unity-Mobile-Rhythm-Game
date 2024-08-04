@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class JudgementButtons : MonoBehaviour {
+public class JudgementButton : MonoBehaviour {
 
 
     // [SerializeField] public GameObject touchManagerObject;
@@ -20,28 +20,13 @@ public class JudgementButtons : MonoBehaviour {
 
     public void Initialize(TouchManager touchManager, Vector3 position, int id)
     {
-        this.touchManager = TouchManager.Instance;
-        // this.touchManager = touchManager;
+        this.touchManager = touchManager;
         this.touchManager.OnTouch += TouchPressed;
         this.hasNote = false;
         this.gameObject.transform.position = position;
         this.id = id;
 
     }
-    // Start is called before the first frame update
-    // void Start()
-    // {
-    //     if (touchManager != null )
-    //     {
-    //         touchManager.OnTouch += TouchPressed;
-    //     }   
-    //     if (scoreManager != null)
-    //     {
-    //         OnNoteHit += scoreManager.OnNoteHit;
-    //         OnNoteMiss += scoreManager.OnNoteMiss;
-    //     }
-    //     hasNote = false;
-    // }
 
     // Unsubscribe from touchManager
     void OnDestroy()
@@ -53,9 +38,12 @@ public class JudgementButtons : MonoBehaviour {
     }
 
     // Button was touched
-    void TouchPressed()
+    void TouchPressed(JudgementButton pressedButton)
     {
-        Debug.Log("Tocuhed " + id);
+        if (pressedButton.id != id)
+        {
+            return;
+        }
         if(_overlappedNote != null)
         {
             Debug.Log("Button " + id + " Pressed!");

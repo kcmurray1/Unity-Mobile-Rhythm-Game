@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class TouchManager : MonoBehaviour
 {
-
-    public static TouchManager Instance;
-
     //Camera to base touches on
     [SerializeField] private Camera CameraMain; 
     //private GameObject player;
@@ -24,19 +21,12 @@ public class TouchManager : MonoBehaviour
     
 
     // Delegates
-    public delegate void TouchAction();
+    public delegate void TouchAction(JudgementButton judgementButton);
 
     public event TouchAction OnTouch;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else{
-            Destroy(gameObject);
-        }
         if (CameraMain == null)
         {
             CameraMain = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -64,10 +54,10 @@ public class TouchManager : MonoBehaviour
         //Convert touch position to position on the Camera screen.
         touchPosition = CameraMain.ScreenToWorldPoint(new Vector3(touchPosition.x, touchPosition.y, 0f));
         touchPosition = new Vector3(touchPosition.x, touchPosition.y, 0f);
-        Collider2D collider = Physics2D.OverlapPoint(touchPosition);
-        if (collider != null && collider.gameObject.CompareTag("Note"))
+        Collider2D[] collider = Physics2D.OverlapPointAll(touchPosition);
+        if (collider != null && collider.Length == 2 && collider[1].gameObject.CompareTag("JudgementButton"))
         {
-            RaiseTouchEvent();  
+            RaiseTouchEvent(collider[1].gameObject);  
         }
         return touchPosition;
     }
@@ -81,9 +71,10 @@ public class TouchManager : MonoBehaviour
     {
         ScreenToWorldPosition(touchPositionAction.ReadValue<Vector2>());        
     }
-    protected virtual void RaiseTouchEvent()
+    protected virtual void RaiseTouchEvent(GameObject buttonGameObject)
     {
-        OnTouch?.Invoke();
+        JudgementButton judgementButton = buttonGameObject.GetComponent<JudgementButton>();
+        OnTouch?.Invoke(judgementButton);
     }
 
 }
