@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TouchManager : MonoBehaviour
 {
+
     public static TouchManager Instance;
 
     //Camera to base touches on
@@ -29,15 +30,17 @@ public class TouchManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         }
-        else
-        {
+        else{
             Destroy(gameObject);
         }
-
+        if (CameraMain == null)
+        {
+            CameraMain = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        }
         playerInput = GetComponent<PlayerInput>();
         touchPressAction = playerInput.actions["TouchPress"];
         touchPositionAction = playerInput.actions["TouchPosition"];
@@ -76,8 +79,7 @@ public class TouchManager : MonoBehaviour
  
     private void TouchPressed(InputAction.CallbackContext context)
     {
-        ScreenToWorldPosition(touchPositionAction.ReadValue<Vector2>());    
-    
+        ScreenToWorldPosition(touchPositionAction.ReadValue<Vector2>());        
     }
     protected virtual void RaiseTouchEvent()
     {

@@ -4,7 +4,6 @@ using UnityEngine;
 using Melanchall.DryWetMidi.Standards;
 public class ScoreManager : MonoBehaviour
 {
-
     private int missCount;
     private int hitCount;
 

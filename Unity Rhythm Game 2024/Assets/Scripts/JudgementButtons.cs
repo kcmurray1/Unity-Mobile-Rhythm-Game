@@ -3,6 +3,7 @@ using UnityEngine;
 public class JudgementButtons : MonoBehaviour {
 
 
+    // [SerializeField] public GameObject touchManagerObject;
     [SerializeField] private TouchManager touchManager;
     [SerializeField] private ScoreManager scoreManager;
 
@@ -15,22 +16,32 @@ public class JudgementButtons : MonoBehaviour {
     public event NoteMissHandler OnNoteMiss;
 
     private bool hasNote;
+    private int id;
 
-
-    // Start is called before the first frame update
-    void Start()
+    public void Initialize(TouchManager touchManager, Vector3 position, int id)
     {
-        if (touchManager != null )
-        {
-            touchManager.OnTouch += TouchPressed;
-        }   
-        if (scoreManager != null)
-        {
-            OnNoteHit += scoreManager.OnNoteHit;
-            OnNoteMiss += scoreManager.OnNoteMiss;
-        }
-        hasNote = false;
+        this.touchManager = TouchManager.Instance;
+        // this.touchManager = touchManager;
+        this.touchManager.OnTouch += TouchPressed;
+        this.hasNote = false;
+        this.gameObject.transform.position = position;
+        this.id = id;
+
     }
+    // Start is called before the first frame update
+    // void Start()
+    // {
+    //     if (touchManager != null )
+    //     {
+    //         touchManager.OnTouch += TouchPressed;
+    //     }   
+    //     if (scoreManager != null)
+    //     {
+    //         OnNoteHit += scoreManager.OnNoteHit;
+    //         OnNoteMiss += scoreManager.OnNoteMiss;
+    //     }
+    //     hasNote = false;
+    // }
 
     // Unsubscribe from touchManager
     void OnDestroy()
@@ -44,8 +55,10 @@ public class JudgementButtons : MonoBehaviour {
     // Button was touched
     void TouchPressed()
     {
+        Debug.Log("Tocuhed " + id);
         if(_overlappedNote != null)
         {
+            Debug.Log("Button " + id + " Pressed!");
             // NOTE: setting hasNote to false here resolves bug where OnTriggerExit2D is called
             //  after _overlappedNote is destroyed
             hasNote = false;
