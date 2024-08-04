@@ -11,7 +11,7 @@ public class TouchManager : MonoBehaviour
     [SerializeField] private float YoffSet;
     [SerializeField] private float XoffSet;
     private InputAction touchPositionAction2;
-    //END OF DEBUGGING
+    
     //Action that receives the position of a touch
     private InputAction touchPositionAction;
     //Action that waits to receive touch

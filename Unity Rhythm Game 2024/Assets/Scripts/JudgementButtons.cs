@@ -1,9 +1,6 @@
 using UnityEngine;
 
 public class JudgementButton : MonoBehaviour {
-
-
-    // [SerializeField] public GameObject touchManagerObject;
     [SerializeField] private TouchManager touchManager;
     [SerializeField] private ScoreManager scoreManager;
 
@@ -63,6 +60,8 @@ public class JudgementButton : MonoBehaviour {
         _overlappedNote = null;
     }
 
+
+    // Triggered by Notes, mark them for destruction
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.CompareTag("Note"))
         {
@@ -71,7 +70,7 @@ public class JudgementButton : MonoBehaviour {
         }
     }
 
-    // Destroy note after leaving judgement button   
+    // Triggered by Notes, Destroy note after leaving judgement button   
     private void OnTriggerExit2D(Collider2D other) {
         if(_overlappedNote && hasNote)
         {
