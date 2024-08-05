@@ -55,9 +55,11 @@ public class TouchManager : MonoBehaviour
         touchPosition = CameraMain.ScreenToWorldPoint(new Vector3(touchPosition.x, touchPosition.y, 0f));
         touchPosition = new Vector3(touchPosition.x, touchPosition.y, 0f);
         Collider2D[] collider = Physics2D.OverlapPointAll(touchPosition);
-        if (collider != null && collider.Length == 2 && collider[1].gameObject.CompareTag("JudgementButton"))
+        var button = Array.Find(collider, element => element.gameObject.CompareTag("JudgementButton"));
+       
+        if(button)
         {
-            RaiseTouchEvent(collider[1].gameObject);  
+            RaiseTouchEvent(button.gameObject);  
         }
         return touchPosition;
     }

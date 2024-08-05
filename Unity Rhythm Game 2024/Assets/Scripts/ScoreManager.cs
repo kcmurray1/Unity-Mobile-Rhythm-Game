@@ -1,13 +1,8 @@
-using System;
 using UnityEngine;
 using TMPro;
-using Melanchall.DryWetMidi.Interaction;
-using Unity.Collections;
 public class ScoreManager : MonoBehaviour
 {
-
     private const string DEFAULT_SCORE_UI = "000000000";
-    
     private const string DEFAULT_MULTIPLIER_UI = "x0";
     private const int BASE_SCORE_VALUE = 100;
     private TextMeshProUGUI _textScore;
@@ -17,6 +12,7 @@ public class ScoreManager : MonoBehaviour
     private int _multiplier;
     private int _totalScore;
 
+    // Connect to UI elements and set initial values
     public void Initialize()
     {
         _textScore = GameObject.Find("Text_Score").GetComponent<TextMeshProUGUI>();
@@ -24,6 +20,7 @@ public class ScoreManager : MonoBehaviour
         Reset();
     }
 
+    // Reset score, multiplier, counts, etc..
     public void Reset()
     {
         _multiplier = 0;
@@ -34,6 +31,7 @@ public class ScoreManager : MonoBehaviour
         _textMultiplier.text = DEFAULT_MULTIPLIER_UI;
     }
 
+    // Update score based on quality it
     public void OnNoteHit()
     {
         _hitCount++;
@@ -43,6 +41,7 @@ public class ScoreManager : MonoBehaviour
         _textMultiplier.text = "x" + _multiplier.ToString();
     }
 
+    // Update multiplier and count of misses
     public void OnNoteMiss()
     {
         _missCount++;

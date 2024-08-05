@@ -15,7 +15,24 @@ public class NoteSpawner : MonoBehaviour
     private Dictionary<int, float> _laneHorizPositions;
     // Spawner Object(itself)
     [SerializeField] private GameObject _spawnerObject;
+
+    private Dictionary<float, int> testSong = new Dictionary<float, int>()
+      {
+        {0,0}, 
+        {0.413793f, 0},
+        { 0.827586f, 0},
+        {1.241379f,0},
+        { 1.448276f, 0},
+        {1.655172f, 1},
+        {1.75862f, 2},
+        {1.862069f, 0},
+    };
     
+    // void Start()
+    // {
+    //     List<float> pos = new List<float>{0f};
+    //     Initialize(pos);
+    // }
     // Initializing the lanepositions sets the spawn boundaries
     // Ex): Receiving three lan positions [-4,0,4] will update _laneHorizPositions to
     // {0: -4, 1: 0, 2: 4} where lane 0 is located at x = -4 and lane 1 is located at x = 0
@@ -28,7 +45,14 @@ public class NoteSpawner : MonoBehaviour
             _laneHorizPositions[laneIndex] = laneHorizPosition;
             laneIndex++; 
         }
-        StartSpawnining();
+        // StartSpawnining();
+        // List<float> timstamps = GetSongData("Assets/Songs/Test_C_Scale.mid", 145);
+        // Dictionary<float, int> testMap = new Dictionary<float, int>();
+        // foreach (var timstamp in timstamps)
+        // {
+        //     testMap[timstamp] = 0;
+        // }
+        StartCoroutine(SpawnNote(testSong));
     }
 
     public void StartSpawnining()
@@ -66,11 +90,13 @@ public class NoteSpawner : MonoBehaviour
     }
 
     IEnumerator SpawnNote(Dictionary<float, int> noteMap)
-    {
-        Debug.Log("Spawning notes!");
+    {            
+        float prevTime = 0;
         foreach(float timestamp in noteMap.Keys)
         {
-            yield return new WaitForSeconds(1);
+            Debug.Log($"Spawning {timestamp} : {noteMap[timestamp]}");
+            yield return new WaitForSeconds(timestamp - prevTime);
+            prevTime = timestamp;
             Spawn(noteMap[timestamp]);
         }
     }
@@ -110,15 +136,18 @@ public class NoteSpawner : MonoBehaviour
         {
             //Get the timestamp of when a note is played
             float spawnTime = (float)note.TimeAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
-
-            Debug.Log($"Note {noteNum} at {spawnTime}");
+            // Debug.Log($"Note {noteNum} at {spawnTime}");
             noteTimeDict[spawnTime] = noteNum;
             newMap.Add(spawnTime);
-            noteNum++;
-            
+            noteNum++;     
         }
         Debug.Log($"Finished Generation for {fileName}");
         return newMap;
+    }
+
+    private void NoteInfo(Melanchall.DryWetMidi.Interaction.Note note)
+    {
+        Debug.Log($"Length: {note.Length}");
     }
 
 }

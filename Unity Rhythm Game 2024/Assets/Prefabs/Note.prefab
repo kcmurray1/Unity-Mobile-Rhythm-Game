@@ -74,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1591610633
-  m_SortingLayer: 3
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 3625043607559282579, guid: 19fb86013d8c24d6cb8410c0aadf30fa, type: 3}
   m_Color: {r: 0.3815152, g: 0.9528302, b: 0.32809716, a: 1}
@@ -99,7 +99,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ff5a0b190267de418c2aae81d9e6a3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  touchManager: {fileID: 0}
   NoteSpeed: 0
 --- !u!50 &7939254140482609862
 Rigidbody2D:
@@ -161,5 +160,5 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.99, y: 1.04}
+  m_Size: {x: 1, y: 1}
   m_Direction: 1

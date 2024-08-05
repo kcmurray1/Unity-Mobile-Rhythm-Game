@@ -1,27 +1,42 @@
 using UnityEngine;
 
 public class JudgementButton : MonoBehaviour {
+    // Connected Managers
     [SerializeField] private TouchManager _touchManager;
     [SerializeField] private ScoreManager _scoreManager;
 
+    [SerializeField] private SoundManager _soundManager;
+
     private GameObject _overlappedNote;
 
+    // Event Handlers for ScoreManager
     public delegate void NoteHitHandler();
     public delegate void NoteMissHandler();
 
     public event NoteHitHandler OnNoteHit;
     public event NoteMissHandler OnNoteMiss;
 
+    // Event Handlers for SoundManager
+    public delegate void SongStateHandler();
+    public event SongStateHandler OnSongStateChange;
+
+    // Judgement Button attributes
     private bool hasNote;
     private int id;
 
-    public void Initialize(TouchManager touchManager, ScoreManager scoreManager, Vector3 position, int id)
+    public void Initialize(TouchManager touchManager, ScoreManager scoreManager, SoundManager soundManager, Vector3 position, int id)
     {
+        // Connect to TouchManager
         _touchManager = touchManager;
         _touchManager.OnTouch += TouchPressed;
+        // Connect to ScoreManager
         _scoreManager = scoreManager;
         OnNoteHit += scoreManager.OnNoteHit;
         OnNoteMiss += scoreManager.OnNoteMiss;
+        // Connect to SoundManager
+        _soundManager = soundManager;
+        OnSongStateChange += soundManager.OnSongStateChange; 
+
         hasNote = false;
         gameObject.transform.position = position;
         this.id = id;
@@ -65,6 +80,10 @@ public class JudgementButton : MonoBehaviour {
 
     // Triggered by Notes, mark them for destruction
     private void OnTriggerEnter2D(Collider2D other) {
+        if(other.gameObject.CompareTag("start"))
+        {
+            OnSongStateChange?.Invoke();
+        }
         if(other.gameObject.CompareTag("Note"))
         {
             _overlappedNote = other.gameObject;

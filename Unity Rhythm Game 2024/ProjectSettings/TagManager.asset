@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Note
   - JudgementButton
+  - start
   layers:
   - Default
   - TransparentFX
