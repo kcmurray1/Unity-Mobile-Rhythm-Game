@@ -5,34 +5,73 @@ using System.Linq; //ToList()
 using System;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
-using Melanchall.DryWetMidi.MusicTheory;
 public class NoteSpawner : MonoBehaviour 
 {
 
     // Object to spawn
     public GameObject noteObject;
 
+    // Dict containing where lane number is the key and lane position is the value
+    private Dictionary<int, int> _laneHorizPositions;
     // Spawner Object(itself)
-    [SerializeField] private GameObject SpawnerObject;
+    [SerializeField] private GameObject _spawnerObject;
     
-    // Spawn an object
-    public void Spawn()
+    // Initializing the lanepositions sets the spawn boundaries
+    // Ex): Receiving three lan positions [-4,0,4] will update _laneHorizPositions to
+    // {0: -4, 1: 0, 2: 4} where lane 0 is located at x = -4 and lane 1 is located at x = 0
+    public void Initialize(List<int> lanePositions)
     {
-        GameObject newNote = Instantiate(noteObject, SpawnerObject.transform.position, Quaternion.identity);
+        _laneHorizPositions = new Dictionary<int, int>();
+        int laneIndex = 0;
+        foreach(int laneHorizPosition in lanePositions)
+        {
+            _laneHorizPositions[laneIndex] = laneHorizPosition;
+            laneIndex++; 
+        }
+        StartSpawnining();
     }
 
-    void Start()
+    public void StartSpawnining()
     {
-        List<float> notes = GetSongData("Assets/Songs/Test_C_Scale.mid", 145);
+        Dictionary<float, int> notes = new Dictionary<float, int>();//GetSongData("Assets/Songs/Test_C_Scale.mid", 145);
+        if(notes.Count == 0)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                int lanePos = 0;
+                if (i % 2 == 0)
+                {
+                    lanePos = 2;
+                }
+                else if (i % 3 == 0)
+                {
+                    lanePos = 3;
+                }
+                else{
+                    lanePos = 0;
+                }
+                notes[i] = lanePos;
+            }
+            
+        }
         StartCoroutine(SpawnNote(notes));
     }
-
-    IEnumerator SpawnNote(List<float> notes)
+    // Spawn an object
+    public void Spawn(int laneIndex)
     {
-        foreach(float timestamp in notes)
+        GameObject newNote = Instantiate(noteObject, _spawnerObject.transform.position, Quaternion.identity);
+        // Adjust horizontal position
+        newNote.transform.position = new Vector3(_laneHorizPositions[laneIndex], 
+                newNote.transform.position.y, newNote.transform.position.z);
+    }
+
+    IEnumerator SpawnNote(Dictionary<float, int> noteMap)
+    {
+        Debug.Log("Spawning notes!");
+        foreach(float timestamp in noteMap.Keys)
         {
-            yield return new WaitForSeconds(timestamp);
-            Spawn();
+            yield return new WaitForSeconds(1);
+            Spawn(noteMap[timestamp]);
         }
     }
 

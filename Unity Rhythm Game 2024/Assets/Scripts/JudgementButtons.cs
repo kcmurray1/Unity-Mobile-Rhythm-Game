@@ -1,8 +1,8 @@
 using UnityEngine;
 
 public class JudgementButton : MonoBehaviour {
-    [SerializeField] private TouchManager touchManager;
-    [SerializeField] private ScoreManager scoreManager;
+    [SerializeField] private TouchManager _touchManager;
+    [SerializeField] private ScoreManager _scoreManager;
 
     private GameObject _overlappedNote;
 
@@ -15,22 +15,25 @@ public class JudgementButton : MonoBehaviour {
     private bool hasNote;
     private int id;
 
-    public void Initialize(TouchManager touchManager, Vector3 position, int id)
+    public void Initialize(TouchManager touchManager, ScoreManager scoreManager, Vector3 position, int id)
     {
-        this.touchManager = touchManager;
-        this.touchManager.OnTouch += TouchPressed;
-        this.hasNote = false;
-        this.gameObject.transform.position = position;
+        _touchManager = touchManager;
+        _touchManager.OnTouch += TouchPressed;
+        _scoreManager = scoreManager;
+        OnNoteHit += scoreManager.OnNoteHit;
+        OnNoteMiss += scoreManager.OnNoteMiss;
+        hasNote = false;
+        gameObject.transform.position = position;
         this.id = id;
 
     }
 
-    // Unsubscribe from touchManager
+    // Unsubscribe from _touchManager
     void OnDestroy()
     {
-        if (touchManager != null)
+        if (_touchManager != null)
         {
-            touchManager.OnTouch -= TouchPressed;
+            _touchManager.OnTouch -= TouchPressed;
         }
     }
 
@@ -43,7 +46,6 @@ public class JudgementButton : MonoBehaviour {
         }
         if(_overlappedNote != null)
         {
-            Debug.Log("Button " + id + " Pressed!");
             // NOTE: setting hasNote to false here resolves bug where OnTriggerExit2D is called
             //  after _overlappedNote is destroyed
             hasNote = false;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 public class GameBoard : MonoBehaviour
 {
@@ -12,14 +13,20 @@ public class GameBoard : MonoBehaviour
     // Managers
     private TouchManager _touchManager;
     private ScoreManager _scoreManager;
-    [SerializeField] private GameObject _TouchManagerObject;
-    [SerializeField] private GameObject _ScoreManagerObject;
+    [SerializeField] private GameObject _touchManagerObject;
+    [SerializeField] private GameObject _scoreManagerObject;
+
+    // NoteSpawner
+
+    private NoteSpawner _noteSpawner;
+    [SerializeField] private GameObject _noteSpawnerObject;
     
     // Center of board
     private Vector3 _center;
 
     // Spacing around the center
     private int _centerHorizOffset;
+
     private int _laneHorizSpacing;
     // Number of lanes
     [Range(3, 5)]
@@ -50,7 +57,7 @@ public class GameBoard : MonoBehaviour
             Destroy(_touchManager);
             _touchManager = null;
         }
-        _touchManager = Instantiate(_TouchManagerObject, gameObject.transform).GetComponent<TouchManager>();
+        _touchManager = Instantiate(_touchManagerObject, gameObject.transform).GetComponent<TouchManager>();
        
         // Create ScoreManager
         if (_scoreManager)
@@ -59,42 +66,55 @@ public class GameBoard : MonoBehaviour
             _scoreManager = null;
         }
 
-        _scoreManager = Instantiate(_ScoreManagerObject, gameObject.transform).GetComponent<ScoreManager>();
+        _scoreManager = Instantiate(_scoreManagerObject, gameObject.transform).GetComponent<ScoreManager>();
     }
 
     // Add lanes to the board
-    private void _PlaceLanes()
+    private List<int> _PlaceLanes()
     {
+        List<int> lanePositions = new List<int>();
         // Place evenly spaced lanes
         for(int i = 0; i < Math.Ceiling(_numLanes / 2.0); i++)
         {
-            Debug.Log(i);
             if (i == 0 && !_hasEvenLanes)
             {
-                Instantiate(LaneObject, _center, Quaternion.identity);
-            
+                GameObject centerLane = Instantiate(LaneObject, _center, Quaternion.identity);
                 JudgementButton center = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
-                center.Initialize(_touchManager, new Vector3(0,0,0), i);
+                center.Initialize(_touchManager, _scoreManager, new Vector3(0,0,0), i);
+                lanePositions.Add((int)centerLane.transform.position.x);
                 continue;
             }
             Vector3 lanePosition = new Vector3(i * _laneHorizSpacing + _centerHorizOffset, 0, 0);    
-            Instantiate(LaneObject, _center + lanePosition, Quaternion.identity);
-            Instantiate(LaneObject, _center - lanePosition, Quaternion.identity);
+            GameObject rightLane = Instantiate(LaneObject, _center + lanePosition, Quaternion.identity);
+            GameObject leftLane = Instantiate(LaneObject, _center - lanePosition, Quaternion.identity);
             JudgementButton rightButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
             JudgementButton leftButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
-            rightButton.Initialize(_touchManager, lanePosition, i);
-            leftButton.Initialize(_touchManager, lanePosition * Vector2.left, -1);
+            rightButton.Initialize(_touchManager, _scoreManager, lanePosition, i);
+            leftButton.Initialize(_touchManager, _scoreManager, lanePosition * Vector2.left, -i);
+
+            lanePositions.Add((int)leftLane.transform.position.x);
+            lanePositions.Add((int)rightLane.transform.position.x);
         }
+        lanePositions.Sort();
+        return lanePositions;
     }
 
-    // Spawn all Necessary GameBoard Components
+    private void _CreateNoteSpawner(List<int> lanePositions)
+    {
+        _noteSpawner = Instantiate(_noteSpawnerObject, gameObject.transform).GetComponent<NoteSpawner>();
+        _noteSpawner.Initialize(lanePositions);
+    }
+
+    // Create all Necessary GameBoard Components
     private void _BuildBoard()
     {
         // Create Managers
         _CreateManagers();
         // Place lanes & Buttons (each lane gets a button)
-        _PlaceLanes();    
+        List<int> laneHorizPositions = _PlaceLanes();    
 
+        // Create Spawner
+        _CreateNoteSpawner(laneHorizPositions);
 
     }
 
