@@ -12,18 +12,18 @@ public class NoteSpawner : MonoBehaviour
     public GameObject noteObject;
 
     // Dict containing where lane number is the key and lane position is the value
-    private Dictionary<int, int> _laneHorizPositions;
+    private Dictionary<int, float> _laneHorizPositions;
     // Spawner Object(itself)
     [SerializeField] private GameObject _spawnerObject;
     
     // Initializing the lanepositions sets the spawn boundaries
     // Ex): Receiving three lan positions [-4,0,4] will update _laneHorizPositions to
     // {0: -4, 1: 0, 2: 4} where lane 0 is located at x = -4 and lane 1 is located at x = 0
-    public void Initialize(List<int> lanePositions)
+    public void Initialize(List<float> lanePositions)
     {
-        _laneHorizPositions = new Dictionary<int, int>();
+        _laneHorizPositions = new Dictionary<int, float>();
         int laneIndex = 0;
-        foreach(int laneHorizPosition in lanePositions)
+        foreach(float laneHorizPosition in lanePositions)
         {
             _laneHorizPositions[laneIndex] = laneHorizPosition;
             laneIndex++; 

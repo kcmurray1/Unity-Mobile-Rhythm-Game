@@ -1,27 +1,52 @@
 using System;
 using UnityEngine;
+using TMPro;
+using Melanchall.DryWetMidi.Interaction;
+using Unity.Collections;
 public class ScoreManager : MonoBehaviour
 {
-    private int missCount;
-    private int hitCount;
 
+    private const string DEFAULT_SCORE_UI = "000000000";
+    
+    private const string DEFAULT_MULTIPLIER_UI = "x0";
+    private const int BASE_SCORE_VALUE = 100;
+    private TextMeshProUGUI _textScore;
+    private TextMeshProUGUI _textMultiplier;
+    private int _missCount;
+    private int _hitCount;
+    private int _multiplier;
+    private int _totalScore;
 
-    private void Awake()
+    public void Initialize()
     {
-        missCount = 0;
-        hitCount = 0;
+        _textScore = GameObject.Find("Text_Score").GetComponent<TextMeshProUGUI>();
+        _textMultiplier = GameObject.Find("Text_Multiplier").GetComponent<TextMeshProUGUI>();
+        Reset();
+    }
+
+    public void Reset()
+    {
+        _multiplier = 0;
+        _missCount = 0;
+        _hitCount = 0;
+        _totalScore = 0;
+        _textScore.text = DEFAULT_SCORE_UI;
+        _textMultiplier.text = DEFAULT_MULTIPLIER_UI;
     }
 
     public void OnNoteHit()
     {
-        hitCount++;
-        Debug.Log(hitCount + "Hits!");
+        _hitCount++;
+        _multiplier++;
+        _totalScore += BASE_SCORE_VALUE;
+        _textScore.text = _totalScore.ToString("D9");
+        _textMultiplier.text = "x" + _multiplier.ToString();
     }
 
     public void OnNoteMiss()
     {
-        missCount++;
-        
-        Debug.Log(missCount + "Misses");
+        _missCount++;
+        _multiplier = 0;
+        Debug.Log(_missCount + "Misses");
     }
 }

@@ -27,15 +27,37 @@ public class GameBoard : MonoBehaviour
     // Spacing around the center
     private int _centerHorizOffset;
 
-    private int _laneHorizSpacing;
+    private float _laneHorizSpacing;
     // Number of lanes
     [Range(3, 5)]
     [SerializeField] private int _numLanes;
     private bool _hasEvenLanes;
+
+    // Board Design
+    private const float LARGE_LANE_SPACING = 4f;
+    private const float MEDIUM_LANE_SPACING = 3.75f;
+
+    private const float SMALL_LANE_SPACING = 3.5f;
+
+    enum LaneSpacing
+    {
+        Small,
+        Medium,
+        Large
+    }
+
     
     void Start()
     {
-        _laneHorizSpacing = 4;
+        Initialize(5, LaneSpacing.Large);    
+    }    
+
+    // TODO: make LaneSpacing Enum accessible outside of this class to change this into a public method
+    private void Initialize(int numLanes, LaneSpacing mode)
+    {
+        _SetLaneSpacing(mode);
+        _numLanes = numLanes;
+
         _center = new Vector3(0,10,90);
         _hasEvenLanes = false;
         _centerHorizOffset = 0;
@@ -46,7 +68,25 @@ public class GameBoard : MonoBehaviour
             _hasEvenLanes = true;
         }
         _BuildBoard();
-    }    
+    }
+   
+
+    // Determine how close the lanes should be on the board
+    private void _SetLaneSpacing(LaneSpacing mode)
+    {
+        switch(mode)
+        {
+            case LaneSpacing.Small:
+                _laneHorizSpacing = SMALL_LANE_SPACING;
+                break;
+            case LaneSpacing.Medium:
+                _laneHorizSpacing = MEDIUM_LANE_SPACING;  
+                break;
+            default:
+                _laneHorizSpacing = LARGE_LANE_SPACING;
+                break;
+        }
+    }
 
     // Instantiate Managers for scoring and interaction
     private void _CreateManagers()
@@ -67,12 +107,13 @@ public class GameBoard : MonoBehaviour
         }
 
         _scoreManager = Instantiate(_scoreManagerObject, gameObject.transform).GetComponent<ScoreManager>();
+        _scoreManager.Initialize();
     }
 
     // Add lanes to the board
-    private List<int> _PlaceLanes()
+    private List<float> _PlaceLanes()
     {
-        List<int> lanePositions = new List<int>();
+        List<float> lanePositions = new List<float>();
         // Place evenly spaced lanes
         for(int i = 0; i < Math.Ceiling(_numLanes / 2.0); i++)
         {
@@ -81,7 +122,7 @@ public class GameBoard : MonoBehaviour
                 GameObject centerLane = Instantiate(LaneObject, _center, Quaternion.identity);
                 JudgementButton center = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
                 center.Initialize(_touchManager, _scoreManager, new Vector3(0,0,0), i);
-                lanePositions.Add((int)centerLane.transform.position.x);
+                lanePositions.Add(centerLane.transform.position.x);
                 continue;
             }
             Vector3 lanePosition = new Vector3(i * _laneHorizSpacing + _centerHorizOffset, 0, 0);    
@@ -91,15 +132,15 @@ public class GameBoard : MonoBehaviour
             JudgementButton leftButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
             rightButton.Initialize(_touchManager, _scoreManager, lanePosition, i);
             leftButton.Initialize(_touchManager, _scoreManager, lanePosition * Vector2.left, -i);
-
-            lanePositions.Add((int)leftLane.transform.position.x);
-            lanePositions.Add((int)rightLane.transform.position.x);
+    
+            lanePositions.Add(leftLane.transform.position.x);
+            lanePositions.Add(rightLane.transform.position.x);
         }
         lanePositions.Sort();
         return lanePositions;
     }
 
-    private void _CreateNoteSpawner(List<int> lanePositions)
+    private void _CreateNoteSpawner(List<float> lanePositions)
     {
         _noteSpawner = Instantiate(_noteSpawnerObject, gameObject.transform).GetComponent<NoteSpawner>();
         _noteSpawner.Initialize(lanePositions);
@@ -111,7 +152,7 @@ public class GameBoard : MonoBehaviour
         // Create Managers
         _CreateManagers();
         // Place lanes & Buttons (each lane gets a button)
-        List<int> laneHorizPositions = _PlaceLanes();    
+        List<float> laneHorizPositions = _PlaceLanes();    
 
         // Create Spawner
         _CreateNoteSpawner(laneHorizPositions);
