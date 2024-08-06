@@ -83,7 +83,7 @@ public class NoteSpawner : MonoBehaviour
     // Spawn an object
     public void Spawn(int laneIndex)
     {
-        GameObject newNote = Instantiate(noteObject, _spawnerObject.transform.position, Quaternion.identity);
+        GameObject newNote = Instantiate(noteObject, _spawnerObject.transform);
         // Adjust horizontal position
         newNote.transform.position = new Vector3(_laneHorizPositions[laneIndex], 
                 newNote.transform.position.y, newNote.transform.position.z);

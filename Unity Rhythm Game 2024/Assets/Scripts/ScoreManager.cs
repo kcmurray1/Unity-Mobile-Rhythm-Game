@@ -32,7 +32,7 @@ public class ScoreManager : MonoBehaviour
     }
 
     // Update score based on quality it
-    public void OnNoteHit()
+    public void OnNoteHit(Vector3 notePosition)
     {
         _hitCount++;
         _multiplier++;

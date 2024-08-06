@@ -9,19 +9,13 @@ public class JudgementButton : MonoBehaviour {
 
     private GameObject _overlappedNote;
 
-    // Event Handlers for ScoreManager
-    public delegate void NoteHitHandler();
-    public delegate void NoteMissHandler();
-
-    public event NoteHitHandler OnNoteHit;
-    public event NoteMissHandler OnNoteMiss;
-
     // Event Handlers for SoundManager
     public delegate void SongStateHandler();
     public event SongStateHandler OnSongStateChange;
 
     // Judgement Button attributes
     private bool hasNote;
+    [SerializeField]
     private int id;
 
     public void Initialize(TouchManager touchManager, ScoreManager scoreManager, SoundManager soundManager, Vector3 position, int id)
@@ -31,8 +25,6 @@ public class JudgementButton : MonoBehaviour {
         _touchManager.OnTouch += TouchPressed;
         // Connect to ScoreManager
         _scoreManager = scoreManager;
-        OnNoteHit += scoreManager.OnNoteHit;
-        OnNoteMiss += scoreManager.OnNoteMiss;
         // Connect to SoundManager
         _soundManager = soundManager;
         OnSongStateChange += soundManager.OnSongStateChange; 
@@ -40,7 +32,7 @@ public class JudgementButton : MonoBehaviour {
         hasNote = false;
         gameObject.transform.position = position;
         this.id = id;
-
+        
     }
 
     // Unsubscribe from _touchManager
@@ -59,13 +51,15 @@ public class JudgementButton : MonoBehaviour {
         {
             return;
         }
+        
         if(_overlappedNote != null)
         {
             // NOTE: setting hasNote to false here resolves bug where OnTriggerExit2D is called
             //  after _overlappedNote is destroyed
             hasNote = false;
+            _soundManager.PlayEffect();
+            _scoreManager.OnNoteHit(_overlappedNote.gameObject.transform.position);
             _DestroyNote();
-            OnNoteHit?.Invoke();
         }
         
     }
@@ -96,7 +90,7 @@ public class JudgementButton : MonoBehaviour {
         if(_overlappedNote && hasNote)
         {
             _DestroyNote();
-            OnNoteMiss?.Invoke();
+            _scoreManager.OnNoteMiss();
         }
         
     }

@@ -38,7 +38,7 @@
                     "id": "35f742af-48b1-4e77-9807-171d71c1bd02",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold,Tap",
                     "initialStateCheck": false
                 }
             ],
@@ -58,7 +58,7 @@
                     "name": "",
                     "id": "ac7b98dd-01fc-4255-8cba-e91a5a4c818e",
                     "path": "<Touchscreen>/touch0/press",
-                    "interactions": "",
+                    "interactions": "Hold,Tap(pressPoint=0.2)",
                     "processors": "",
                     "groups": "",
                     "action": "TouchPress",

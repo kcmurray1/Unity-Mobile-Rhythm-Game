@@ -19,6 +19,7 @@ public class SoundManager : MonoBehaviour
     public void SetGameSong()
     {
         _gameSong.clip.LoadAudioData();
+        _generalSoundSource.clip.LoadAudioData();
     }
 
     public void OnSongStateChange()
@@ -30,7 +31,12 @@ public class SoundManager : MonoBehaviour
         else
         {
             _gameSong.Play();
-        }
-        
+        }   
+    }
+
+    public void PlayEffect()
+    {
+        if (!_generalSoundSource) {return;}
+        _generalSoundSource.Play();
     }
 }

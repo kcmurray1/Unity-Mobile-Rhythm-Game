@@ -1,0 +1,34 @@
+{
+    "name": "hold",
+    "maps": [
+        {
+            "name": "testHold",
+            "id": "5b6eb0ed-f3e9-4b60-8bdf-78a3fee90bc3",
+            "actions": [
+                {
+                    "name": "hold",
+                    "type": "PassThrough",
+                    "id": "0f4d6c33-9e86-4013-b078-781847f96ed7",
+                    "expectedControlType": "Touch",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "21aa70de-16d1-48a5-8341-8050a5630576",
+                    "path": "<Touchscreen>/touch*/Press",
+                    "interactions": "Hold,Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "hold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

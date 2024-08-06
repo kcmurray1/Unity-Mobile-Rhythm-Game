@@ -1,6 +1,9 @@
 using System;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.Interactions;
 using UnityEngine;
+
 
 public class TouchManager : MonoBehaviour
 {
@@ -36,17 +39,20 @@ public class TouchManager : MonoBehaviour
         touchPositionAction = playerInput.actions["TouchPosition"];
         touchPositionAction2 = playerInput.actions["TouchPosition2"];
         touchPressAction2 = playerInput.actions["TouchPress2"];
+
     }
     private void OnEnable()
     {
-        touchPressAction.started += TouchPressed;
-        touchPressAction2.started += TouchPressedTwo;
+        touchPressAction.performed += TouchPressed;
+        touchPressAction.canceled += TouchCanceled;
+        touchPressAction2.performed += TouchPressedTwo;
     }
 
     private void OnDisable()
     {
-        touchPressAction.started -= TouchPressed;
-        touchPressAction2.started -= TouchPressedTwo;
+        touchPressAction.performed -= TouchPressed;
+        touchPressAction2.performed -= TouchPressedTwo;
+        touchPressAction.canceled -= TouchCanceled;
     }
 
     private Vector3 ScreenToWorldPosition(Vector3 touchPosition)
@@ -64,14 +70,32 @@ public class TouchManager : MonoBehaviour
         return touchPosition;
     }
 
+    private void TouchCanceled(InputAction.CallbackContext context)
+    {
+        if (context.interaction is TapInteraction)
+        {
+            return;
+        }
+        //https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/api/UnityEngine.InputSystem.InputAction.CallbackContext.html#UnityEngine_InputSystem_InputAction_CallbackContext_duration
+        else if (context.duration > 0.5){
+            Debug.Log("Done holding!");
+        }
+    }
     private void TouchPressedTwo(InputAction.CallbackContext context)
     {
-        ScreenToWorldPosition(touchPositionAction2.ReadValue<Vector2>());
+        if (context.interaction is TapInteraction)
+        {
+            ScreenToWorldPosition(touchPositionAction2.ReadValue<Vector2>());
+        }
+       
     }
  
     private void TouchPressed(InputAction.CallbackContext context)
     {
-        ScreenToWorldPosition(touchPositionAction.ReadValue<Vector2>());        
+        if (context.interaction is TapInteraction)
+        {
+             ScreenToWorldPosition(touchPositionAction.ReadValue<Vector2>());    
+        }     
     }
     protected virtual void RaiseTouchEvent(GameObject buttonGameObject)
     {

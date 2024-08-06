@@ -50,7 +50,7 @@ public class GameBoard : MonoBehaviour
     
     void Start()
     {
-        Initialize(5, LaneSpacing.Large);    
+        Initialize(5, LaneSpacing.Small);    
     }    
 
     // TODO: make LaneSpacing Enum accessible outside of this class to change this into a public method
