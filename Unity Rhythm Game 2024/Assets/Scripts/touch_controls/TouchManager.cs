@@ -3,66 +3,89 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine;
+using Unity.VisualScripting;
+using System.Collections.Generic;
 
 
 public class TouchManager : MonoBehaviour
 {
-    //Camera to base touches on
+    //Camera to convert screen touches to world positions
     [SerializeField] private Camera CameraMain; 
     //private GameObject player;
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private float YoffSet;
     [SerializeField] private float XoffSet;
-    private InputAction touchPositionAction2;
-    
-    //Action that receives the position of a touch
-    private InputAction touchPositionAction;
-    //Action that waits to receive touch
-    private InputAction touchPressAction;
 
-    private InputAction touchPressAction2;
-    
+    // Store all press input actions (independent for each finger)
+    private InputAction[] _inputActions ;
+    // Store the positions of individual presses
+    private Dictionary<string, InputAction> _inputActionPositions;
 
-    // Delegates
+    // Delegate used to notify Judgement buttons of finger press
     public delegate void TouchAction(JudgementButton judgementButton);
-
     public event TouchAction OnTouch;
+
+    // Number of InputActions to make
+    private int NUM_ACTIONS = 3;
 
     private void Awake()
     {
+        // Setup Camera
         if (CameraMain == null)
         {
             CameraMain = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         }
-        playerInput = GetComponent<PlayerInput>();
-        touchPressAction = playerInput.actions["TouchPress"];
-        touchPositionAction = playerInput.actions["TouchPosition"];
-        touchPositionAction2 = playerInput.actions["TouchPosition2"];
-        touchPressAction2 = playerInput.actions["TouchPress2"];
-
+        _inputActions = new InputAction[NUM_ACTIONS];
+        _inputActionPositions = new Dictionary<string, InputAction>();
+        for(int i = 0; i < NUM_ACTIONS; i++)
+        {
+            // press action
+            InputAction newAction = new InputAction($"TouchPress{i}", InputActionType.Button, $"<Touchscreen>/touch{i}/press", "tap,hold");
+            // press position
+            InputAction newActionPosition = new InputAction($"TouchPressPosition{i}", InputActionType.Value, 
+                                            $"<Touchscreen>/touch{i}/position", expectedControlType:"Vector2");
+            
+            _inputActions[i] = newAction;
+            _inputActionPositions[newAction.name] = newActionPosition;
+        }
+        // Add binding https://docs.unity3d.com/Packages/com.unity.inputsystem@1.2/api/UnityEngine.InputSystem.InputBinding.html#UnityEngine_InputSystem_InputBinding_interactions
     }
+
+    // Enable all input actions
     private void OnEnable()
     {
-        touchPressAction.performed += TouchPressed;
-        touchPressAction.canceled += TouchCanceled;
-        touchPressAction2.performed += TouchPressedTwo;
+        for(int i = 0; i < NUM_ACTIONS; i++)
+        {
+            Debug.Log(_inputActions[i]);
+            _inputActions[i].performed += TouchPressed;
+            _inputActions[i].canceled += TouchCanceled;
+            _inputActions[i].Enable();
+            _inputActionPositions[_inputActions[i].name].Enable();
+        }
     }
 
+    // Disable all input actions
     private void OnDisable()
     {
-        touchPressAction.performed -= TouchPressed;
-        touchPressAction2.performed -= TouchPressedTwo;
-        touchPressAction.canceled -= TouchCanceled;
+        for(int i = 0; i < NUM_ACTIONS; i++)
+        {
+            _inputActions[i].performed -= TouchPressed;
+            _inputActions[i].canceled -= TouchCanceled;
+            _inputActions[i].Disable();
+            _inputActionPositions[_inputActions[i].name].Disable();
+        }
+
     }
 
+    // Convert a screen touch to world position
     private Vector3 ScreenToWorldPosition(Vector3 touchPosition)
     {
         //Convert touch position to position on the Camera screen.
         touchPosition = CameraMain.ScreenToWorldPoint(new Vector3(touchPosition.x, touchPosition.y, 0f));
         touchPosition = new Vector3(touchPosition.x, touchPosition.y, 0f);
+        // Gather all objects that overlap the touch location and check for a Judgement button
         Collider2D[] collider = Physics2D.OverlapPointAll(touchPosition);
-        var button = Array.Find(collider, element => element.gameObject.CompareTag("JudgementButton"));
-       
+        Collider2D button = Array.Find(collider, element => element.gameObject.CompareTag("JudgementButton"));
         if(button)
         {
             RaiseTouchEvent(button.gameObject);  
@@ -81,22 +104,21 @@ public class TouchManager : MonoBehaviour
             Debug.Log("Done holding!");
         }
     }
-    private void TouchPressedTwo(InputAction.CallbackContext context)
-    {
-        if (context.interaction is TapInteraction)
-        {
-            ScreenToWorldPosition(touchPositionAction2.ReadValue<Vector2>());
-        }
-       
-    }
  
     private void TouchPressed(InputAction.CallbackContext context)
     {
         if (context.interaction is TapInteraction)
         {
-             ScreenToWorldPosition(touchPositionAction.ReadValue<Vector2>());    
+            ScreenToWorldPosition(_inputActionPositions[context.action.name].ReadValue<Vector2>());
         }     
+        else
+        {
+            Debug.Log($"{context.control.path} is holding...");
+        
+        }
     }
+
+    // Notify Judgement buttons of a screen touch
     protected virtual void RaiseTouchEvent(GameObject buttonGameObject)
     {
         JudgementButton judgementButton = buttonGameObject.GetComponent<JudgementButton>();

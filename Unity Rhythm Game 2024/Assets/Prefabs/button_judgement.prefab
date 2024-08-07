@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6, y: 0, z: 90}
-  m_LocalScale: {x: 2.8162103, y: 0.9453737, z: 2.5893805}
+  m_LocalScale: {x: 2.91, y: 1.61, z: 2.5893805}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -146,7 +146,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _touchManager: {fileID: 0}
   _scoreManager: {fileID: 0}
-  songSource: {fileID: 1580178437006357228}
+  _soundManager: {fileID: 0}
+  id: 0
 --- !u!82 &1580178437006357228
 AudioSource:
   m_ObjectHideFlags: 0
