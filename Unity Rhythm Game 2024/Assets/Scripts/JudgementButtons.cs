@@ -7,7 +7,8 @@ public class JudgementButton : MonoBehaviour {
 
     [SerializeField] private SoundManager _soundManager;
 
-    private GameObject _overlappedNote;
+    private GameObject _overlappedNoteObject;
+    private GameObject _overlappedNoteLongObject;
 
     // Event Handlers for SoundManager
     public delegate void SongStateHandler();
@@ -16,13 +17,16 @@ public class JudgementButton : MonoBehaviour {
     // Judgement Button attributes
     private bool hasNote;
     [SerializeField]
-    private int id;
+    public int Id;
+    private bool isHolding;
 
     public void Initialize(TouchManager touchManager, ScoreManager scoreManager, SoundManager soundManager, Vector3 position, int id)
     {
         // Connect to TouchManager
         _touchManager = touchManager;
         _touchManager.OnTouch += TouchPressed;
+        _touchManager.OnHold += TouchHold;
+        _touchManager.OnHoldRelease += TouchHoldRelease;
         // Connect to ScoreManager
         _scoreManager = scoreManager;
         // Connect to SoundManager
@@ -30,8 +34,10 @@ public class JudgementButton : MonoBehaviour {
         OnSongStateChange += soundManager.OnSongStateChange; 
 
         hasNote = false;
+        isHolding = false;
         gameObject.transform.position = position;
-        this.id = id;
+        this.Id = id;
+        _overlappedNoteLongObject = null;
         
     }
 
@@ -44,55 +50,69 @@ public class JudgementButton : MonoBehaviour {
         }
     }
 
-    // Button was touched
-    void TouchPressed(JudgementButton pressedButton)
+    void TouchHoldRelease()
     {
-        if (pressedButton.id != id)
-        {
-            return;
-        }
-        
-        if(_overlappedNote != null)
-        {
-            // NOTE: setting hasNote to false here resolves bug where OnTriggerExit2D is called
-            //  after _overlappedNote is destroyed
-            hasNote = false;
-            _soundManager.PlayEffect();
-            _scoreManager.OnNoteHit(_overlappedNote.gameObject.transform.position);
-            _DestroyNote();
-        }
+        isHolding = false;
+    }
+
+    void TouchHold(int pressedButtonId)
+    {
+        if (pressedButtonId != Id){return;}
+        isHolding = true;
+    }
+    // Button was tapped
+    void TouchPressed(int pressedButtonId)
+    {
+        if (pressedButtonId != Id){return;}
+        if(!_overlappedNoteObject){return;}
+        // NOTE: setting hasNote to false here resolves bug where OnTriggerExit2D is called
+        //  after _overlappedNoteObject is destroyed
+        hasNote = false;
+        _soundManager.PlayEffect();
+        _scoreManager.OnNoteHit(_overlappedNoteObject.gameObject.transform.position);
+        _DestroyNote();
+
         
     }
     
-    // Destory overlapping gameObject
+    // Destroy overlapping gameObject
     private void _DestroyNote()
     {
-        Destroy(_overlappedNote);
-        _overlappedNote = null;
+        Destroy(_overlappedNoteObject);
+        _overlappedNoteObject = null;
     }
 
 
     // Triggered by Notes, mark them for destruction
-    private void OnTriggerEnter2D(Collider2D other) {
-        if(other.gameObject.CompareTag("start"))
+    private void OnTriggerEnter2D(Collider2D other) {    
+        if (other.CompareTag("Inactive") || (!isHolding && other.CompareTag("Note_Long")))
         {
-            OnSongStateChange?.Invoke();
+            return;
         }
-        if(other.gameObject.CompareTag("Note"))
+        _overlappedNoteObject = other.gameObject;
+        hasNote = true; 
+        if (isHolding && other.CompareTag("Note_Long"))
         {
-            _overlappedNote = other.gameObject;
-            hasNote = true;
+            TouchPressed(Id);
         }
+    
     }
 
     // Triggered by Notes, Destroy note after leaving judgement button   
     private void OnTriggerExit2D(Collider2D other) {
-        if(_overlappedNote && hasNote)
+        string otherTag = other.tag;
+        // Missed long Note
+        if (otherTag == "Note_Long_Start" && hasNote)
         {
-            _DestroyNote();
-            _scoreManager.OnNoteMiss();
+            other.gameObject.transform.parent.GetComponent<NoteLong>().Clear();
         }
-        
+        if(otherTag != "Inactive" && _overlappedNoteObject && hasNote)
+        {
+            _scoreManager.OnNoteMiss();
+            _DestroyNote();
+        }
+        Destroy(other.gameObject);
+ 
     }
     
 }

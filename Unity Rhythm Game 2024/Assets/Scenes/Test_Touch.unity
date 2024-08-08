@@ -268,6 +268,7 @@ MonoBehaviour:
   _touchManager: {fileID: 0}
   _scoreManager: {fileID: 0}
   _soundManager: {fileID: 0}
+  Id: 0
 --- !u!1 &269182852
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,6 +594,7 @@ MonoBehaviour:
   _touchManager: {fileID: 0}
   _scoreManager: {fileID: 0}
   _soundManager: {fileID: 0}
+  Id: 0
 --- !u!1 &479384222
 GameObject:
   m_ObjectHideFlags: 0
@@ -867,6 +869,7 @@ MonoBehaviour:
   _touchManager: {fileID: 0}
   _scoreManager: {fileID: 0}
   _soundManager: {fileID: 0}
+  Id: 0
 --- !u!1 &948372204
 GameObject:
   m_ObjectHideFlags: 0
@@ -1457,6 +1460,7 @@ MonoBehaviour:
   _touchManager: {fileID: 0}
   _scoreManager: {fileID: 0}
   _soundManager: {fileID: 0}
+  Id: 0
 --- !u!1 &1391340877
 GameObject:
   m_ObjectHideFlags: 0

@@ -39,6 +39,7 @@ public class ScoreManager : MonoBehaviour
         _totalScore += BASE_SCORE_VALUE;
         _textScore.text = _totalScore.ToString("D9");
         _textMultiplier.text = "x" + _multiplier.ToString();
+        Debug.Log(_hitCount);
     }
 
     // Update multiplier and count of misses

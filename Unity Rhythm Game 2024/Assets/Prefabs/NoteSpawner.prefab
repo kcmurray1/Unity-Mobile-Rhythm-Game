@@ -44,5 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01dc13feffb654f42a1a38c6ccfa190a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noteObject: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+  notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+  _longNotePrefab: {fileID: 8157745921619344236, guid: 73049cda21846e44e860d9b04936beab, type: 3}
   _spawnerObject: {fileID: 1856548311554283032}

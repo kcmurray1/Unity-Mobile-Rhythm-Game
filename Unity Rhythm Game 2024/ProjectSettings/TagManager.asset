@@ -7,6 +7,9 @@ TagManager:
   - Note
   - JudgementButton
   - start
+  - Note_Long_Start
+  - Note_Long
+  - Inactive
   layers:
   - Default
   - TransparentFX

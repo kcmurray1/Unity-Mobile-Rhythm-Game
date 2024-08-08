@@ -1,9 +1,7 @@
 using System;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine;
-using Unity.VisualScripting;
 using System.Collections.Generic;
 
 
@@ -22,8 +20,12 @@ public class TouchManager : MonoBehaviour
     private Dictionary<string, InputAction> _inputActionPositions;
 
     // Delegate used to notify Judgement buttons of finger press
-    public delegate void TouchAction(JudgementButton judgementButton);
+    public delegate void TouchAction(int buttonId);
+     public delegate void ReleaseAction();
     public event TouchAction OnTouch;
+
+    public event TouchAction OnHold;
+    public event ReleaseAction OnHoldRelease;
 
     // Number of InputActions to make
     private int NUM_ACTIONS = 3;
@@ -56,8 +58,7 @@ public class TouchManager : MonoBehaviour
     {
         for(int i = 0; i < NUM_ACTIONS; i++)
         {
-            Debug.Log(_inputActions[i]);
-            _inputActions[i].performed += TouchPressed;
+            _inputActions[i].started += TouchPressed;
             _inputActions[i].canceled += TouchCanceled;
             _inputActions[i].Enable();
             _inputActionPositions[_inputActions[i].name].Enable();
@@ -69,7 +70,7 @@ public class TouchManager : MonoBehaviour
     {
         for(int i = 0; i < NUM_ACTIONS; i++)
         {
-            _inputActions[i].performed -= TouchPressed;
+            _inputActions[i].started -= TouchPressed;
             _inputActions[i].canceled -= TouchCanceled;
             _inputActions[i].Disable();
             _inputActionPositions[_inputActions[i].name].Disable();
@@ -78,43 +79,35 @@ public class TouchManager : MonoBehaviour
     }
 
     // Convert a screen touch to world position
-    private Vector3 ScreenToWorldPosition(Vector3 touchPosition)
+    private Collider2D ScreenToWorldPosition(Vector3 touchPosition)
     {
         //Convert touch position to position on the Camera screen.
         touchPosition = CameraMain.ScreenToWorldPoint(new Vector3(touchPosition.x, touchPosition.y, 0f));
         touchPosition = new Vector3(touchPosition.x, touchPosition.y, 0f);
         // Gather all objects that overlap the touch location and check for a Judgement button
         Collider2D[] collider = Physics2D.OverlapPointAll(touchPosition);
-        Collider2D button = Array.Find(collider, element => element.gameObject.CompareTag("JudgementButton"));
-        if(button)
-        {
-            RaiseTouchEvent(button.gameObject);  
-        }
-        return touchPosition;
+        return Array.Find(collider, element => element.gameObject.CompareTag("JudgementButton"));
     }
 
     private void TouchCanceled(InputAction.CallbackContext context)
     {
-        if (context.interaction is TapInteraction)
-        {
-            return;
-        }
         //https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/api/UnityEngine.InputSystem.InputAction.CallbackContext.html#UnityEngine_InputSystem_InputAction_CallbackContext_duration
-        else if (context.duration > 0.5){
-            Debug.Log("Done holding!");
+        // Check duration to discern TapInteraction and HitInteraction will call this function
+        if (context.duration > 0.5)
+        {
+            OnHoldRelease?.Invoke();
         }
     }
  
     private void TouchPressed(InputAction.CallbackContext context)
     {
-        if (context.interaction is TapInteraction)
+        // Get button at touch position
+        Collider2D button = ScreenToWorldPosition(_inputActionPositions[context.action.name].ReadValue<Vector2>());
+        if (!button){return;}
+        RaiseTouchEvent(button.gameObject);
+        if (context.interaction is HoldInteraction)
         {
-            ScreenToWorldPosition(_inputActionPositions[context.action.name].ReadValue<Vector2>());
-        }     
-        else
-        {
-            Debug.Log($"{context.control.path} is holding...");
-        
+            OnHold?.Invoke(button.gameObject.GetComponent<JudgementButton>().Id);
         }
     }
 
@@ -122,7 +115,7 @@ public class TouchManager : MonoBehaviour
     protected virtual void RaiseTouchEvent(GameObject buttonGameObject)
     {
         JudgementButton judgementButton = buttonGameObject.GetComponent<JudgementButton>();
-        OnTouch?.Invoke(judgementButton);
+        OnTouch?.Invoke(judgementButton.Id);
     }
 
 }
