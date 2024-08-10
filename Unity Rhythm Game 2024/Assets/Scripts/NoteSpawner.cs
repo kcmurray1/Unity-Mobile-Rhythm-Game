@@ -35,23 +35,12 @@ public class NoteSpawner : MonoBehaviour
         {1.862069f, 0},
     };
     
-    // void Start()
-    // {
-    //     List<float> pos = new List<float>{0f};
-    //     Initialize(pos);
-    // }
     // Initializing the lanepositions sets the spawn boundaries
     // Ex): Receiving three lan positions [-4,0,4] will update _laneHorizPositions to
     // {0: -4, 1: 0, 2: 4} where lane 0 is located at x = -4 and lane 1 is located at x = 0
     public void Initialize(List<float> lanePositions)
     {
         _InitializeLanePositions(lanePositions);
-        // List<float> timstamps = GetSongData("Assets/Songs/Test_C_Scale.mid", 145);
-        // Dictionary<float, int> testMap = new Dictionary<float, int>();
-        // foreach (var timstamp in timstamps)
-        // {
-        //     testMap[timstamp] = 0;
-        // }
         List<float> timings = GetSongData("Assets/Songs/Test_Twelve.mid", 95);
         Dictionary<float, int> songMap = new Dictionary<float, int>();
         System.Random idk = new System.Random();
@@ -74,7 +63,6 @@ public class NoteSpawner : MonoBehaviour
         }
     }
     
-   
     // Spawn an object
     public void Spawn(int laneIndex)
     {
@@ -122,6 +110,36 @@ public class NoteSpawner : MonoBehaviour
         newNote.gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
     }
 
+    private bool _IsLongNote(double noteLength)
+    {
+        return noteLength > 0.414;
+    }
+
+    private List<MidiNote> _RemoveExtraNotes(List<MidiNote> notes)
+    {
+        while(notes.Count > _laneHorizPositions.Count)
+        {
+            notes.RemoveAt(0);
+        }
+        return notes;
+    }
+    // Adjust notes that are spawned at the same time in the same lane(i.e prevent notes from stacking)
+    private List<MidiNote> _RemoveMidiNoteCollisions(List<MidiNote> notes)
+    {
+        // No collision
+        if(notes.Count < 2)
+        {
+            return notes;
+        }
+        for(int i = 0; i < notes.Count; i++)
+        {
+            notes = _RemoveExtraNotes(notes);
+            // Redistribute notes across lanes
+            
+        }
+
+        return notes;
+    }
     // Read midifile
     public List<float> GetSongData(string fileName, float bpm)
     {
@@ -145,30 +163,36 @@ public class NoteSpawner : MonoBehaviour
         //Use Dictionary to store timestamps as keys and lanes as values
         //The purpose is to check if there is a note in a lane at noteTimeDict[timestamp]
         //and avoid collisions by placing a new note in a different lane
-        Dictionary<float, int> noteTimeDict = new Dictionary<float, int>();
+        Dictionary<float, List<MidiNote>> midiNoteMap = new Dictionary<float, List<MidiNote>>();
         List<float> newMap = new List<float>(); 
         //Get Note timings from midiFile
         var notes = midiFile.GetNotes().ToList();
 
         int noteNum = 0;
 
-        //Iterate each note
+        // Build initial map
         foreach(var note in notes)
         {
             //Get the timestamp of when a note is played
             float spawnTime = (float)note.TimeAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
-            // Debug.Log($"Note {noteNum} at {spawnTime}");
-            noteTimeDict[spawnTime] = noteNum;
+            double noteLength = note.LengthAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
+            MidiNote newNote = new MidiNote(_IsLongNote(noteLength), 0, spawnTime, noteNum);
+            if(!midiNoteMap.ContainsKey(spawnTime))
+            {
+                midiNoteMap[spawnTime] = new List<MidiNote>();
+            }
+            midiNoteMap[spawnTime].Add(newNote);
             newMap.Add(spawnTime);
             noteNum++;     
+        }
+        // Resolve any spawning collisions
+        foreach(float timestamp in midiNoteMap.Keys)
+        {
+            _RemoveMidiNoteCollisions(midiNoteMap[timestamp]);
         }
         Debug.Log($"Finished Generation for {fileName}");
         return newMap;
     }
 
-    private void NoteInfo(Melanchall.DryWetMidi.Interaction.Note note)
-    {
-        Debug.Log($"Length: {note.Length}");
-    }
-
 }
+

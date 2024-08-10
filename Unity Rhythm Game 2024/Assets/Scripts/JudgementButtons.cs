@@ -20,7 +20,7 @@ public class JudgementButton : MonoBehaviour {
     [SerializeField]
     public int Id;
     private bool isHolding;
-
+    private bool _autoplay;
     private bool notPlaying;
     public void Initialize(TouchManager touchManager, ScoreManager scoreManager, SoundManager soundManager, Vector3 position, int id)
     {
@@ -41,6 +41,9 @@ public class JudgementButton : MonoBehaviour {
         this.Id = id;
 
         notPlaying = false;
+
+        // Debug
+        _autoplay = false;
     }
 
     // Unsubscribe from _touchManager
@@ -71,9 +74,8 @@ public class JudgementButton : MonoBehaviour {
         //  after _overlappedNoteObject is destroyed
         hasNote = false;
         _scoreManager.OnNoteHit(_overlappedNoteObject.gameObject.transform.position.y - transform.position.y);
-        _soundManager.PlayEffect();
         _DestroyNote();
-
+        _soundManager.PlayEffect();
         
     }
     
@@ -106,27 +108,37 @@ public class JudgementButton : MonoBehaviour {
             notPlaying = true;
             _soundManager.OnSongStateChange();
         }
+
+        if(_autoplay && other.CompareTag("Note") && Math.Abs(other.transform.position.y - transform.position.y) <= 0.3f)
+        {
+            TouchPressed(Id);
+        }
     }
     // Triggered by Notes, Destroy note after leaving judgement button   
     private void OnTriggerExit2D(Collider2D other) {
         string otherTag = other.tag;
-        // Missed long Note
-        if (otherTag == "Note_Long_Start" && hasNote)
+       
+        if(!other.CompareTag("end") && !other.CompareTag("start"))
         {
-            other.gameObject.transform.parent.GetComponent<NoteLong>().Clear();
+            // Missed long Note
+            if (otherTag == "Note_Long_Start" && hasNote)
+            {
+                other.gameObject.transform.parent.GetComponent<NoteLong>().Clear();
+            }
+            if(otherTag != "Inactive" && _overlappedNoteObject && hasNote)
+            {
+                _scoreManager.OnNoteMiss();
+                _DestroyNote();
+            }
         }
-        if(otherTag != "Inactive" && _overlappedNoteObject && hasNote)
+        else
         {
-            _scoreManager.OnNoteMiss();
-            _DestroyNote();
+            //FIXME: used for debugging scoreManager
+            Debug.Log(_scoreManager.ToString());
         }
         Destroy(other.gameObject);
         
-        //FIXME: used for debugging scoreManager
-        if(other.CompareTag("end"))
-        {
-            Debug.Log(_scoreManager.ToString());
-        }
+        
  
     }
     
