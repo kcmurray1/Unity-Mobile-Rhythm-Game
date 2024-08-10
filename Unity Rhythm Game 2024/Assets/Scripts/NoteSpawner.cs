@@ -45,6 +45,26 @@ public class NoteSpawner : MonoBehaviour
     // {0: -4, 1: 0, 2: 4} where lane 0 is located at x = -4 and lane 1 is located at x = 0
     public void Initialize(List<float> lanePositions)
     {
+        _InitializeLanePositions(lanePositions);
+        // List<float> timstamps = GetSongData("Assets/Songs/Test_C_Scale.mid", 145);
+        // Dictionary<float, int> testMap = new Dictionary<float, int>();
+        // foreach (var timstamp in timstamps)
+        // {
+        //     testMap[timstamp] = 0;
+        // }
+        List<float> timings = GetSongData("Assets/Songs/Test_Twelve.mid", 95);
+        Dictionary<float, int> songMap = new Dictionary<float, int>();
+        System.Random idk = new System.Random();
+        foreach(float time in timings)
+        {
+            // Assign lane for each timestamp
+            songMap[time] = idk.Next(0,_laneHorizPositions.Count);
+        }
+        StartCoroutine(SpawnNote(songMap));
+    }
+
+    private void _InitializeLanePositions(List<float> lanePositions)
+    {
         _laneHorizPositions = new Dictionary<int, float>();
         int laneIndex = 0;
         foreach(float laneHorizPosition in lanePositions)
@@ -52,45 +72,13 @@ public class NoteSpawner : MonoBehaviour
             _laneHorizPositions[laneIndex] = laneHorizPosition;
             laneIndex++; 
         }
-        // StartSpawnining();
-        // List<float> timstamps = GetSongData("Assets/Songs/Test_C_Scale.mid", 145);
-        // Dictionary<float, int> testMap = new Dictionary<float, int>();
-        // foreach (var timstamp in timstamps)
-        // {
-        //     testMap[timstamp] = 0;
-        // }
-        StartCoroutine(SpawnNote(testSong));
     }
-
-    public void StartSpawnining()
-    {
-        Dictionary<float, int> notes = new Dictionary<float, int>();//GetSongData("Assets/Songs/Test_C_Scale.mid", 145);
-        if(notes.Count == 0)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                int lanePos = 0;
-                if (i % 2 == 0)
-                {
-                    lanePos = 2;
-                }
-                else if (i % 3 == 0)
-                {
-                    lanePos = 3;
-                }
-                else{
-                    lanePos = 0;
-                }
-                notes[i] = lanePos;
-            }
-            
-        }
-        StartCoroutine(SpawnNote(notes));
-    }
+    
+   
     // Spawn an object
     public void Spawn(int laneIndex)
     {
-        if (laneIndex == 2)
+        if (laneIndex == 20)
         {
              GameObject newNote = Instantiate(_longNotePrefab, _spawnerObject.transform);
              newNote.transform.position = new Vector3(_laneHorizPositions[laneIndex], 
@@ -106,15 +94,32 @@ public class NoteSpawner : MonoBehaviour
     }
 
     IEnumerator SpawnNote(Dictionary<float, int> noteMap)
-    {            
+    {   
+        GameObject newNote = Instantiate(notePrefab, _spawnerObject.transform);
+        // Adjust horizontal position
+        newNote.transform.position = new Vector3(_laneHorizPositions[0], 
+                newNote.transform.position.y, newNote.transform.position.z);
+        newNote.tag = "start";
+        newNote.gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+
         float prevTime = 0;
         foreach(float timestamp in noteMap.Keys)
         {
-            // Debug.Log($"Spawning {timestamp} : {noteMap[timestamp]}");
-            yield return new WaitForSeconds(timestamp - prevTime);
+            if(timestamp - prevTime != 0)
+            {   
+                yield return new WaitForSeconds(timestamp - prevTime);
+            }
+           
             prevTime = timestamp;
             Spawn(noteMap[timestamp]);
         }
+
+        newNote = Instantiate(notePrefab, _spawnerObject.transform);
+        // Adjust horizontal position
+        newNote.transform.position = new Vector3(_laneHorizPositions[0], 
+                newNote.transform.position.y, newNote.transform.position.z);
+        newNote.tag = "end";
+        newNote.gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
     }
 
     // Read midifile

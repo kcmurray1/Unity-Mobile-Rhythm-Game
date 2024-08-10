@@ -32,7 +32,7 @@ public class NoteLong : MonoBehaviour
         
       }
       _childNotes.Add(gameObject);
-      NoteSpeed = 8f;
+      NoteSpeed = 10f;
     }
 
     
@@ -52,7 +52,6 @@ public class NoteLong : MonoBehaviour
         child.GetComponent<SpriteRenderer>().color = Color.gray;
         child.tag = "Inactive";
       }
-      // GetComponent<SpriteRenderer>().color = Color.gray;
 
     }
 }

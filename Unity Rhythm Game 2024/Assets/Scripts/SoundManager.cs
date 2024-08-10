@@ -24,11 +24,7 @@ public class SoundManager : MonoBehaviour
 
     public void OnSongStateChange()
     {
-        if(_gameSong.isPlaying)
-        {
-            _gameSong.Stop();
-        }
-        else
+        if(!_gameSong.isPlaying)
         {
             _gameSong.Play();
         }   
@@ -38,5 +34,6 @@ public class SoundManager : MonoBehaviour
     {
         if (!_generalSoundSource) {return;}
         _generalSoundSource.Play();
+   
     }
 }

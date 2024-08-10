@@ -6,7 +6,7 @@ public class Note : MonoBehaviour
 
     void Awake()
     {
-        NoteSpeed = 10f;
+        NoteSpeed = 12f;
     }
 
     void Update()

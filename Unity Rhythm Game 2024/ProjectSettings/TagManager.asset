@@ -10,6 +10,7 @@ TagManager:
   - Note_Long_Start
   - Note_Long
   - Inactive
+  - end
   layers:
   - Default
   - TransparentFX

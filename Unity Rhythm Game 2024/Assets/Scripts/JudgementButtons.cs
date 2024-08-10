@@ -1,3 +1,5 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class JudgementButton : MonoBehaviour {
@@ -8,7 +10,6 @@ public class JudgementButton : MonoBehaviour {
     [SerializeField] private SoundManager _soundManager;
 
     private GameObject _overlappedNoteObject;
-    private GameObject _overlappedNoteLongObject;
 
     // Event Handlers for SoundManager
     public delegate void SongStateHandler();
@@ -20,6 +21,7 @@ public class JudgementButton : MonoBehaviour {
     public int Id;
     private bool isHolding;
 
+    private bool notPlaying;
     public void Initialize(TouchManager touchManager, ScoreManager scoreManager, SoundManager soundManager, Vector3 position, int id)
     {
         // Connect to TouchManager
@@ -37,8 +39,8 @@ public class JudgementButton : MonoBehaviour {
         isHolding = false;
         gameObject.transform.position = position;
         this.Id = id;
-        _overlappedNoteLongObject = null;
-        
+
+        notPlaying = false;
     }
 
     // Unsubscribe from _touchManager
@@ -68,8 +70,8 @@ public class JudgementButton : MonoBehaviour {
         // NOTE: setting hasNote to false here resolves bug where OnTriggerExit2D is called
         //  after _overlappedNoteObject is destroyed
         hasNote = false;
+        _scoreManager.OnNoteHit(_overlappedNoteObject.gameObject.transform.position.y - transform.position.y);
         _soundManager.PlayEffect();
-        _scoreManager.OnNoteHit(_overlappedNoteObject.gameObject.transform.position);
         _DestroyNote();
 
         
@@ -98,6 +100,13 @@ public class JudgementButton : MonoBehaviour {
     
     }
 
+    private void OnTriggerStay2D(Collider2D other) {
+        if(other.CompareTag("start") && Math.Abs(other.transform.position.y - transform.position.y) <= 0.2f)
+        {
+            notPlaying = true;
+            _soundManager.OnSongStateChange();
+        }
+    }
     // Triggered by Notes, Destroy note after leaving judgement button   
     private void OnTriggerExit2D(Collider2D other) {
         string otherTag = other.tag;
@@ -112,6 +121,12 @@ public class JudgementButton : MonoBehaviour {
             _DestroyNote();
         }
         Destroy(other.gameObject);
+        
+        //FIXME: used for debugging scoreManager
+        if(other.CompareTag("end"))
+        {
+            Debug.Log(_scoreManager.ToString());
+        }
  
     }
     
