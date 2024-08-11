@@ -5,6 +5,10 @@ using System.Linq; //ToList()
 using System;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
+/// <summary>
+/// Class <c> NoteSpawner </c> reads a midi file to generate a noteMaps used <br/>
+/// to spawn notes for the game.
+/// </summary>
 public class NoteSpawner : MonoBehaviour 
 {
 
@@ -17,39 +21,18 @@ public class NoteSpawner : MonoBehaviour
     // Spawner Object(itself)
     [SerializeField] private GameObject _spawnerObject;
 
-    private Dictionary<float, int> testSong = new Dictionary<float, int>()
-    // {
-    //     {0,1},
-    //     {1,1},
-    //     {2,1},
-    //     {3,1},
-    // };
-      {
-        {0,0}, 
-        {0.413793f, 0},
-        { 0.827586f, 0},
-        {1.241379f,0},
-        { 1.448276f, 0},
-        {1.655172f, 1},
-        {1.75862f, 2},
-        {1.862069f, 0},
-    };
-    
-    // Initializing the lanepositions sets the spawn boundaries
-    // Ex): Receiving three lan positions [-4,0,4] will update _laneHorizPositions to
-    // {0: -4, 1: 0, 2: 4} where lane 0 is located at x = -4 and lane 1 is located at x = 0
+    /// <summary>
+    ///  Set the spawn boundaries <br/>
+    ///  Ex): Receiving three lane positions [-4,0,4] will update _laneHorizPositions to <br/>
+    ///  {0: -4, 1: 0, 2: 4} <br/>
+    ///  where lane 0 is located at x = -4 and lane 1 is located at x = 0
+    /// </summary>
+    /// <param name="lanePositions">The x-coordinate for each lane</param>   
     public void Initialize(List<float> lanePositions)
     {
         _InitializeLanePositions(lanePositions);
-        List<float> timings = GetSongData("Assets/Songs/Test_Twelve.mid", 95);
-        Dictionary<float, int> songMap = new Dictionary<float, int>();
-        System.Random idk = new System.Random();
-        foreach(float time in timings)
-        {
-            // Assign lane for each timestamp
-            songMap[time] = idk.Next(0,_laneHorizPositions.Count);
-        }
-        StartCoroutine(SpawnNote(songMap));
+        Dictionary<float, List<MidiNote>> songMap = _GetSongData("Assets/Songs/Test_Twelve.mid", 95);
+        StartCoroutine(_SpawnNote(songMap));
     }
 
     private void _InitializeLanePositions(List<float> lanePositions)
@@ -63,61 +46,52 @@ public class NoteSpawner : MonoBehaviour
         }
     }
     
-    // Spawn an object
-    public void Spawn(int laneIndex)
+    // 
+    private void _Spawn(int laneIndex, bool isLongNote=false, bool isStart=false, bool isEnd=false)
     {
-        if (laneIndex == 20)
+        GameObject noteToSpawn = notePrefab;
+        if (isLongNote)
         {
-             GameObject newNote = Instantiate(_longNotePrefab, _spawnerObject.transform);
-             newNote.transform.position = new Vector3(_laneHorizPositions[laneIndex], 
-                    newNote.transform.position.y, newNote.transform.position.z);
+            noteToSpawn = _longNotePrefab;
         }
-        else
+        GameObject newNote = Instantiate(noteToSpawn, _spawnerObject.transform);
+        // Adjust horizontal position
+        newNote.transform.position = new Vector3(_laneHorizPositions[laneIndex], 
+                newNote.transform.position.y, newNote.transform.position.z);
+        // Adjust look and tag for start and end notes
+        if(isStart || isEnd)
         {
-            GameObject newNote = Instantiate(notePrefab, _spawnerObject.transform);
-            // Adjust horizontal position
-            newNote.transform.position = new Vector3(_laneHorizPositions[laneIndex], 
-                    newNote.transform.position.y, newNote.transform.position.z);
+            newNote.gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+            newNote.tag = isStart ? "start" : "end";
         }
     }
 
-    IEnumerator SpawnNote(Dictionary<float, int> noteMap)
+    private IEnumerator _SpawnNote(Dictionary<float, List<MidiNote>> noteMap)
     {   
-        GameObject newNote = Instantiate(notePrefab, _spawnerObject.transform);
-        // Adjust horizontal position
-        newNote.transform.position = new Vector3(_laneHorizPositions[0], 
-                newNote.transform.position.y, newNote.transform.position.z);
-        newNote.tag = "start";
-        newNote.gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
-
+        _Spawn(0, isStart: true);
         float prevTime = 0;
         foreach(float timestamp in noteMap.Keys)
         {
-            if(timestamp - prevTime != 0)
-            {   
-                yield return new WaitForSeconds(timestamp - prevTime);
+            foreach(MidiNote note in noteMap[timestamp])
+            {
+                if(timestamp - prevTime != 0)
+                {   
+                    yield return new WaitForSeconds(timestamp - prevTime);
+                }     
+                prevTime = timestamp;
+                _Spawn(note.LaneIndex);
             }
-           
-            prevTime = timestamp;
-            Spawn(noteMap[timestamp]);
         }
-
-        newNote = Instantiate(notePrefab, _spawnerObject.transform);
-        // Adjust horizontal position
-        newNote.transform.position = new Vector3(_laneHorizPositions[0], 
-                newNote.transform.position.y, newNote.transform.position.z);
-        newNote.tag = "end";
-        newNote.gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+        _Spawn(0, isEnd: true);
     }
 
     private bool _IsLongNote(double noteLength)
     {
         return noteLength > 0.414;
     }
-
-    private List<MidiNote> _RemoveExtraNotes(List<MidiNote> notes)
+    private List<MidiNote> _RemoveExtraNotes(List<MidiNote> notes, int maxNotes=1)
     {
-        while(notes.Count > _laneHorizPositions.Count)
+        while(notes.Count > _laneHorizPositions.Count || notes.Count > maxNotes)
         {
             notes.RemoveAt(0);
         }
@@ -135,13 +109,20 @@ public class NoteSpawner : MonoBehaviour
         {
             notes = _RemoveExtraNotes(notes);
             // Redistribute notes across lanes
-            
+
         }
 
         return notes;
     }
+
+    // Assign random lane to MidiNote
+    private int _AssignRandomLane()
+    {
+        System.Random rnd = new System.Random();
+        return rnd.Next(0, _laneHorizPositions.Count);
+    }
     // Read midifile
-    public List<float> GetSongData(string fileName, float bpm)
+    private Dictionary<float, List<MidiNote>> _GetSongData(string fileName, float bpm)
     {
         MidiFile midiFile = MidiFile.Read(fileName);
 
@@ -164,25 +145,21 @@ public class NoteSpawner : MonoBehaviour
         //The purpose is to check if there is a note in a lane at noteTimeDict[timestamp]
         //and avoid collisions by placing a new note in a different lane
         Dictionary<float, List<MidiNote>> midiNoteMap = new Dictionary<float, List<MidiNote>>();
-        List<float> newMap = new List<float>(); 
         //Get Note timings from midiFile
         var notes = midiFile.GetNotes().ToList();
-
         int noteNum = 0;
-
         // Build initial map
         foreach(var note in notes)
         {
             //Get the timestamp of when a note is played
             float spawnTime = (float)note.TimeAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
             double noteLength = note.LengthAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
-            MidiNote newNote = new MidiNote(_IsLongNote(noteLength), 0, spawnTime, noteNum);
+            MidiNote newNote = new MidiNote(_IsLongNote(noteLength), _AssignRandomLane(), spawnTime, noteNum);
             if(!midiNoteMap.ContainsKey(spawnTime))
             {
                 midiNoteMap[spawnTime] = new List<MidiNote>();
             }
             midiNoteMap[spawnTime].Add(newNote);
-            newMap.Add(spawnTime);
             noteNum++;     
         }
         // Resolve any spawning collisions
@@ -191,7 +168,8 @@ public class NoteSpawner : MonoBehaviour
             _RemoveMidiNoteCollisions(midiNoteMap[timestamp]);
         }
         Debug.Log($"Finished Generation for {fileName}");
-        return newMap;
+
+        return midiNoteMap;
     }
 
 }

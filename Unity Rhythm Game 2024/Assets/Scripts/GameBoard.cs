@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+/// <summary>
+/// Class <c>GameBoard</c> creates a 3-5 lane version of the game 
+/// </summary>
 public class GameBoard : MonoBehaviour
 {
     // Lanes and Judgement Buttons
@@ -53,7 +56,12 @@ public class GameBoard : MonoBehaviour
         Initialize(5, LaneSpacing.Small);    
     }    
 
-    // TODO: make LaneSpacing Enum accessible outside of this class to change this into a public method
+    // FIXME: make LaneSpacing Enum accessible outside of this class to change this into a public method
+    /// <summary>
+    /// Set the number of lanes [3-5] and specify how wide the <c>GameBoard</c> should be
+    /// </summary>
+    /// <param name="numLanes"></param>
+    /// <param name="mode">The width of the GameBoard [Small, Medium, Large]</param>
     private void Initialize(int numLanes, LaneSpacing mode)
     {
         _SetLaneSpacing(mode);
@@ -107,13 +115,12 @@ public class GameBoard : MonoBehaviour
         }
         _scoreManager = Instantiate(_scoreManagerPrefab, gameObject.transform).GetComponent<ScoreManager>();
         _scoreManager.Initialize();
-
         // Find SoundManager
         _soundManagerObject = GameObject.Find("SoundManager");
         _soundManager = _soundManagerObject.GetComponent<SoundManager>();
     }
 
-    // Add lanes to the board
+    // Add lanes to the board to fit the layout: <Left lane(s)> <center> <Right lane(s)>
     private List<float> _PlaceLanes()
     {
         List<float> lanePositions = new List<float>();
@@ -129,7 +136,7 @@ public class GameBoard : MonoBehaviour
                 continue;
             }
             Vector3 lanePosition = new Vector3(i * _laneHorizSpacing + _centerHorizOffset, 0, 0);
-            // Create Mirrored Lanes    
+            // Create Mirrored Lanes   
             GameObject rightLane = Instantiate(LaneObject, _center + lanePosition, Quaternion.identity);
             GameObject leftLane = Instantiate(LaneObject, _center - lanePosition, Quaternion.identity);
             // Create Mirrored Judgement Buttons
@@ -141,6 +148,8 @@ public class GameBoard : MonoBehaviour
             lanePositions.Add(leftLane.transform.position.x);
             lanePositions.Add(rightLane.transform.position.x);
         }
+        // Sort lanes from left to right
+        // Ex: 3 lane layout sorted: -4 0 4 
         lanePositions.Sort();
         return lanePositions;
     }

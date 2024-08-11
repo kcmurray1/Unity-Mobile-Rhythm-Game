@@ -1,7 +1,8 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
-
+/// <summary>
+/// Class <c>JudgementButton</c> destroys notes, starts/stops musics, and rates hit accuracy
+/// </summary>
 public class JudgementButton : MonoBehaviour {
     // Connected Managers
     [SerializeField] private TouchManager _touchManager;
@@ -21,7 +22,6 @@ public class JudgementButton : MonoBehaviour {
     public int Id;
     private bool isHolding;
     private bool _autoplay;
-    private bool notPlaying;
     public void Initialize(TouchManager touchManager, ScoreManager scoreManager, SoundManager soundManager, Vector3 position, int id)
     {
         // Connect to TouchManager
@@ -39,8 +39,6 @@ public class JudgementButton : MonoBehaviour {
         isHolding = false;
         gameObject.transform.position = position;
         this.Id = id;
-
-        notPlaying = false;
 
         // Debug
         _autoplay = false;
@@ -105,7 +103,6 @@ public class JudgementButton : MonoBehaviour {
     private void OnTriggerStay2D(Collider2D other) {
         if(other.CompareTag("start") && Math.Abs(other.transform.position.y - transform.position.y) <= 0.2f)
         {
-            notPlaying = true;
             _soundManager.OnSongStateChange();
         }
 
