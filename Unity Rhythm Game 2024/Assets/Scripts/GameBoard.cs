@@ -43,7 +43,7 @@ public class GameBoard : MonoBehaviour
 
     private const float SMALL_LANE_SPACING = 3.5f;
 
-    enum LaneSpacing
+    public enum LaneSpacing
     {
         Small,
         Medium,
@@ -62,7 +62,7 @@ public class GameBoard : MonoBehaviour
     /// </summary>
     /// <param name="numLanes"></param>
     /// <param name="mode">The width of the GameBoard [Small, Medium, Large]</param>
-    private void Initialize(int numLanes, LaneSpacing mode)
+    public void Initialize(int numLanes, LaneSpacing mode)
     {
         _SetLaneSpacing(mode);
         _numLanes = numLanes;

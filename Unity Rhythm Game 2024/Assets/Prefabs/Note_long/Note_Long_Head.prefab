@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2007454116461354408}
   - component: {fileID: 277977047797575043}
   m_Layer: 0
-  m_Name: Note_Long_Dummy
+  m_Name: Note_Long_Head
   m_TagString: Note_Long_Start
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

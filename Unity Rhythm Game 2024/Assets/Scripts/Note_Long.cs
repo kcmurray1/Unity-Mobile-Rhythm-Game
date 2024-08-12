@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using System;
 public class NoteLong : MonoBehaviour
 {
     [SerializeField] private GameObject child;
@@ -9,14 +11,19 @@ public class NoteLong : MonoBehaviour
 
     private List<GameObject> _childNotes;
 
-    private int numChildren;
     public float NoteSpeed;
     public bool isLongNote;
 
     void Awake()
     {  
+      int numChildren = 5;
+      Initialize(numChildren);  
+      NoteSpeed = 12f;
+    }
+
+    public void Initialize(int numChildren)
+    {
       _childNotes = new List<GameObject>();
-      numChildren = 5;
       for(int i = 1; i < numChildren; i++)
       {
         GameObject toSpawn = child;
@@ -32,10 +39,17 @@ public class NoteLong : MonoBehaviour
         
       }
       _childNotes.Add(gameObject);
-      NoteSpeed = 10f;
     }
-
     
+    public void RelocateTail()
+    {
+      // Start of Long note
+      GameObject head = _childNotes[_childNotes.Count - 2];
+      float adjustedYOffset = Math.Abs(head.transform.position.y - transform.position.y);
+      transform.position = new Vector3(transform.position.x, 
+                           transform.position.y +  adjustedYOffset,
+                           transform.position.z);
+    }
     void Update()
     {
       transform.position += Vector3.down * NoteSpeed * Time.deltaTime;

@@ -18,6 +18,7 @@ public class NoteSpawner : MonoBehaviour
 
     // Dict containing where lane number is the key and lane position is the value
     private Dictionary<int, float> _laneHorizPositions;
+    private int _centerLaneIndex;
     // Spawner Object(itself)
     [SerializeField] private GameObject _spawnerObject;
 
@@ -31,7 +32,7 @@ public class NoteSpawner : MonoBehaviour
     public void Initialize(List<float> lanePositions)
     {
         _InitializeLanePositions(lanePositions);
-        Dictionary<float, List<MidiNote>> songMap = _GetSongData("Assets/Songs/Test_Twelve.mid", 95);
+        Dictionary<float, List<MidiNote>> songMap = _GetSongData("Assets/Songs/Test_Halfing_c.mid", 170);
         StartCoroutine(_SpawnNote(songMap));
     }
 
@@ -44,6 +45,7 @@ public class NoteSpawner : MonoBehaviour
             _laneHorizPositions[laneIndex] = laneHorizPosition;
             laneIndex++; 
         }
+        _centerLaneIndex = _laneHorizPositions.Count / 2;
     }
     
     // 
@@ -63,12 +65,17 @@ public class NoteSpawner : MonoBehaviour
         {
             newNote.gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
             newNote.tag = isStart ? "start" : "end";
+            Debug.Log($"Spawned marker at {newNote.transform.position}");
+        }
+        if (isLongNote)
+        {
+            newNote.GetComponent<NoteLong>().RelocateTail();
         }
     }
 
     private IEnumerator _SpawnNote(Dictionary<float, List<MidiNote>> noteMap)
     {   
-        _Spawn(0, isStart: true);
+        _Spawn(_centerLaneIndex, isStart: true);
         float prevTime = 0;
         foreach(float timestamp in noteMap.Keys)
         {
@@ -79,10 +86,10 @@ public class NoteSpawner : MonoBehaviour
                     yield return new WaitForSeconds(timestamp - prevTime);
                 }     
                 prevTime = timestamp;
-                _Spawn(note.LaneIndex);
+                _Spawn(laneIndex: note.LaneIndex, isLongNote: note.IsLongNote);
             }
         }
-        _Spawn(0, isEnd: true);
+        _Spawn(_centerLaneIndex, isEnd: true);
     }
 
     private bool _IsLongNote(double noteLength)
@@ -97,6 +104,16 @@ public class NoteSpawner : MonoBehaviour
         }
         return notes;
     }
+
+    private List<MidiNote> _RedistributeLanes(List<MidiNote> notes)
+    {
+        Stack<int> availableLanes = new Stack<int>(_laneHorizPositions.Keys);
+        for(int i =0; i < notes.Count; i++)
+        {
+            notes[i].LaneIndex = availableLanes.Pop();
+        }
+        return notes;
+    }
     // Adjust notes that are spawned at the same time in the same lane(i.e prevent notes from stacking)
     private List<MidiNote> _RemoveMidiNoteCollisions(List<MidiNote> notes)
     {
@@ -105,13 +122,10 @@ public class NoteSpawner : MonoBehaviour
         {
             return notes;
         }
-        for(int i = 0; i < notes.Count; i++)
-        {
-            notes = _RemoveExtraNotes(notes);
-            // Redistribute notes across lanes
-
-        }
-
+        // Remove notes such that notes.Count <= numLanes
+        notes = _RemoveExtraNotes(notes);
+        // Redistribute notes across lanes
+        notes = _RedistributeLanes(notes);
         return notes;
     }
 

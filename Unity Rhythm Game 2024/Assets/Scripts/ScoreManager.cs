@@ -9,8 +9,8 @@ public class ScoreManager : MonoBehaviour
     private const string DEFAULT_MULTIPLIER_UI = "x0";
     private const int BASE_SCORE_VALUE = 100;
     // Multiplier score information
-    private const float ACCURACY_PERFECT_THRESHHOLD = 0.3f;
-    private const float ACCURACY_GREAT_THRESHHOLD = 0.6f;
+    private const float ACCURACY_PERFECT_THRESHHOLD = 0.4f;
+    private const float ACCURACY_GREAT_THRESHHOLD = 0.7f;
     private const float ACCURACY_GOOD_THRESHHOLD = 1f;
     private const double PERFECT_SCORE_MULTIPLIER = 2;
     private const double GREAT_SCORE_MULTIPLIER = 1.5;

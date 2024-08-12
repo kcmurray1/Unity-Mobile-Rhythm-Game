@@ -12,10 +12,6 @@ public class JudgementButton : MonoBehaviour {
 
     private GameObject _overlappedNoteObject;
 
-    // Event Handlers for SoundManager
-    public delegate void SongStateHandler();
-    public event SongStateHandler OnSongStateChange;
-
     // Judgement Button attributes
     private bool hasNote;
     [SerializeField]
@@ -33,7 +29,6 @@ public class JudgementButton : MonoBehaviour {
         _scoreManager = scoreManager;
         // Connect to SoundManager
         _soundManager = soundManager;
-        OnSongStateChange += soundManager.OnSongStateChange; 
 
         hasNote = false;
         isHolding = false;
@@ -84,13 +79,21 @@ public class JudgementButton : MonoBehaviour {
         _overlappedNoteObject = null;
     }
 
+    private bool _IsDeactivatedLongNote(Collider2D other)
+    {
+        return other.CompareTag("Inactive") || (!isHolding && other.CompareTag("Note_Long"));
+    }
+
+    private bool _IsMarkerNote(Collider2D other)
+    {
+        return other.CompareTag("start") || other.CompareTag("end");
+    }
 
     // Triggered by Notes, mark them for destruction
-    private void OnTriggerEnter2D(Collider2D other) {    
-        if (other.CompareTag("Inactive") || (!isHolding && other.CompareTag("Note_Long")))
-        {
-            return;
-        }
+    private void OnTriggerEnter2D(Collider2D other) {
+        // Ignore deactivated notes    
+        if (_IsDeactivatedLongNote(other)) {return;}
+        if(_IsMarkerNote(other)){return;}
         _overlappedNoteObject = other.gameObject;
         hasNote = true; 
         if (isHolding && other.CompareTag("Note_Long"))
@@ -101,7 +104,7 @@ public class JudgementButton : MonoBehaviour {
     }
 
     private void OnTriggerStay2D(Collider2D other) {
-        if(other.CompareTag("start") && Math.Abs(other.transform.position.y - transform.position.y) <= 0.2f)
+        if(other.CompareTag("start") && Math.Abs(other.transform.position.y - transform.position.y) <= 0.3f)
         {
             _soundManager.OnSongStateChange();
         }
