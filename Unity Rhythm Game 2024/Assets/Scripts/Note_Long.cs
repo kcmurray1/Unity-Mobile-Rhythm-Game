@@ -16,29 +16,43 @@ public class NoteLong : MonoBehaviour
 
     void Awake()
     {  
-      int numChildren = 5;
-      Initialize(numChildren);  
+      // int NumChildren = 5;
+      // Initialize(NumChildren);  
       NoteSpeed = 12f;
     }
 
-    public void Initialize(int numChildren)
+    public void Initialize(int NumChildren)
     {
       _childNotes = new List<GameObject>();
-      for(int i = 1; i < numChildren; i++)
+      for(int i = 1; i < NumChildren; i++)
       {
         GameObject toSpawn = child;
-        if (i == numChildren - 1)
+        
+        if (i == NumChildren - 1)
         {
           toSpawn = head;
         }
         GameObject newChild = Instantiate(toSpawn, _tailTransform, worldPositionStays: true);
+        float yOffset;//newChild.transform.position.y - (1 * (i - 1));
+        if (i == 1)
+        {
+          yOffset = -0.8f;
+        }
+        else
+        {
+          yOffset = -0.8f - 0.95f * (i - 1);
+        }
+        
+        // float yOffset = newChild.transform.position.y *((2 * i) - 1);
+        Debug.Log(yOffset);
         newChild.transform.position = _tailTransform.position +
-                new Vector3(newChild.transform.position.x, newChild.transform.position.y * ((2 * i) - 1), 
+                new Vector3(newChild.transform.position.x, yOffset, 
                             newChild.transform.position.z);
         _childNotes.Add(newChild);
         
       }
       _childNotes.Add(gameObject);
+      RelocateTail();
     }
     
     public void RelocateTail()

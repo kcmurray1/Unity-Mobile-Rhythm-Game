@@ -32,7 +32,7 @@ public class NoteSpawner : MonoBehaviour
     public void Initialize(List<float> lanePositions)
     {
         _InitializeLanePositions(lanePositions);
-        Dictionary<float, List<MidiNote>> songMap = _GetSongData("Assets/Songs/Test_Halfing_c.mid", 170);
+        Dictionary<float, List<MidiNote>> songMap = _GetSongData("Assets/Songs/Test_MIDI_Cascade_2.mid",115);
         StartCoroutine(_SpawnNote(songMap));
     }
 
@@ -49,7 +49,7 @@ public class NoteSpawner : MonoBehaviour
     }
     
     // 
-    private void _Spawn(int laneIndex, bool isLongNote=false, bool isStart=false, bool isEnd=false)
+    private void _Spawn(int laneIndex, bool isLongNote=false, bool isStart=false, bool isEnd=false, int numChildren=0)
     {
         GameObject noteToSpawn = notePrefab;
         if (isLongNote)
@@ -69,7 +69,7 @@ public class NoteSpawner : MonoBehaviour
         }
         if (isLongNote)
         {
-            newNote.GetComponent<NoteLong>().RelocateTail();
+            newNote.GetComponent<NoteLong>().Initialize(numChildren);
         }
     }
 
@@ -86,16 +86,12 @@ public class NoteSpawner : MonoBehaviour
                     yield return new WaitForSeconds(timestamp - prevTime);
                 }     
                 prevTime = timestamp;
-                _Spawn(laneIndex: note.LaneIndex, isLongNote: note.IsLongNote);
+                _Spawn(laneIndex: note.LaneIndex, isLongNote: note.IsLongNote, numChildren: note.NumQuarterNotes);
             }
         }
         _Spawn(_centerLaneIndex, isEnd: true);
     }
 
-    private bool _IsLongNote(double noteLength)
-    {
-        return noteLength > 0.414;
-    }
     private List<MidiNote> _RemoveExtraNotes(List<MidiNote> notes, int maxNotes=1)
     {
         while(notes.Count > _laneHorizPositions.Count || notes.Count > maxNotes)
@@ -168,7 +164,7 @@ public class NoteSpawner : MonoBehaviour
             //Get the timestamp of when a note is played
             float spawnTime = (float)note.TimeAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
             double noteLength = note.LengthAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
-            MidiNote newNote = new MidiNote(_IsLongNote(noteLength), _AssignRandomLane(), spawnTime, noteNum);
+            MidiNote newNote = new MidiNote(noteLength, _AssignRandomLane(), spawnTime, noteNum);
             if(!midiNoteMap.ContainsKey(spawnTime))
             {
                 midiNoteMap[spawnTime] = new List<MidiNote>();
