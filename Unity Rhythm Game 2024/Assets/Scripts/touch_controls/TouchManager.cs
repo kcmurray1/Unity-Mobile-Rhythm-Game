@@ -21,7 +21,7 @@ public class TouchManager : MonoBehaviour
 
     // Delegate used to notify Judgement buttons of finger press
     public delegate void TouchAction(int buttonId);
-     public delegate void ReleaseAction();
+    public delegate void ReleaseAction(int buttonId);
     public event TouchAction OnTouch;
 
     public event TouchAction OnHold;
@@ -95,7 +95,10 @@ public class TouchManager : MonoBehaviour
         // Check duration to discern TapInteraction and HitInteraction will call this function
         if (context.duration > 0.5)
         {
-            OnHoldRelease?.Invoke();
+            Collider2D button = ScreenToWorldPosition(_inputActionPositions[context.action.name].ReadValue<Vector2>());
+            if (!button){return;}
+           
+            RaiseHoldReleaseEvent(button.gameObject);
         }
     }
  
@@ -112,10 +115,16 @@ public class TouchManager : MonoBehaviour
     }
 
     // Notify Judgement buttons of a screen touch
-    protected virtual void RaiseTouchEvent(GameObject buttonGameObject)
+    private void RaiseTouchEvent(GameObject buttonGameObject)
     {
         JudgementButton judgementButton = buttonGameObject.GetComponent<JudgementButton>();
         OnTouch?.Invoke(judgementButton.Id);
+    }
+
+    private void RaiseHoldReleaseEvent(GameObject buttonGameObject)
+    {
+        JudgementButton judgementButton = buttonGameObject.GetComponent<JudgementButton>();
+        OnHoldRelease?.Invoke(judgementButton.Id);
     }
 
 }

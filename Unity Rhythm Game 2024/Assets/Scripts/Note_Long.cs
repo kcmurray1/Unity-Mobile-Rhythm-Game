@@ -33,7 +33,7 @@ public class NoteLong : MonoBehaviour
           toSpawn = head;
         }
         GameObject newChild = Instantiate(toSpawn, _tailTransform, worldPositionStays: true);
-        float yOffset;//newChild.transform.position.y - (1 * (i - 1));
+        float yOffset;
         if (i == 1)
         {
           yOffset = -0.8f;
@@ -42,9 +42,6 @@ public class NoteLong : MonoBehaviour
         {
           yOffset = -0.8f - 0.95f * (i - 1);
         }
-        
-        // float yOffset = newChild.transform.position.y *((2 * i) - 1);
-        Debug.Log(yOffset);
         newChild.transform.position = _tailTransform.position +
                 new Vector3(newChild.transform.position.x, yOffset, 
                             newChild.transform.position.z);
@@ -77,8 +74,12 @@ public class NoteLong : MonoBehaviour
     {
       foreach(GameObject child in _childNotes)
       {
-        child.GetComponent<SpriteRenderer>().color = Color.gray;
-        child.tag = "Inactive";
+        if(child != null)
+        {
+          child.GetComponent<SpriteRenderer>().color = Color.gray;
+          child.tag = "Inactive";
+        }
+       
       }
 
     }

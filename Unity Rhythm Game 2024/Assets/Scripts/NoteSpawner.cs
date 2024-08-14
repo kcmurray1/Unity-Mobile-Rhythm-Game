@@ -65,7 +65,6 @@ public class NoteSpawner : MonoBehaviour
         {
             newNote.gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
             newNote.tag = isStart ? "start" : "end";
-            Debug.Log($"Spawned marker at {newNote.transform.position}");
         }
         if (isLongNote)
         {

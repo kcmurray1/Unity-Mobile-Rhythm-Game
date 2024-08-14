@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 /// <summary>
 /// Class <c>JudgementButton</c> destroys notes, starts/stops musics, and rates hit accuracy
@@ -18,6 +19,8 @@ public class JudgementButton : MonoBehaviour {
     public int Id;
     private bool isHolding;
     private bool _autoplay;
+    private static string[] IGNORED_NOTE_TAGS = {"start, end, Inactive"};
+    private static string[] LONG_NOTE_TAGS = {"Note_Long_Start", "Note_Long"};
     public void Initialize(TouchManager touchManager, ScoreManager scoreManager, SoundManager soundManager, Vector3 position, int id)
     {
         // Connect to TouchManager
@@ -36,7 +39,7 @@ public class JudgementButton : MonoBehaviour {
         this.Id = id;
 
         // Debug
-        _autoplay = false;
+        _autoplay = true;
     }
 
     // Unsubscribe from _touchManager
@@ -48,8 +51,9 @@ public class JudgementButton : MonoBehaviour {
         }
     }
 
-    void TouchHoldRelease()
+    void TouchHoldRelease(int releasedButtonId)
     {
+        if (releasedButtonId != Id){return;}
         isHolding = false;
     }
 
@@ -79,21 +83,11 @@ public class JudgementButton : MonoBehaviour {
         _overlappedNoteObject = null;
     }
 
-    private bool _IsDeactivatedLongNote(Collider2D other)
-    {
-        return other.CompareTag("Inactive") || (!isHolding && other.CompareTag("Note_Long"));
-    }
-
-    private bool _IsMarkerNote(Collider2D other)
-    {
-        return other.CompareTag("start") || other.CompareTag("end");
-    }
-
     // Triggered by Notes, mark them for destruction
     private void OnTriggerEnter2D(Collider2D other) {
         // Ignore deactivated notes    
-        if (_IsDeactivatedLongNote(other)) {return;}
-        if(_IsMarkerNote(other)){return;}
+        if (IGNORED_NOTE_TAGS.Contains(other.tag)) {return;}
+        if (!isHolding && other.CompareTag("Note_Long")) {return;}
         _overlappedNoteObject = other.gameObject;
         hasNote = true; 
         if (isHolding && other.CompareTag("Note_Long"))
@@ -104,38 +98,36 @@ public class JudgementButton : MonoBehaviour {
     }
 
     private void OnTriggerStay2D(Collider2D other) {
-        if(other.CompareTag("start") && Math.Abs(other.transform.position.y - transform.position.y) <= 0.3f)
+        float yDifference = other.transform.position.y - transform.position.y;
+        if(other.CompareTag("start") && yDifference <= 0.3f)
         {
             _soundManager.OnSongStateChange();
         }
 
-        if(_autoplay && other.CompareTag("Note") && Math.Abs(other.transform.position.y - transform.position.y) <= 0.3f)
+        if(_autoplay && other.CompareTag("Note") && yDifference <= 0.3f)
         {
             TouchPressed(Id);
         }
     }
     // Triggered by Notes, Destroy note after leaving judgement button   
     private void OnTriggerExit2D(Collider2D other) {
-        string otherTag = other.tag;
-       
-        if(!other.CompareTag("end") && !other.CompareTag("start"))
+        if(IGNORED_NOTE_TAGS.Contains(other.tag))
         {
-            // Missed long Note
-            if (otherTag == "Note_Long_Start" && hasNote)
-            {
-                other.gameObject.transform.parent.GetComponent<NoteLong>().Clear();
-            }
-            if(otherTag != "Inactive" && _overlappedNoteObject && hasNote)
-            {
-                _scoreManager.OnNoteMiss();
-                _DestroyNote();
-            }
+            Destroy(other.gameObject);
+            return;
         }
-        else
+   
+        // Missed long Note
+        if (LONG_NOTE_TAGS.Contains(other.tag) && hasNote)
         {
-            //FIXME: used for debugging scoreManager
-            Debug.Log(_scoreManager.ToString());
+            other.gameObject.transform.parent.GetComponent<NoteLong>().Clear();
         }
+        if(!other.CompareTag("Inactive") && hasNote)
+        {
+            _scoreManager.OnNoteMiss();
+            _DestroyNote();
+        }
+    
         Destroy(other.gameObject);
         
         
