@@ -43,6 +43,9 @@ public class GameBoard : MonoBehaviour
 
     private const float SMALL_LANE_SPACING = 3.5f;
 
+    // Autoplay feature
+    bool _isAutoPlay;
+
     public enum LaneSpacing
     {
         Small,
@@ -53,20 +56,19 @@ public class GameBoard : MonoBehaviour
     
     void Start()
     {
-        Initialize(5, LaneSpacing.Small);    
+        Initialize(5, LaneSpacing.Small, true);    
     }    
 
-    // FIXME: make LaneSpacing Enum accessible outside of this class to change this into a public method
     /// <summary>
     /// Set the number of lanes [3-5] and specify how wide the <c>GameBoard</c> should be
     /// </summary>
     /// <param name="numLanes"></param>
     /// <param name="mode">The width of the GameBoard [Small, Medium, Large]</param>
-    public void Initialize(int numLanes, LaneSpacing mode)
+    public void Initialize(int numLanes, LaneSpacing mode, bool autoPlay=false)
     {
         _SetLaneSpacing(mode);
         _numLanes = numLanes;
-
+        _isAutoPlay = autoPlay;
         _center = new Vector3(0,10,90);
         _hasEvenLanes = false;
         _centerHorizOffset = 0;
@@ -131,7 +133,7 @@ public class GameBoard : MonoBehaviour
             {
                 GameObject centerLane = Instantiate(LaneObject, _center, Quaternion.identity);
                 JudgementButton center = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
-                center.Initialize(_touchManager, _scoreManager, _soundManager, new Vector3(0,0,0), i);
+                center.Initialize(_touchManager, _scoreManager, _soundManager, new Vector3(0,0,0), i, _isAutoPlay);
                 lanePositions.Add(centerLane.transform.position.x);
                 continue;
             }
@@ -142,8 +144,8 @@ public class GameBoard : MonoBehaviour
             // Create Mirrored Judgement Buttons
             JudgementButton rightButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
             JudgementButton leftButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
-            rightButton.Initialize(_touchManager, _scoreManager, _soundManager, lanePosition, i);
-            leftButton.Initialize(_touchManager, _scoreManager, _soundManager, lanePosition * Vector2.left, -i);
+            rightButton.Initialize(_touchManager, _scoreManager, _soundManager, lanePosition, i, _isAutoPlay);
+            leftButton.Initialize(_touchManager, _scoreManager, _soundManager, lanePosition * Vector2.left, -i, _isAutoPlay);
             // Record location of lanes
             lanePositions.Add(leftLane.transform.position.x);
             lanePositions.Add(rightLane.transform.position.x);

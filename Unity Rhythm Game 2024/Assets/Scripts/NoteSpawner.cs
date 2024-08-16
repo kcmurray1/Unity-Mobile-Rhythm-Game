@@ -33,6 +33,7 @@ public class NoteSpawner : MonoBehaviour
     {
         _InitializeLanePositions(lanePositions);
         Dictionary<float, List<MidiNote>> songMap = _GetSongData("Assets/Songs/Test_MIDI_Cascade_2.mid",115);
+        Debug.Log($"Spawned {songMap.Count} notes");
         StartCoroutine(_SpawnNote(songMap));
     }
 
@@ -88,6 +89,7 @@ public class NoteSpawner : MonoBehaviour
                 _Spawn(laneIndex: note.LaneIndex, isLongNote: note.IsLongNote, numChildren: note.NumQuarterNotes);
             }
         }
+        yield return new WaitForSeconds(3f);
         _Spawn(_centerLaneIndex, isEnd: true);
     }
 

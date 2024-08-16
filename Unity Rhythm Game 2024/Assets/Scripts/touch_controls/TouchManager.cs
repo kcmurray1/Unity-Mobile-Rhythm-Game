@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor;
 
 
 public class TouchManager : MonoBehaviour
@@ -18,6 +19,8 @@ public class TouchManager : MonoBehaviour
     private InputAction[] _inputActions ;
     // Store the positions of individual presses
     private Dictionary<string, InputAction> _inputActionPositions;
+    // Store the Judgement button for each press
+    private Dictionary<string, Collider2D> _inputActionButtons;
 
     // Delegate used to notify Judgement buttons of finger press
     public delegate void TouchAction(int buttonId);
@@ -27,7 +30,8 @@ public class TouchManager : MonoBehaviour
     public event TouchAction OnHold;
     public event ReleaseAction OnHoldRelease;
 
-    // Number of InputActions to make
+    // Number of InputActions to make(number of separate touches to support)
+    // Ex: NUM_ACTIONS = 3 means that 3 fingers can interaction with the screen separately
     private int NUM_ACTIONS = 3;
 
     private void Awake()
@@ -39,6 +43,7 @@ public class TouchManager : MonoBehaviour
         }
         _inputActions = new InputAction[NUM_ACTIONS];
         _inputActionPositions = new Dictionary<string, InputAction>();
+        _inputActionButtons = new Dictionary<string, Collider2D>();
         for(int i = 0; i < NUM_ACTIONS; i++)
         {
             // press action
@@ -91,26 +96,26 @@ public class TouchManager : MonoBehaviour
 
     private void TouchCanceled(InputAction.CallbackContext context)
     {
+        string actionName = context.action.name;
         //https://docs.unity3d.com/Packages/com.unity.inputsystem@1.0/api/UnityEngine.InputSystem.InputAction.CallbackContext.html#UnityEngine_InputSystem_InputAction_CallbackContext_duration
         // Check duration to discern TapInteraction and HitInteraction will call this function
-        if (context.duration > 0.5)
+        if (context.interaction is HoldInteraction)
         {
-            Collider2D button = ScreenToWorldPosition(_inputActionPositions[context.action.name].ReadValue<Vector2>());
-            if (!button){return;}
-           
-            RaiseHoldReleaseEvent(button.gameObject);
+            RaiseHoldReleaseEvent(_inputActionButtons[actionName].gameObject);
         }
     }
  
     private void TouchPressed(InputAction.CallbackContext context)
     {
+        string actionName = context.action.name;
         // Get button at touch position
-        Collider2D button = ScreenToWorldPosition(_inputActionPositions[context.action.name].ReadValue<Vector2>());
+        Collider2D button = ScreenToWorldPosition(_inputActionPositions[actionName].ReadValue<Vector2>());
         if (!button){return;}
         RaiseTouchEvent(button.gameObject);
         if (context.interaction is HoldInteraction)
         {
             OnHold?.Invoke(button.gameObject.GetComponent<JudgementButton>().Id);
+            _inputActionButtons[actionName] = button;
         }
     }
 

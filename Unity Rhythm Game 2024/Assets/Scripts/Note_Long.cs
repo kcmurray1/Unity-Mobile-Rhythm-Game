@@ -16,8 +16,6 @@ public class NoteLong : MonoBehaviour
 
     void Awake()
     {  
-      // int NumChildren = 5;
-      // Initialize(NumChildren);  
       NoteSpeed = 12f;
     }
 
