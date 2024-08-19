@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cac20967464bf0409e957fb9ebaa97f, type: 3}
+  m_Name: Cascade
+  m_EditorClassIdentifier: 
+  Name: Cascade
+  Bpm: 115
+  TopScore: 0
+  MidiFile: Assets/Songs/Cascade/Test_MIDI_Cascade_2.mid
+  SongClip: {fileID: 8300000, guid: 9088093676583284a9c4dbbe3b45bfbf, type: 3}

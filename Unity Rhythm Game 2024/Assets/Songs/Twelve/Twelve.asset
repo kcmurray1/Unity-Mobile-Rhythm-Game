@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Twelve
   m_EditorClassIdentifier: 
   Name: Twelve
-  Bpm: 0
+  Bpm: 95
   TopScore: 0
   MidiFile: 
+  SongClip: {fileID: 8300000, guid: 11a09f6ebcff22a4bae00f6dfcd2a16c, type: 3}

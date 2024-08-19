@@ -13,6 +13,10 @@ public class JudgementButton : MonoBehaviour {
 
     private GameObject _overlappedNoteObject;
 
+    // Song Events
+    public event Action OnSoundEffect;
+    public event Action<string> OnToggleGameSong;
+
     // Judgement Button attributes
     private bool hasNote;
     [SerializeField]
@@ -50,6 +54,16 @@ public class JudgementButton : MonoBehaviour {
         }
     }
 
+    private void _ToggleGameSong(string state)
+    {
+        OnToggleGameSong?.Invoke(state);
+    }
+    
+    private void _PlayEffect()
+    {
+        OnSoundEffect?.Invoke();
+    }
+    
     void TouchHoldRelease(int releasedButtonId)
     {
         if (releasedButtonId != Id){return;}
@@ -100,10 +114,10 @@ public class JudgementButton : MonoBehaviour {
         // Start playing music
         if(other.CompareTag("start") && yDifference <= 0.3f)
         {
-            _soundManager.ToggleGameSong(other.tag);
+            _ToggleGameSong(other.tag);
         }
         // Autoplay hits perfect notes
-        if(_autoplay && _IsNote(other) && yDifference <= 0.3f)
+        if(_autoplay && (_IsNote(other) || other.CompareTag("Note_Long")) && yDifference <= 0.3f)
         {
             TouchPressed(Id);
             return;
@@ -120,7 +134,7 @@ public class JudgementButton : MonoBehaviour {
             Destroy(other.gameObject);
             if (other.CompareTag("end"))
             {
-                _soundManager.ToggleGameSong(other.tag);
+                _ToggleGameSong(other.tag);
                 Debug.Log(_scoreManager.ToString());
             }
             return;

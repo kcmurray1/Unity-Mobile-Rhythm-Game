@@ -29,10 +29,15 @@ public class NoteSpawner : MonoBehaviour
     ///  where lane 0 is located at x = -4 and lane 1 is located at x = 0
     /// </summary>
     /// <param name="lanePositions">The x-coordinate for each lane</param>   
-    public void Initialize(List<float> lanePositions)
+    public void Initialize(List<float> lanePositions, SongDataScriptableObject song)
     {
         _InitializeLanePositions(lanePositions);
-        Dictionary<float, List<MidiNote>> songMap = _GetSongData("Assets/Songs/Test_MIDI_Cascade_2.mid",115);
+        Debug.Log(song.MidiFile);
+        Dictionary<float, List<MidiNote>> songMap = _GetSongData(song.MidiFile, song.Bpm);
+        if (song.EasyNoteMap == null)
+        {
+            song.EasyNoteMap = songMap;
+        }
         Debug.Log($"Spawned {songMap.Count} notes");
         StartCoroutine(_SpawnNotes(songMap));
     }

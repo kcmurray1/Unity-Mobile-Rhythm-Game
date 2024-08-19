@@ -1,6 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+ public enum LaneSpacing
+ {
+    Small,
+    Medium,
+    Large
+ }
 /// <summary>
 /// Class <c>GameBoard</c> creates a 3-5 lane version of the game 
 /// </summary>
@@ -36,6 +43,7 @@ public class GameBoard : MonoBehaviour
     [Range(3, 5)]
     [SerializeField] private int _numLanes;
     private bool _hasEvenLanes;
+    private List<JudgementButton> _judgementButtons;
 
     // Board Design
     private const float LARGE_LANE_SPACING = 4f;
@@ -43,17 +51,10 @@ public class GameBoard : MonoBehaviour
 
     private const float SMALL_LANE_SPACING = 3.5f;
 
-    private SongDataScriptableObject song;
+    private SongDataScriptableObject _song;
 
     // Autoplay feature
     bool _isAutoPlay;
-
-    public enum LaneSpacing
-    {
-        Small,
-        Medium,
-        Large
-    }
 
     public enum Difficulty
     {
@@ -62,18 +63,12 @@ public class GameBoard : MonoBehaviour
         Hard
     }
 
-    
-    void Start()
-    {
-        Initialize(5, LaneSpacing.Small, true);    
-    }    
-
     /// <summary>
     /// Set the number of lanes [3-5] and specify how wide the <c>GameBoard</c> should be
     /// </summary>
     /// <param name="numLanes"></param>
     /// <param name="mode">The width of the GameBoard [Small, Medium, Large]</param>
-    public void Initialize(int numLanes, LaneSpacing mode, bool autoPlay=false)
+    public void Initialize(int numLanes, LaneSpacing mode, SongDataScriptableObject song, SoundManager soundManager, bool autoPlay=false)
     {
         _SetLaneSpacing(mode);
         _numLanes = numLanes;
@@ -87,7 +82,12 @@ public class GameBoard : MonoBehaviour
             _centerHorizOffset = 2;
             _hasEvenLanes = true;
         }
-        _BuildBoard();
+        _song = song;
+        _soundManager = soundManager;
+        _judgementButtons = new List<JudgementButton>();
+        // Create Managers
+        _CreateManagers(soundManager);
+        _BuildBoard(song);
     }
    
 
@@ -109,7 +109,7 @@ public class GameBoard : MonoBehaviour
     }
 
     // Instantiate Managers for scoring and interaction
-    private void _CreateManagers()
+    private void _CreateManagers(SoundManager soundManager)
     {
         // Create TouchManager
         if(_touchManager)
@@ -126,9 +126,8 @@ public class GameBoard : MonoBehaviour
         }
         _scoreManager = Instantiate(_scoreManagerPrefab, gameObject.transform).GetComponent<ScoreManager>();
         _scoreManager.Initialize();
-        // Find SoundManager
-        _soundManagerObject = GameObject.Find("SoundManager");
-        _soundManager = _soundManagerObject.GetComponent<SoundManager>();
+        // Connect to soundManager
+        _soundManager = soundManager;
     }
 
     // Add lanes to the board to fit the layout: <Left lane(s)> <center> <Right lane(s)>
@@ -144,6 +143,7 @@ public class GameBoard : MonoBehaviour
                 JudgementButton center = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
                 center.Initialize(_touchManager, _scoreManager, _soundManager, new Vector3(0,0,0), i, _isAutoPlay);
                 lanePositions.Add(centerLane.transform.position.x);
+                _judgementButtons.Add(center);
                 continue;
             }
             Vector3 lanePosition = new Vector3(i * _laneHorizSpacing + _centerHorizOffset, 0, 0);
@@ -158,6 +158,8 @@ public class GameBoard : MonoBehaviour
             // Record location of lanes
             lanePositions.Add(leftLane.transform.position.x);
             lanePositions.Add(rightLane.transform.position.x);
+            _judgementButtons.Add(leftButton);
+            _judgementButtons.Add(rightButton);
         }
         // Sort lanes from left to right
         // Ex: 3 lane layout sorted: -4 0 4 
@@ -168,16 +170,26 @@ public class GameBoard : MonoBehaviour
     private void _CreateNoteSpawner(List<float> lanePositions)
     {
         _noteSpawner = Instantiate(_noteSpawnerObject, gameObject.transform).GetComponent<NoteSpawner>();
-        _noteSpawner.Initialize(lanePositions);
+        _noteSpawner.Initialize(lanePositions, _song);
+    }
+
+    private void _AddJudgementListeners()
+    {
+        for (int i = 0; i < _judgementButtons.Count; i++)
+        {
+            _judgementButtons[i].OnSoundEffect += _soundManager.PlayEffect;
+            _judgementButtons[i].OnToggleGameSong += _soundManager.ToggleGameSong;
+        }
     }
 
     // Create all Necessary GameBoard Components
-    private void _BuildBoard()
+    private void _BuildBoard(SongDataScriptableObject song)
     {
-        // Create Managers
-        _CreateManagers();
         // Place lanes & Buttons (each lane gets a button)
-        List<float> laneHorizPositions = _PlaceLanes();    
+        List<float> laneHorizPositions = _PlaceLanes();
+
+        // Subscribe SoundManager methods to Judgement buttons
+        _AddJudgementListeners();    
 
         // Create Spawner
         _CreateNoteSpawner(laneHorizPositions);

@@ -14,8 +14,12 @@ public class SoundManager : MonoBehaviour
         // play any default audio
     }
 
-    public void SetGameSong()
+    public void SetGameSong(AudioClip songClip)
     {
+        if (songClip != null)
+        {
+             _gameSong.clip = songClip;
+        }
         _gameSong.clip.LoadAudioData();
         _generalSoundSource.clip.LoadAudioData();
     }
