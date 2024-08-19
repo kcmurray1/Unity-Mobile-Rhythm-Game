@@ -20,12 +20,18 @@ public class SoundManager : MonoBehaviour
         _generalSoundSource.clip.LoadAudioData();
     }
 
-    public void OnSongStateChange()
+    // Play the game song if it's not playing
+    // Otherwise, stop playing
+    public void ToggleGameSong(string state)
     {
-        if(!_gameSong.isPlaying)
+        if (!_gameSong.isPlaying && state == "start")
         {
             _gameSong.Play();
-        }   
+        } 
+        if (state == "end")
+        {
+            _gameSong.Stop();
+        }  
     }
 
     public void PlayEffect()
