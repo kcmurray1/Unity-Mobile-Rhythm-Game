@@ -140,13 +140,15 @@ public class NoteSpawner : MonoBehaviour
         System.Random rnd = new System.Random();
         return rnd.Next(0, _laneHorizPositions.Count);
     }
-    // Create a noteMap from a Midifile
+    // Retrieve note map from song
     private Dictionary<float, List<MidiNote>> _GetSongData(SongDataScriptableObject song)
     {      
+        // Notemap Already exists
         if (song.EasyNoteMap.map.Count > 0)
         {
             return song.EasyNoteMap.GetMap();
         }
+        // Create a new note map
         MidiFile midiFile = MidiFile.Read(song.MidiFile);
 
         float midiTempo = (float)midiFile.GetTempoMap().GetTempoAtTime((MidiTimeSpan)0).BeatsPerMinute;

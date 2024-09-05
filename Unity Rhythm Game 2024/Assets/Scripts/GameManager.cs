@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class GameManager: MonoBehaviour
@@ -17,6 +18,9 @@ public class GameManager: MonoBehaviour
     
     private void _PlayGame(SongDataScriptableObject song)
     {
+        // Display song name
+        TextMeshProUGUI _displaySongName = GameObject.Find("Text_Song_Name").GetComponent<TextMeshProUGUI>();
+        _displaySongName.text = song.name;
         _BuildGameBoard(song);
         _soundManager.SetGameSong(song.SongClip);
     }
