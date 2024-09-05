@@ -33,11 +33,7 @@ public class NoteSpawner : MonoBehaviour
     {
         _InitializeLanePositions(lanePositions);
         Debug.Log(song.MidiFile);
-        Dictionary<float, List<MidiNote>> songMap = _GetSongData(song.MidiFile, song.Bpm);
-        if (song.EasyNoteMap == null)
-        {
-            song.EasyNoteMap = songMap;
-        }
+        Dictionary<float, List<MidiNote>> songMap = _GetSongData(song);
         Debug.Log($"Spawned {songMap.Count} notes");
         StartCoroutine(_SpawnNotes(songMap));
     }
@@ -104,7 +100,7 @@ public class NoteSpawner : MonoBehaviour
     // maxNotes can be used to reduce this number further to support game difficulty.
     // An easy difficulty for this Gameboard my allow at most 1 note at each timestamp; whereas,
     // a hard difficulty may allow at most 4 notes to spawn at once.
-    private List<MidiNote> _RemoveExtraNotes(List<MidiNote> notes, int maxNotes=1)
+    private List<MidiNote> _RemoveExtraNotes(List<MidiNote> notes, int maxNotes=2)
     {
         while(notes.Count > _laneHorizPositions.Count || notes.Count > maxNotes)
         {
@@ -127,15 +123,14 @@ public class NoteSpawner : MonoBehaviour
     // Adjust notes that are spawned at the same time in the same lane(i.e prevent notes from stacking)
     private List<MidiNote> _RemoveMidiNoteCollisions(List<MidiNote> notes)
     {
-        // No collision
-        if(notes.Count < 2)
+        // Handle Collision
+        if(notes.Count > 1)
         {
-            return notes;
+            // Remove notes such that notes.Count <= numLanes
+            notes = _RemoveExtraNotes(notes);
+            // Redistribute notes across lanes
+            notes = _RedistributeNotes(notes);
         }
-        // Remove notes such that notes.Count <= numLanes
-        notes = _RemoveExtraNotes(notes);
-        // Redistribute notes across lanes
-        notes = _RedistributeNotes(notes);
         return notes;
     }
 
@@ -146,19 +141,23 @@ public class NoteSpawner : MonoBehaviour
         return rnd.Next(0, _laneHorizPositions.Count);
     }
     // Create a noteMap from a Midifile
-    private Dictionary<float, List<MidiNote>> _GetSongData(string fileName, float bpm)
-    {
-        MidiFile midiFile = MidiFile.Read(fileName);
+    private Dictionary<float, List<MidiNote>> _GetSongData(SongDataScriptableObject song)
+    {      
+        if (song.EasyNoteMap.map.Count > 0)
+        {
+            return song.EasyNoteMap.GetMap();
+        }
+        MidiFile midiFile = MidiFile.Read(song.MidiFile);
 
         float midiTempo = (float)midiFile.GetTempoMap().GetTempoAtTime((MidiTimeSpan)0).BeatsPerMinute;
         TempoMap newTempoMap;
         //Set tempo if they do not match
-        if(midiTempo != bpm)
+        if(midiTempo != song.Bpm)
         {
             //Standard 96 ticks per quarter note
             var timeDivision = new TicksPerQuarterNoteTimeDivision((Int16)96);
             //Create tempo based on song tempo
-            newTempoMap = TempoMap.Create(timeDivision, Tempo.FromBeatsPerMinute((double)bpm));
+            newTempoMap = TempoMap.Create(timeDivision, Tempo.FromBeatsPerMinute((double)song.Bpm));
         }
         else
         {
@@ -192,9 +191,11 @@ public class NoteSpawner : MonoBehaviour
         {
             _RemoveMidiNoteCollisions(midiNoteMap[timestamp]);
         }
-        Debug.Log($"Finished Generation for {fileName}");
+        // Set song map
+        song.EasyNoteMap = new SpawnMap(midiNoteMap);
+        Debug.Log($"Finished Generation for {song.MidiFile}");
 
-        return midiNoteMap;
+        return song.EasyNoteMap.GetMap();
     }
 
 }

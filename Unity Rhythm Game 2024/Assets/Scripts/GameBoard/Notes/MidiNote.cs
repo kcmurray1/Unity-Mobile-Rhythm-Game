@@ -1,5 +1,5 @@
 using System;
-using System.Diagnostics;
+using UnityEngine;
 /// <summary>
 /// Class <c>MidiNote</c> stores MidiNote informated required to spawn
 /// </summary>
@@ -9,7 +9,7 @@ public class MidiNote
     /// <summary>
     /// Determine whether this is a LongNote or Note
     /// </summary>
-    public bool IsLongNote {get;}
+    public bool IsLongNote {get; set;}
     /// <summary>
     /// The lane this note will be spawned
     /// </summary>
@@ -17,13 +17,13 @@ public class MidiNote
     /// <summary>
     /// The time in (float)seconds that this note will be spawned
     /// </summary>
-    public float Timestamp {get;}
+    public float Timestamp {get; set;}
     /// <summary>
     /// The number in the spawn sequence
     /// </summary>
-    public int Id {get;}
-    public double NoteLength {get;}
-    public int NumQuarterNotes {get;}
+    public int Id {get; set;}
+    public double NoteLength {get; set;}
+    public int NumQuarterNotes {get; set;}
     /// <summary>
     /// Create a MidiNote
     /// </summary>
@@ -45,5 +45,6 @@ public class MidiNote
     {
         return $"Note: {Id} Timestamp: {Timestamp} Lane: {LaneIndex} IsLongNote: {IsLongNote}\n";
     }
+
 
 }
