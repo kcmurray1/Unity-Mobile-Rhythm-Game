@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using System;
+[Serializable]
 public class NoteLong : Note
 {
     [SerializeField] private GameObject child;
@@ -9,7 +9,7 @@ public class NoteLong : Note
 
     [SerializeField] private Transform _tailTransform;
 
-    private List<GameObject> _childNotes;
+    [SerializeField] private List<GameObject> _childNotes = new List<GameObject>();
 
     public bool isLongNote;
 

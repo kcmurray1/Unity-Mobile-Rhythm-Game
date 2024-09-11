@@ -18,7 +18,7 @@ public class NoteSpawner : MonoBehaviour
 
     // Dict containing where lane number is the key and lane position is the value
     private Dictionary<int, float> _laneHorizPositions;
-    private int _centerLaneIndex;
+    [SerializeField] private int _centerLaneIndex;
     // Spawner Object(itself)
     [SerializeField] private GameObject _spawnerObject;
 
@@ -69,6 +69,7 @@ public class NoteSpawner : MonoBehaviour
             newNote.gameObject.GetComponent<SpriteRenderer>().enabled = false;
             newNote.tag = isStart ? "start" : "end";
         }
+        
         if (isLongNote)
         {
             newNote.GetComponent<NoteLong>().Initialize(numChildren);
@@ -146,9 +147,10 @@ public class NoteSpawner : MonoBehaviour
         // Notemap Already exists
         if (song.EasyNoteMap.map.Count > 0)
         {
+            Debug.Log("Using OldMap");
             return song.EasyNoteMap.GetMap();
         }
-        // Create a new note map
+        // // Create a new note map
         MidiFile midiFile = MidiFile.Read(song.MidiFile);
 
         float midiTempo = (float)midiFile.GetTempoMap().GetTempoAtTime((MidiTimeSpan)0).BeatsPerMinute;
@@ -179,7 +181,7 @@ public class NoteSpawner : MonoBehaviour
             // Get the timestamp of when a note is played
             float spawnTime = (float)note.TimeAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
             double noteLength = note.LengthAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
-            MidiNote newNote = new MidiNote(noteLength, _AssignRandomLane(), spawnTime, noteId);
+            MidiNote newNote = new MidiNote(noteLength, 1, spawnTime, noteId);
             // Each timestamp holds a list of MidiNotes
             if(!midiNoteMap.ContainsKey(spawnTime))
             {

@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cac20967464bf0409e957fb9ebaa97f, type: 3}
+  m_Name: Longinus
+  m_EditorClassIdentifier: 
+  EasyNoteMap:
+    map:
+    - _notes:
+      - IsLongNote: 1
+        LaneIndex: 1
+        Timestamp: 0
+        Id: 0
+        NoteLength: 2.474228
+        NumQuarterNotes: 5
+      _timestamp: 0
+    - _notes:
+      - IsLongNote: 1
+        LaneIndex: 1
+        Timestamp: 2.474228
+        Id: 1
+        NoteLength: 2.474228
+        NumQuarterNotes: 5
+      _timestamp: 2.474228
+    - _notes:
+      - IsLongNote: 1
+        LaneIndex: 1
+        Timestamp: 4.948456
+        Id: 2
+        NoteLength: 2.474228
+        NumQuarterNotes: 5
+      _timestamp: 4.948456
+    - _notes:
+      - IsLongNote: 1
+        LaneIndex: 1
+        Timestamp: 7.422684
+        Id: 3
+        NoteLength: 2.474228
+        NumQuarterNotes: 5
+      _timestamp: 7.422684
+    - _notes:
+      - IsLongNote: 1
+        LaneIndex: 1
+        Timestamp: 9.896912
+        Id: 4
+        NoteLength: 2.474228
+        NumQuarterNotes: 5
+      _timestamp: 9.896912
+    TopScore: 0
+    _noteCount: 5
+  MediumNoteMap:
+    map: []
+    TopScore: 0
+    _noteCount: 0
+  HardNoteMap:
+    map: []
+    TopScore: 0
+    _noteCount: 0
+  Name: Longinus
+  Bpm: 97
+  MidiFile: Assets/Songs/Longinus/MAP_Longinus.mid
+  SongClip: {fileID: 8300000, guid: e41b1b53713e0324b9fd2fe7ea47a860, type: 3}

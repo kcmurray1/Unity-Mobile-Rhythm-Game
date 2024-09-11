@@ -1,6 +1,13 @@
 using TMPro;
 using UnityEngine;
+using System;
 
+public enum Difficulty
+{
+    Easy,
+    Medium,
+    Hard
+}
 public class GameManager: MonoBehaviour
 {
     [SerializeField] private SoundManager _soundManager;
@@ -13,6 +20,8 @@ public class GameManager: MonoBehaviour
     void Awake()
     {
         _PlayGame(song);
+        Console.WriteLine("STARTING");
+        Debug.Log("STARTING - LOG");
     }
 
     

@@ -12,8 +12,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cac20967464bf0409e957fb9ebaa97f, type: 3}
   m_Name: Cascade
   m_EditorClassIdentifier: 
+  EasyNoteMap:
+    map:
+    - _notes: []
+      _timestamp: 0
+    - _notes: []
+      _timestamp: 0.521739
+    - _notes: []
+      _timestamp: 1.043478
+    - _notes: []
+      _timestamp: 1.565217
+    - _notes: []
+      _timestamp: 2.086956
+    - _notes: []
+      _timestamp: 2.608695
+    - _notes: []
+      _timestamp: 3.130434
+    - _notes: []
+      _timestamp: 3.652173
+    - _notes: []
+      _timestamp: 4.173912
+    - _notes: []
+      _timestamp: 4.434782
+    - _notes: []
+      _timestamp: 4.695651
+    - _notes: []
+      _timestamp: 4.956521
+    - _notes: []
+      _timestamp: 5.21739
+    - _notes: []
+      _timestamp: 5.47826
+    - _notes: []
+      _timestamp: 5.608694
+    - _notes: []
+      _timestamp: 5.739129
+    - _notes: []
+      _timestamp: 5.869564
+    - _notes: []
+      _timestamp: 5.999999
+    - _notes: []
+      _timestamp: 6.130433
+    - _notes: []
+      _timestamp: 6.260868
+    - _notes: []
+      _timestamp: 6.391303
+    - _notes: []
+      _timestamp: 6.521738
+    - _notes: []
+      _timestamp: 6.652172
+    - _notes: []
+      _timestamp: 6.782607
+    TopScore: 0
+    _noteCount: 24
+  MediumNoteMap:
+    map: []
+    TopScore: 0
+    _noteCount: 0
+  HardNoteMap:
+    map: []
+    TopScore: 0
+    _noteCount: 0
   Name: Cascade
   Bpm: 115
-  TopScore: 0
   MidiFile: Assets/Songs/Cascade/Test_MIDI_Cascade_2.mid
   SongClip: {fileID: 8300000, guid: 9088093676583284a9c4dbbe3b45bfbf, type: 3}

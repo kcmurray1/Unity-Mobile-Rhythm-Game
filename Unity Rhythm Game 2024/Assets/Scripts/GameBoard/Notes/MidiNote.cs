@@ -9,21 +9,21 @@ public class MidiNote
     /// <summary>
     /// Determine whether this is a LongNote or Note
     /// </summary>
-    public bool IsLongNote {get; set;}
+    public bool IsLongNote = false;
     /// <summary>
     /// The lane this note will be spawned
     /// </summary>
-    public int  LaneIndex {get; set;}
+    public int  LaneIndex = 0;
     /// <summary>
     /// The time in (float)seconds that this note will be spawned
     /// </summary>
-    public float Timestamp {get; set;}
+    public float Timestamp = 0;
     /// <summary>
     /// The number in the spawn sequence
     /// </summary>
-    public int Id {get; set;}
-    public double NoteLength {get; set;}
-    public int NumQuarterNotes {get; set;}
+    public int Id;
+    public double NoteLength;
+    public int NumQuarterNotes;
     /// <summary>
     /// Create a MidiNote
     /// </summary>

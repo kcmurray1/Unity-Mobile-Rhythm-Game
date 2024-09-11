@@ -1,5 +1,6 @@
+using System;
 using UnityEngine;
-
+[Serializable]
 public class Note : MonoBehaviour
 {
     public float NoteSpeed;

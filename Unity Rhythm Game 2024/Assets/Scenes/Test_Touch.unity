@@ -859,7 +859,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 9.1, y: -7.899994}
+  m_AnchoredPosition: {x: 9.099976, y: -7.9000244}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &926085918
@@ -1955,7 +1955,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _soundManager: {fileID: 1391340879}
-  song: {fileID: 11400000, guid: 0b59f076c3c349f419b21f08604d5889, type: 2}
+  song: {fileID: 11400000, guid: 1bb2d1a1b17d635408dfaababa7538c1, type: 2}
   _gameBoard: {fileID: 948372206}
 --- !u!4 &1877146968
 Transform:
