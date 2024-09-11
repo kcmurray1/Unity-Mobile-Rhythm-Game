@@ -147,7 +147,6 @@ public class NoteSpawner : MonoBehaviour
         // Notemap Already exists
         if (song.EasyNoteMap.map.Count > 0)
         {
-            Debug.Log("Using OldMap");
             return song.EasyNoteMap.GetMap();
         }
         // // Create a new note map
@@ -181,7 +180,7 @@ public class NoteSpawner : MonoBehaviour
             // Get the timestamp of when a note is played
             float spawnTime = (float)note.TimeAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
             double noteLength = note.LengthAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
-            MidiNote newNote = new MidiNote(noteLength, 1, spawnTime, noteId);
+            MidiNote newNote = new MidiNote(noteLength, _AssignRandomLane(), spawnTime, noteId);
             // Each timestamp holds a list of MidiNotes
             if(!midiNoteMap.ContainsKey(spawnTime))
             {

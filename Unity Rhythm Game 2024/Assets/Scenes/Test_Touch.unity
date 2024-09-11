@@ -1009,6 +1009,7 @@ MonoBehaviour:
   LaneObject: {fileID: 1608549993976497064, guid: 4afa77ec5ba61134492d552b0ec8267d, type: 3}
   JudgementButtonObject: {fileID: 8370931998482354266, guid: 04a91744fddac194a983e1e07659c914, type: 3}
   JudgementButtonTransform: {fileID: 479384223}
+  scoreManager: {fileID: 0}
   _touchManagerPrefab: {fileID: 6523392313341727631, guid: c5596db6c3b22b341ad13c99bb2fbb32, type: 3}
   _scoreManagerPrefab: {fileID: 634347516622658945, guid: bcd0b7c70fd9b474fb71c894e5185d6c, type: 3}
   _soundManagerObject: {fileID: 0}
@@ -1707,13 +1708,13 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 34efe8b585db7004e9faf1732784e6f6, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.4
+  m_Volume: 0.1
   m_Pitch: 1.44
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 256
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -1955,7 +1956,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _soundManager: {fileID: 1391340879}
-  song: {fileID: 11400000, guid: 1bb2d1a1b17d635408dfaababa7538c1, type: 2}
+  song: {fileID: 11400000, guid: 0f9be19a5e3994648a11c13d30a4992b, type: 2}
   _gameBoard: {fileID: 948372206}
 --- !u!4 &1877146968
 Transform:

@@ -6,9 +6,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SongDataScriptableObject", menuName = "ScriptableObjects/Song", order = 0)]
 public class SongDataScriptableObject : ScriptableObject
 {
-    [SerializeField] public SpawnMap EasyNoteMap = new SpawnMap();
-    [SerializeField] private SpawnMap MediumNoteMap = new SpawnMap();
-    [SerializeField] private SpawnMap HardNoteMap = new SpawnMap();
+    [SerializeField] public SpawnMap EasyNoteMap;
+    [SerializeField] private SpawnMap MediumNoteMap;
+    [SerializeField] private SpawnMap HardNoteMap;
     public string Name; 
     public int Bpm; 
     public string MidiFile; 

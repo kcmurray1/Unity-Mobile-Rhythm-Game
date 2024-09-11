@@ -24,19 +24,30 @@ public class GameManager: MonoBehaviour
         Debug.Log("STARTING - LOG");
     }
 
-    
-    private void _PlayGame(SongDataScriptableObject song)
+    private void _SetupUI(SongDataScriptableObject song)
     {
         // Display song name
         TextMeshProUGUI _displaySongName = GameObject.Find("Text_Song_Name").GetComponent<TextMeshProUGUI>();
         _displaySongName.text = song.name;
-        _BuildGameBoard(song);
+    }
+    private void _PlayGame(SongDataScriptableObject song)
+    {
+        Debug.Log("Starting game...");
+        _SetupUI(song);
         _soundManager.SetGameSong(song.SongClip);
+        _BuildGameBoard(song);
+       
     }
 
-    // Create GameBoard for song
+    private void _EndGame()
+    {
+        // Retrieve score
+        Debug.Log(_gameBoard.scoreManager.ToString());
+    }
+
+    // Create GameBoard for song and start spawning
     private void _BuildGameBoard(SongDataScriptableObject song)
     {
-        _gameBoard.Initialize(5, LaneSpacing.Small, song, _soundManager, true);
+        _gameBoard.Initialize(5, LaneSpacing.Small, song, _soundManager, _EndGame, true);
     }
 }

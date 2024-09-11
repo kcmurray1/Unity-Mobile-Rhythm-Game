@@ -14,53 +14,197 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EasyNoteMap:
     map:
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 0
+        Timestamp: 0
+        Id: 0
+        NoteLength: 0.521739
+        NumQuarterNotes: 1
       _timestamp: 0
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 0.521739
+        Id: 1
+        NoteLength: 0.521739
+        NumQuarterNotes: 1
       _timestamp: 0.521739
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 0
+        Timestamp: 1.043478
+        Id: 2
+        NoteLength: 0.521739
+        NumQuarterNotes: 1
       _timestamp: 1.043478
-    - _notes: []
+    - _notes:
+      - IsLongNote: 1
+        LaneIndex: 2
+        Timestamp: 1.565217
+        Id: 3
+        NoteLength: 2.608695
+        NumQuarterNotes: 6
       _timestamp: 1.565217
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 2.086956
+        Id: 4
+        NoteLength: 0.521739
+        NumQuarterNotes: 1
       _timestamp: 2.086956
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 2.608695
+        Id: 5
+        NoteLength: 0.521739
+        NumQuarterNotes: 1
       _timestamp: 2.608695
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 0
+        Timestamp: 3.130434
+        Id: 6
+        NoteLength: 0.521739
+        NumQuarterNotes: 1
       _timestamp: 3.130434
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 2
+        Timestamp: 3.652173
+        Id: 7
+        NoteLength: 0.521739
+        NumQuarterNotes: 1
       _timestamp: 3.652173
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 2
+        Timestamp: 4.173912
+        Id: 8
+        NoteLength: 0.26087
+        NumQuarterNotes: 0
       _timestamp: 4.173912
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 4.434782
+        Id: 9
+        NoteLength: 0.26086899999999996
+        NumQuarterNotes: 0
       _timestamp: 4.434782
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 1
+        Timestamp: 4.695651
+        Id: 10
+        NoteLength: 0.26087
+        NumQuarterNotes: 0
       _timestamp: 4.695651
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 4.956521
+        Id: 11
+        NoteLength: 0.26086899999999996
+        NumQuarterNotes: 0
       _timestamp: 4.956521
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 5.21739
+        Id: 12
+        NoteLength: 0.26087
+        NumQuarterNotes: 0
       _timestamp: 5.21739
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 2
+        Timestamp: 5.47826
+        Id: 13
+        NoteLength: 0.130434
+        NumQuarterNotes: 0
       _timestamp: 5.47826
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 5.608694
+        Id: 14
+        NoteLength: 0.130435
+        NumQuarterNotes: 0
       _timestamp: 5.608694
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 5.739129
+        Id: 15
+        NoteLength: 0.130435
+        NumQuarterNotes: 0
       _timestamp: 5.739129
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 1
+        Timestamp: 5.869564
+        Id: 16
+        NoteLength: 0.130435
+        NumQuarterNotes: 0
       _timestamp: 5.869564
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 1
+        Timestamp: 5.999999
+        Id: 17
+        NoteLength: 0.130434
+        NumQuarterNotes: 0
       _timestamp: 5.999999
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 2
+        Timestamp: 6.130433
+        Id: 18
+        NoteLength: 0.130435
+        NumQuarterNotes: 0
       _timestamp: 6.130433
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 1
+        Timestamp: 6.260868
+        Id: 19
+        NoteLength: 0.130435
+        NumQuarterNotes: 0
       _timestamp: 6.260868
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 2
+        Timestamp: 6.391303
+        Id: 20
+        NoteLength: 0.130435
+        NumQuarterNotes: 0
       _timestamp: 6.391303
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 0
+        Timestamp: 6.521738
+        Id: 21
+        NoteLength: 0.130434
+        NumQuarterNotes: 0
       _timestamp: 6.521738
-    - _notes: []
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 2
+        Timestamp: 6.652172
+        Id: 22
+        NoteLength: 0.130435
+        NumQuarterNotes: 0
       _timestamp: 6.652172
-    - _notes: []
+    - _notes:
+      - IsLongNote: 1
+        LaneIndex: 3
+        Timestamp: 6.782607
+        Id: 23
+        NoteLength: 5.21739
+        NumQuarterNotes: 12
       _timestamp: 6.782607
     TopScore: 0
     _noteCount: 24

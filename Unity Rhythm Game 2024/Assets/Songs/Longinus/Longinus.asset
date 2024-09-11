@@ -16,7 +16,7 @@ MonoBehaviour:
     map:
     - _notes:
       - IsLongNote: 1
-        LaneIndex: 1
+        LaneIndex: 0
         Timestamp: 0
         Id: 0
         NoteLength: 2.474228
@@ -24,7 +24,7 @@ MonoBehaviour:
       _timestamp: 0
     - _notes:
       - IsLongNote: 1
-        LaneIndex: 1
+        LaneIndex: 4
         Timestamp: 2.474228
         Id: 1
         NoteLength: 2.474228
@@ -40,7 +40,7 @@ MonoBehaviour:
       _timestamp: 4.948456
     - _notes:
       - IsLongNote: 1
-        LaneIndex: 1
+        LaneIndex: 4
         Timestamp: 7.422684
         Id: 3
         NoteLength: 2.474228
@@ -48,7 +48,7 @@ MonoBehaviour:
       _timestamp: 7.422684
     - _notes:
       - IsLongNote: 1
-        LaneIndex: 1
+        LaneIndex: 4
         Timestamp: 9.896912
         Id: 4
         NoteLength: 2.474228

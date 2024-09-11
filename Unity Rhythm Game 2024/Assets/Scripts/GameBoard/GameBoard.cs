@@ -22,7 +22,7 @@ public class GameBoard : MonoBehaviour
 
     // Managers
     private TouchManager _touchManager;
-    private ScoreManager _scoreManager;
+    public ScoreManager scoreManager;
     private SoundManager _soundManager;
     [SerializeField] private GameObject _touchManagerPrefab;
     [SerializeField] private GameObject _scoreManagerPrefab;
@@ -56,19 +56,12 @@ public class GameBoard : MonoBehaviour
     // Autoplay feature
     bool _isAutoPlay;
 
-    public enum Difficulty
-    {
-        Easy,
-        Medium,
-        Hard
-    }
-
     /// <summary>
     /// Set the number of lanes [3-5] and specify how wide the <c>GameBoard</c> should be
     /// </summary>
     /// <param name="numLanes"></param>
     /// <param name="mode">The width of the GameBoard [Small, Medium, Large]</param>
-    public void Initialize(int numLanes, LaneSpacing mode, SongDataScriptableObject song, SoundManager soundManager, bool autoPlay=false)
+    public void Initialize(int numLanes, LaneSpacing mode, SongDataScriptableObject song, SoundManager soundManager, Action endGame, bool autoPlay=false)
     {
         _SetLaneSpacing(mode);
         _numLanes = numLanes;
@@ -87,7 +80,7 @@ public class GameBoard : MonoBehaviour
         _judgementButtons = new List<JudgementButton>();
         // Create Managers
         _CreateManagers(soundManager);
-        _BuildBoard(song);
+        _BuildBoard(song, endGame);
     }
    
 
@@ -119,13 +112,13 @@ public class GameBoard : MonoBehaviour
         }
         _touchManager = Instantiate(_touchManagerPrefab, gameObject.transform).GetComponent<TouchManager>();
         // Create ScoreManager
-        if (_scoreManager)
+        if (scoreManager)
         {
-            Destroy(_scoreManager);
-            _scoreManager = null;
+            Destroy(scoreManager);
+            scoreManager = null;
         }
-        _scoreManager = Instantiate(_scoreManagerPrefab, gameObject.transform).GetComponent<ScoreManager>();
-        _scoreManager.Initialize();
+        scoreManager = Instantiate(_scoreManagerPrefab, gameObject.transform).GetComponent<ScoreManager>();
+        scoreManager.Initialize();
         // Connect to soundManager
         _soundManager = soundManager;
     }
@@ -141,7 +134,7 @@ public class GameBoard : MonoBehaviour
             {
                 GameObject centerLane = Instantiate(LaneObject, _center, Quaternion.identity);
                 JudgementButton center = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
-                center.Initialize(_touchManager, _scoreManager, _soundManager, new Vector3(0,0,0), i, _isAutoPlay);
+                center.Initialize(_touchManager, scoreManager, _soundManager, new Vector3(0,0,0), i, _isAutoPlay);
                 lanePositions.Add(centerLane.transform.position.x);
                 _judgementButtons.Add(center);
                 continue;
@@ -153,8 +146,8 @@ public class GameBoard : MonoBehaviour
             // Create Mirrored Judgement Buttons
             JudgementButton rightButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
             JudgementButton leftButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
-            rightButton.Initialize(_touchManager, _scoreManager, _soundManager, lanePosition, i, _isAutoPlay);
-            leftButton.Initialize(_touchManager, _scoreManager, _soundManager, lanePosition * Vector2.left, -i, _isAutoPlay);
+            rightButton.Initialize(_touchManager, scoreManager, _soundManager, lanePosition, i, _isAutoPlay);
+            leftButton.Initialize(_touchManager, scoreManager, _soundManager, lanePosition * Vector2.left, -i, _isAutoPlay);
             // Record location of lanes
             lanePositions.Add(leftLane.transform.position.x);
             lanePositions.Add(rightLane.transform.position.x);
@@ -173,23 +166,24 @@ public class GameBoard : MonoBehaviour
         _noteSpawner.Initialize(lanePositions, _song);
     }
 
-    private void _AddJudgementListeners()
+    private void _AddJudgementListeners(Action gameEnd)
     {
         for (int i = 0; i < _judgementButtons.Count; i++)
         {
             _judgementButtons[i].OnSoundEffect += _soundManager.PlayEffect;
             _judgementButtons[i].OnToggleGameSong += _soundManager.ToggleGameSong;
+            _judgementButtons[i].OnGameEnd += gameEnd;
         }
     }
 
     // Create all Necessary GameBoard Components
-    private void _BuildBoard(SongDataScriptableObject song)
+    private void _BuildBoard(SongDataScriptableObject song, Action gameManagerMethod)
     {
         // Place lanes & Buttons (each lane gets a button)
         List<float> laneHorizPositions = _PlaceLanes();
 
         // Subscribe SoundManager methods to Judgement buttons
-        _AddJudgementListeners();    
+        _AddJudgementListeners(gameManagerMethod);    
 
         // Create Spawner
         _CreateNoteSpawner(laneHorizPositions);

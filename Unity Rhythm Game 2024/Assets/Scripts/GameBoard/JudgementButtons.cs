@@ -17,6 +17,7 @@ public class JudgementButton : MonoBehaviour {
     // Song Events
     public event Action OnSoundEffect;
     public event Action<string> OnToggleGameSong;
+    public event Action OnGameEnd;
 
     // Judgement Button attributes
     private bool hasNote;
@@ -98,7 +99,11 @@ public class JudgementButton : MonoBehaviour {
     {
         return other.CompareTag("Note") || other.CompareTag("Note_Long_Start");
     }
-
+    //Game is over
+    private void _EndGame()
+    {
+        OnGameEnd?.Invoke();
+    }
     // Triggered by Notes, mark them for destruction
     private void OnTriggerEnter2D(Collider2D other) {
         // Ignore deactivated notes    
@@ -133,7 +138,8 @@ public class JudgementButton : MonoBehaviour {
             if (other.CompareTag("end"))
             {
                 _ToggleGameSong(other.tag);
-                Debug.Log(_scoreManager.ToString());
+                _EndGame();
+                // Debug.Log(_scoreManager.ToString());
             }
             return;
         }
