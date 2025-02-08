@@ -17,6 +17,11 @@ public class GameManager: MonoBehaviour
 
     [SerializeField] private GameBoard _gameBoard;
 
+
+
+
+    public bool autoPlay;
+
     void Awake()
     {
         _PlayGame(song);
@@ -30,6 +35,7 @@ public class GameManager: MonoBehaviour
         TextMeshProUGUI _displaySongName = GameObject.Find("Text_Song_Name").GetComponent<TextMeshProUGUI>();
         _displaySongName.text = song.name;
     }
+
     private void _PlayGame(SongDataScriptableObject song)
     {
         Debug.Log("Starting game...");
@@ -42,12 +48,14 @@ public class GameManager: MonoBehaviour
     private void _EndGame()
     {
         // Retrieve score
-        Debug.Log(_gameBoard.scoreManager.ToString());
+        TextMeshProUGUI results = GameObject.Find("Test_Result").GetComponent<TextMeshProUGUI>();
+        results.text = _gameBoard.scoreManager.ToString();
+        Debug.Log(results.text);
     }
 
     // Create GameBoard for song and start spawning
     private void _BuildGameBoard(SongDataScriptableObject song)
     {
-        _gameBoard.Initialize(5, LaneSpacing.Small, song, _soundManager, _EndGame, true);
+        _gameBoard.Initialize(5, LaneSpacing.Small, song, _soundManager, _EndGame, autoPlay);
     }
 }

@@ -1,0 +1,28 @@
+{
+  "buildFiles": [
+    "C:\\MyGitHub\\Unity-Mobile-Rhythm-Game\\Unity Rhythm Game 2024\\Library\\Bee\\Android\\Prj\\IL2CPP\\Gradle\\unityLibrary\\src\\main\\cpp\\CMakeLists.txt",
+    "C:\\MyGitHub\\Unity-Mobile-Rhythm-Game\\Unity Rhythm Game 2024\\Library\\Bee\\Android\\Prj\\IL2CPP\\Gradle\\unityLibrary\\src\\main\\cpp\\FramePacing\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "C:\\Program Files\\Unity\\Hub\\Editor\\6000.0.37f1\\Editor\\Data\\PlaybackEngines\\AndroidPlayer\\SDK\\cmake\\3.22.1\\bin\\ninja.exe",
+      "-C",
+      "C:\\MyGitHub\\Unity-Mobile-Rhythm-Game\\Unity Rhythm Game 2024\\.utmp\\RelWithDebInfo\\11183l4z\\armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "C:\\Program Files\\Unity\\Hub\\Editor\\6000.0.37f1\\Editor\\Data\\PlaybackEngines\\AndroidPlayer\\SDK\\cmake\\3.22.1\\bin\\ninja.exe",
+    "-C",
+    "C:\\MyGitHub\\Unity-Mobile-Rhythm-Game\\Unity Rhythm Game 2024\\.utmp\\RelWithDebInfo\\11183l4z\\armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "swappywrapper::@7e25bd1f32ce224db4e9": {
+      "artifactName": "swappywrapper",
+      "abi": "armeabi-v7a",
+      "output": "C:\\MyGitHub\\Unity-Mobile-Rhythm-Game\\Unity Rhythm Game 2024\\Library\\Bee\\Android\\Prj\\IL2CPP\\Gradle\\unityLibrary\\build\\intermediates\\cxx\\RelWithDebInfo\\11183l4z\\obj\\armeabi-v7a\\libswappywrapper.so",
+      "runtimeFiles": []
+    }
+  }
+}

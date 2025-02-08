@@ -1,0 +1,5 @@
+C:/MyGitHub/Unity-Mobile-Rhythm-Game/Unity Rhythm Game 2024/.utmp/RelWithDebInfo/11183l4z/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/MyGitHub/Unity-Mobile-Rhythm-Game/Unity Rhythm Game 2024/.utmp/RelWithDebInfo/11183l4z/arm64-v8a/CMakeFiles/rebuild_cache.dir
+C:/MyGitHub/Unity-Mobile-Rhythm-Game/Unity Rhythm Game 2024/.utmp/RelWithDebInfo/11183l4z/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+C:/MyGitHub/Unity-Mobile-Rhythm-Game/Unity Rhythm Game 2024/.utmp/RelWithDebInfo/11183l4z/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+C:/MyGitHub/Unity-Mobile-Rhythm-Game/Unity Rhythm Game 2024/.utmp/RelWithDebInfo/11183l4z/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir

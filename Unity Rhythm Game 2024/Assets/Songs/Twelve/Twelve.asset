@@ -12,8 +12,259 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cac20967464bf0409e957fb9ebaa97f, type: 3}
   m_Name: Twelve
   m_EditorClassIdentifier: 
+  EasyNoteMap:
+    map:
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 0
+        Id: 1
+        NoteLength: 0.348684
+        NumQuarterNotes: 0
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 0
+        Id: 2
+        NoteLength: 0.348684
+        NumQuarterNotes: 0
+      _timestamp: 0
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 0.473684
+        Id: 4
+        NoteLength: 0.361842
+        NumQuarterNotes: 0
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 0.473684
+        Id: 5
+        NoteLength: 0.368421
+        NumQuarterNotes: 0
+      _timestamp: 0.473684
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 0.631579
+        Id: 6
+        NoteLength: 0.15789499999999998
+        NumQuarterNotes: 0
+      _timestamp: 0.631579
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 0.789474
+        Id: 7
+        NoteLength: 0.15789499999999998
+        NumQuarterNotes: 0
+      _timestamp: 0.789474
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 0.947369
+        Id: 8
+        NoteLength: 0.151315
+        NumQuarterNotes: 0
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 0.947369
+        Id: 9
+        NoteLength: 0.16447299999999998
+        NumQuarterNotes: 0
+      _timestamp: 0.947369
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 1.263158
+        Id: 11
+        NoteLength: 0.31578999999999996
+        NumQuarterNotes: 0
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 1.263158
+        Id: 12
+        NoteLength: 0.348684
+        NumQuarterNotes: 0
+      _timestamp: 1.263158
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 1.736842
+        Id: 14
+        NoteLength: 0.388158
+        NumQuarterNotes: 0
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 1.736842
+        Id: 15
+        NoteLength: 0.407895
+        NumQuarterNotes: 0
+      _timestamp: 1.736842
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 1.894737
+        Id: 16
+        NoteLength: 0.15789499999999998
+        NumQuarterNotes: 0
+      _timestamp: 1.894737
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 1
+        Timestamp: 2.052632
+        Id: 17
+        NoteLength: 0.15789499999999998
+        NumQuarterNotes: 0
+      _timestamp: 2.052632
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 2.210527
+        Id: 19
+        NoteLength: 0.118421
+        NumQuarterNotes: 0
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 2.210527
+        Id: 20
+        NoteLength: 0.131578
+        NumQuarterNotes: 0
+      _timestamp: 2.210527
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 0
+        Timestamp: 2.368421
+        Id: 21
+        NoteLength: 0.15789499999999998
+        NumQuarterNotes: 0
+      _timestamp: 2.368421
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 2.526316
+        Id: 22
+        NoteLength: 0.328947
+        NumQuarterNotes: 0
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 2.526316
+        Id: 23
+        NoteLength: 0.296053
+        NumQuarterNotes: 0
+      _timestamp: 2.526316
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 2
+        Timestamp: 2.842106
+        Id: 24
+        NoteLength: 0.157894
+        NumQuarterNotes: 0
+      _timestamp: 2.842106
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 3
+        Id: 26
+        NoteLength: 0.32894799999999996
+        NumQuarterNotes: 0
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 3
+        Id: 27
+        NoteLength: 0.302632
+        NumQuarterNotes: 0
+      _timestamp: 3
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 3.31579
+        Id: 28
+        NoteLength: 0.15789499999999998
+        NumQuarterNotes: 0
+      _timestamp: 3.31579
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 3.473685
+        Id: 30
+        NoteLength: 0.18420999999999998
+        NumQuarterNotes: 0
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 3.473685
+        Id: 31
+        NoteLength: 0.144736
+        NumQuarterNotes: 0
+      _timestamp: 3.473685
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 3.789474
+        Id: 33
+        NoteLength: 0.348684
+        NumQuarterNotes: 0
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 3.789474
+        Id: 34
+        NoteLength: 0.355263
+        NumQuarterNotes: 0
+      _timestamp: 3.789474
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 4.105264
+        Id: 35
+        NoteLength: 0.157894
+        NumQuarterNotes: 0
+      _timestamp: 4.105264
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 4.263158
+        Id: 37
+        NoteLength: 0.375
+        NumQuarterNotes: 0
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 4.263158
+        Id: 38
+        NoteLength: 0.388158
+        NumQuarterNotes: 0
+      _timestamp: 4.263158
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 4.578948
+        Id: 39
+        NoteLength: 0.15789499999999998
+        NumQuarterNotes: 0
+      _timestamp: 4.578948
+    - _notes:
+      - IsLongNote: 0
+        LaneIndex: 4
+        Timestamp: 4.736843
+        Id: 41
+        NoteLength: 0.190789
+        NumQuarterNotes: 0
+      - IsLongNote: 0
+        LaneIndex: 3
+        Timestamp: 4.736843
+        Id: 42
+        NoteLength: 0.210526
+        NumQuarterNotes: 0
+      _timestamp: 4.736843
+    TopScore: 0
+    _noteCount: 33
+  MediumNoteMap:
+    map: []
+    TopScore: 0
+    _noteCount: 0
+  HardNoteMap:
+    map: []
+    TopScore: 0
+    _noteCount: 0
   Name: Twelve
   Bpm: 95
-  TopScore: 0
-  MidiFile: 
+  MidiFile: Assets/Songs/Twelve/Test_Twelve.mid
   SongClip: {fileID: 8300000, guid: 11a09f6ebcff22a4bae00f6dfcd2a16c, type: 3}
