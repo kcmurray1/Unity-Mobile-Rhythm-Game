@@ -70,6 +70,7 @@ public class GameBoard : MonoBehaviour
         _hasEvenLanes = false;
         _centerHorizOffset = 0;
 
+        // Adjust lane spacing if number of lanes is even
         if (_numLanes % 2 == 0)
         {
             _centerHorizOffset = 2;

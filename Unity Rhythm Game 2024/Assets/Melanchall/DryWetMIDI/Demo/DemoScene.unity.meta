@@ -5,3 +5,10 @@ DefaultImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 222171
+  packageName: DryWetMIDI
+  packageVersion: 7.2.0
+  assetPath: Assets/Melanchall/DryWetMIDI/Demo/DemoScene.unity
+  uploadId: 690084

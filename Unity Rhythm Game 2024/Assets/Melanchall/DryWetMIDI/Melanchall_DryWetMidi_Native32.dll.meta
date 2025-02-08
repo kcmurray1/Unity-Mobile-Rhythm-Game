@@ -25,3 +25,10 @@ PluginImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 222171
+  packageName: DryWetMIDI
+  packageVersion: 7.2.0
+  assetPath: Assets/Melanchall/DryWetMIDI/Melanchall_DryWetMidi_Native32.dll
+  uploadId: 690084
