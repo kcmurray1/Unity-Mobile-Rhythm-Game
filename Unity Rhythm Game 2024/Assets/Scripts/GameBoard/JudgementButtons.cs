@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 /// <summary>
 /// Class <c>JudgementButton</c> destroys notes, starts/stops musics, and rates hit accuracy
 /// </summary>
