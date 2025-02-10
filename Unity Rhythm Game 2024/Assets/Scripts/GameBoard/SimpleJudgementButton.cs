@@ -5,7 +5,6 @@ using TMPro;
 
 
 using UnityEngine.EventSystems;
-using Unity.VisualScripting; // Required for Event Triggers
 
 
 public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
@@ -16,8 +15,8 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
 
   // Callbacks
   public event Action OnGameEnd;
-
   public event Action<string> OnToggleGameSong;
+  public event Action OnSoundEffect;
   private Action<float> _noteHitCallback;
   private Action<float> _effectCallback;
 
@@ -51,7 +50,6 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
 
   public void OnPointerUp(PointerEventData eventData)
   {
-    print("Button released!");
     status_text.text = "up";
   // isHolding = false;
     isPressed = false;  
@@ -78,8 +76,9 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
   private void OnTriggerStay2D(Collider2D other) {
       float yDifference = other.transform.position.y - transform.position.y;
 
+      print($"distance: {Math.Abs(yDifference)}");
       // Start playing music
-      if(other.CompareTag("start") && yDifference <= 0.3f)
+      if(other.CompareTag("start") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
       {
           _ToggleGameSong(other.tag);
       }
@@ -88,6 +87,7 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
       {
         _noteHitCallback(yDifference);
         _effectCallback(yDifference);
+        OnSoundEffect?.Invoke();
         Destroy(other.gameObject);
         isPressed = false;
       }
@@ -95,7 +95,9 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
 
   private void OnTriggerExit2D(Collider2D other)
   {
-
+    float yDifference = other.transform.position.y - transform.position.y;
+    print($"GONE! distance: {Math.Abs(yDifference)}");
+    
     Destroy(other.gameObject);
     if (other.CompareTag("end"))
     {

@@ -167,7 +167,7 @@ public class GameBoard : MonoBehaviour
     {
         for (int i = 0; i < _judgementButtons.Count; i++)
         {
-            // _judgementButtons[i].OnSoundEffect += _soundManager.PlayEffect;
+            _judgementButtons[i].OnSoundEffect += _soundManager.PlayEffect;
             _judgementButtons[i].OnToggleGameSong += _soundManager.ToggleGameSong;
             _judgementButtons[i].OnGameEnd += gameEnd;
         }

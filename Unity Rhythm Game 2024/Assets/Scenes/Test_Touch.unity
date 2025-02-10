@@ -1329,7 +1329,7 @@ MonoBehaviour:
   _effectManager: {fileID: 978254890}
   _touchManagerPrefab: {fileID: 0}
   _scoreManagerPrefab: {fileID: 634347516622658945, guid: bcd0b7c70fd9b474fb71c894e5185d6c, type: 3}
-  _soundManagerObject: {fileID: 0}
+  _soundManagerObject: {fileID: 1391340877}
   _noteSpawnerObject: {fileID: 1856548311554283032, guid: f8488d51796c5d8408fff12c9db91748, type: 3}
   _numLanes: 5
 --- !u!1 &954461897

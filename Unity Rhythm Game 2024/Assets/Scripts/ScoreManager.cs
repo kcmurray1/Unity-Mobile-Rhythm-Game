@@ -7,14 +7,7 @@ public class ScoreManager : MonoBehaviour
     // Default score information
     private const string DEFAULT_SCORE_UI = "000000000";
     private const string DEFAULT_MULTIPLIER_UI = "x0";
-    private const int BASE_SCORE_VALUE = 100;
-    // Multiplier score information
-    private const float ACCURACY_PERFECT_THRESHHOLD = 0.4f;
-    private const float ACCURACY_GREAT_THRESHHOLD = 0.7f;
-    private const float ACCURACY_GOOD_THRESHHOLD = 1f;
-    private const double PERFECT_SCORE_MULTIPLIER = 2;
-    private const double GREAT_SCORE_MULTIPLIER = 1.5;
-    private const double GOOD_SCORE_MULTIPLIER = 1;
+
     // Types of hits
     private string[] HIT_TYPES = new string[]{"Perfect", "Great", "Good", "Miss"};
     private TextMeshProUGUI _textScore;
@@ -54,27 +47,27 @@ public class ScoreManager : MonoBehaviour
     private double _CalcScore(float accuracy)
     {
         accuracy = Math.Abs(accuracy);
-        if(accuracy <= ACCURACY_PERFECT_THRESHHOLD)
+        if(accuracy <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
         {
             _counts["Perfect"]++;
-            return PERFECT_SCORE_MULTIPLIER;
+            return ScoreConstants.PERFECT_SCORE_MULTIPLIER;
         }
-        else if(accuracy <= ACCURACY_GREAT_THRESHHOLD)
+        else if(accuracy <= ScoreConstants.ACCURACY_GREAT_THRESHHOLD)
         {
             _counts["Great"]++;
-            return GREAT_SCORE_MULTIPLIER;
+            return ScoreConstants.GREAT_SCORE_MULTIPLIER;
         }
         else
         {
             _counts["Good"]++;
-            return GOOD_SCORE_MULTIPLIER;
+            return ScoreConstants.GOOD_SCORE_MULTIPLIER;
         }
     }
     // Update score based on quality it
     public void OnNoteHit(float accuracy)
     {
         _multiplier++;
-        _totalScore += (int)(BASE_SCORE_VALUE * _CalcScore(accuracy));
+        _totalScore += (int)(ScoreConstants.BASE_SCORE_VALUE * _CalcScore(accuracy));
         _textScore.text = _totalScore.ToString("D9");
         _textMultiplier.text = "x" + _multiplier.ToString();
     }
