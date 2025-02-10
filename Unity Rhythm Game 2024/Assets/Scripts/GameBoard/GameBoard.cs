@@ -24,6 +24,9 @@ public class GameBoard : MonoBehaviour
     private TouchManager _touchManager;
     public ScoreManager scoreManager;
     private SoundManager _soundManager;
+
+    [SerializeField] EffectsManager _effectManager;
+
     [SerializeField] private GameObject _touchManagerPrefab;
     [SerializeField] private GameObject _scoreManagerPrefab;
     [SerializeField] private GameObject _soundManagerObject;
@@ -105,13 +108,6 @@ public class GameBoard : MonoBehaviour
     // Instantiate Managers for scoring and interaction
     private void _CreateManagers(SoundManager soundManager)
     {
-        // Create TouchManager
-        // if(_touchManager)
-        // {
-        //     Destroy(_touchManager);
-        //     _touchManager = null;
-        // }
-        // _touchManager = Instantiate(_touchManagerPrefab, gameObject.transform).GetComponent<TouchManager>();
         // Create ScoreManager
         if (scoreManager)
         {
@@ -135,8 +131,7 @@ public class GameBoard : MonoBehaviour
             {
                 GameObject centerLane = Instantiate(LaneObject, _center, Quaternion.identity);
                 SimpleJudgementButton center = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<SimpleJudgementButton>();
-                center.Initialize(new Vector3(0,0,0), scoreManager.OnNoteHit);
-                // center.Initialize(_touchManager, scoreManager, _soundManager, new Vector3(0,0,0), i, _isAutoPlay);
+                center.Initialize(new Vector3(0,0,0), scoreManager.OnNoteHit, _effectManager.UpdateDisplay);
                 lanePositions.Add(centerLane.transform.position.x);
                 _judgementButtons.Add(center);
                 continue;
@@ -145,16 +140,11 @@ public class GameBoard : MonoBehaviour
             // Create Mirrored Lanes   
             GameObject rightLane = Instantiate(LaneObject, _center + lanePosition, Quaternion.identity);
             GameObject leftLane = Instantiate(LaneObject, _center - lanePosition, Quaternion.identity);
-            // Create Mirrored Judgement Buttons
-            // JudgementButton rightButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
-            // JudgementButton leftButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<JudgementButton>();
             
             SimpleJudgementButton rightButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<SimpleJudgementButton>();
             SimpleJudgementButton leftButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<SimpleJudgementButton>();
-            rightButton.Initialize(lanePosition, scoreManager.OnNoteHit);
-            leftButton.Initialize(lanePosition * Vector2.left, scoreManager.OnNoteHit);
-            // rightButton.Initialize(_touchManager, scoreManager, _soundManager, lanePosition, i, _isAutoPlay);
-            // leftButton.Initialize(_touchManager, scoreManager, _soundManager, lanePosition * Vector2.left, -i, _isAutoPlay);
+            rightButton.Initialize(lanePosition, scoreManager.OnNoteHit, _effectManager.UpdateDisplay);
+            leftButton.Initialize(lanePosition * Vector2.left, scoreManager.OnNoteHit, _effectManager.UpdateDisplay);
             // Record location of lanes
             lanePositions.Add(leftLane.transform.position.x);
             lanePositions.Add(rightLane.transform.position.x);

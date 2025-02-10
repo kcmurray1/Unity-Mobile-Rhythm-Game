@@ -14,18 +14,22 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
 
   public bool isPressed = false;
 
+  // Callbacks
   public event Action OnGameEnd;
 
   public event Action<string> OnToggleGameSong;
+  private Action<float> _noteHitCallback;
+  private Action<float> _effectCallback;
 
   [SerializeField] private TextMeshProUGUI status_text;
 
-  private Action<float> _noteHitCallback;
+
   
-  public void Initialize(Vector3 position, Action<float> noteHitCallback)
+  public void Initialize(Vector3 position, Action<float> noteHitCallback, Action<float> effectCallback)
   {
       gameObject.transform.position = position;
       _noteHitCallback = noteHitCallback;
+      _effectCallback = effectCallback;
   }
   private void _EndGame()
   {
@@ -83,6 +87,7 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
       if(isPressed)
       {
         _noteHitCallback(yDifference);
+        _effectCallback(yDifference);
         Destroy(other.gameObject);
         isPressed = false;
       }
@@ -92,8 +97,12 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
   {
 
     Destroy(other.gameObject);
+    if (other.CompareTag("end"))
+    {
+      _ToggleGameSong(other.tag);
+      _EndGame();
+    }
   }
-
   void Update()
   {
     _ManageTouch();
