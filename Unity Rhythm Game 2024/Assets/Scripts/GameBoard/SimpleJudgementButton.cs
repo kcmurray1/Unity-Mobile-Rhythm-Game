@@ -5,6 +5,7 @@ using TMPro;
 
 
 using UnityEngine.EventSystems;
+using Unity.Mathematics;
 
 
 public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
@@ -17,17 +18,17 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
   public event Action OnGameEnd;
   public event Action<string> OnToggleGameSong;
   public event Action OnSoundEffect;
-  private Action<float> _noteHitCallback;
+  private ScoreManager _scoreManager;
   private Action<float> _effectCallback;
 
   [SerializeField] private TextMeshProUGUI status_text;
 
 
   
-  public void Initialize(Vector3 position, Action<float> noteHitCallback, Action<float> effectCallback)
+  public void Initialize(Vector3 position, ScoreManager scoreManager, Action<float> effectCallback)
   {
       gameObject.transform.position = position;
-      _noteHitCallback = noteHitCallback;
+      _scoreManager = scoreManager;
       _effectCallback = effectCallback;
   }
   private void _EndGame()
@@ -76,16 +77,28 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
   private void OnTriggerStay2D(Collider2D other) {
       float yDifference = other.transform.position.y - transform.position.y;
 
-      print($"distance: {Math.Abs(yDifference)}");
+      // print($"distance: {Math.Abs(yDifference)}");
       // Start playing music
       if(other.CompareTag("start") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
       {
           _ToggleGameSong(other.tag);
+          Destroy(other.gameObject);
+          return;
       }
 
-      if(isPressed)
+      // if(!other.CompareTag("end") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
+      // {
+      //   print(other.tag);
+      //   _scoreManager.OnNoteHit(yDifference);
+      //   _effectCallback(yDifference);
+      //   OnSoundEffect?.Invoke();
+      //   Destroy(other.gameObject);
+      //   isPressed = false;
+      // }
+
+      if(isPressed && !other.CompareTag("end"))
       {
-        _noteHitCallback(yDifference);
+        _scoreManager.OnNoteHit(yDifference);
         _effectCallback(yDifference);
         OnSoundEffect?.Invoke();
         Destroy(other.gameObject);
@@ -96,13 +109,18 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
   private void OnTriggerExit2D(Collider2D other)
   {
     float yDifference = other.transform.position.y - transform.position.y;
-    print($"GONE! distance: {Math.Abs(yDifference)}");
-    
     Destroy(other.gameObject);
-    if (other.CompareTag("end"))
+    if(other.CompareTag("end"))
     {
       _ToggleGameSong(other.tag);
       _EndGame();
+      return;
+    }
+  
+    if(math.abs(yDifference) > 1f)
+    {
+      print($"missed {other.tag}");
+      _scoreManager.OnNoteMiss();
     }
   }
   void Update()

@@ -9,12 +9,34 @@ public class SongDataScriptableObject : ScriptableObject
     [SerializeField] public SpawnMap EasyNoteMap;
     [SerializeField] private SpawnMap MediumNoteMap;
     [SerializeField] private SpawnMap HardNoteMap;
+
+
+    [SerializeReference] public List<INote> test;
+
+
     public string Name; 
     public int Bpm; 
     public string MidiFile; 
     public AudioClip SongClip;
 
 }
+
+
+public class test : ISerializationCallbackReceiver {
+
+
+    public void OnBeforeSerialize()
+    {
+        Debug.Log("serial");
+    }
+
+    public void OnAfterDeserialize()
+    {
+        Debug.Log("deserial");
+    }
+}
+
+
 
 /// <summary>
 /// Class <c>SpawnData</c> stores a list of MidiNotes to spawn at a specific timestamp.
@@ -41,6 +63,34 @@ public class SpawnData
     public List<MidiNote> GetNotes()
     {
         return _notes;
+    }
+}
+
+
+public interface ISerializeNoteData 
+{
+    void Spawn();
+}
+
+[Serializable]
+public class SerializableMultiNote : ISerializeNoteData
+{
+    [SerializeField]
+    private int _numNotes;
+    [SerializeField]
+    private List<float> _noteSpawnLocations;
+    public void Spawn()
+    {
+
+    }
+}
+
+public class SerializableSingleNote : ISerializeNoteData
+{
+    public bool isAwesome = false;
+    public void Spawn()
+    {
+
     }
 }
 

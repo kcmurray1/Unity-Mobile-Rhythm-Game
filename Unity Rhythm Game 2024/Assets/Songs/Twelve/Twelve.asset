@@ -264,6 +264,7 @@ MonoBehaviour:
     map: []
     TopScore: 0
     _noteCount: 0
+  GeneralMap: {fileID: 0}
   Name: Twelve
   Bpm: 95
   MidiFile: Assets/Songs/Twelve/Test_Twelve.mid

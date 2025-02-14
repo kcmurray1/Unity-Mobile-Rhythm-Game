@@ -131,7 +131,7 @@ public class GameBoard : MonoBehaviour
             {
                 GameObject centerLane = Instantiate(LaneObject, _center, Quaternion.identity);
                 SimpleJudgementButton center = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<SimpleJudgementButton>();
-                center.Initialize(new Vector3(0,0,0), scoreManager.OnNoteHit, _effectManager.UpdateDisplay);
+                center.Initialize(new Vector3(0,0,0), scoreManager, _effectManager.UpdateDisplay);
                 lanePositions.Add(centerLane.transform.position.x);
                 _judgementButtons.Add(center);
                 continue;
@@ -143,8 +143,8 @@ public class GameBoard : MonoBehaviour
             
             SimpleJudgementButton rightButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<SimpleJudgementButton>();
             SimpleJudgementButton leftButton = Instantiate(JudgementButtonObject, JudgementButtonTransform).GetComponent<SimpleJudgementButton>();
-            rightButton.Initialize(lanePosition, scoreManager.OnNoteHit, _effectManager.UpdateDisplay);
-            leftButton.Initialize(lanePosition * Vector2.left, scoreManager.OnNoteHit, _effectManager.UpdateDisplay);
+            rightButton.Initialize(lanePosition, scoreManager, _effectManager.UpdateDisplay);
+            leftButton.Initialize(lanePosition * Vector2.left, scoreManager, _effectManager.UpdateDisplay);
             // Record location of lanes
             lanePositions.Add(leftLane.transform.position.x);
             lanePositions.Add(rightLane.transform.position.x);
@@ -160,6 +160,7 @@ public class GameBoard : MonoBehaviour
     private void _CreateNoteSpawner(List<float> lanePositions)
     {
         _noteSpawner = Instantiate(_noteSpawnerObject, gameObject.transform).GetComponent<NoteSpawner>();
+        // print(_noteSpawner.transform.position);
         _noteSpawner.Initialize(lanePositions, _song);
     }
 

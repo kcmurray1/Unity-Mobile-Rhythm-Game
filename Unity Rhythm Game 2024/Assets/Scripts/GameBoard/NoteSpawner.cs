@@ -16,6 +16,10 @@ public class NoteSpawner : MonoBehaviour
     public GameObject notePrefab;
     public GameObject _longNotePrefab;
 
+    public GameObject multiNotePrefab;
+
+    public GameObject multiNoteChildPrefab;
+
     // Dict containing where lane number is the key and lane position is the value
     private Dictionary<int, float> _laneHorizPositions;
     [SerializeField] private int _centerLaneIndex;
@@ -31,11 +35,19 @@ public class NoteSpawner : MonoBehaviour
     /// <param name="lanePositions">The x-coordinate for each lane</param>   
     public void Initialize(List<float> lanePositions, SongDataScriptableObject song)
     {
+        print(lanePositions);
         _InitializeLanePositions(lanePositions);
         Debug.Log(song.MidiFile);
-        Dictionary<float, List<MidiNote>> songMap = _GetSongData(song);
-        Debug.Log($"Spawned {songMap.Count} notes");
-        StartCoroutine(_SpawnNotes(songMap));
+        MultipleNote mNote = new MultipleNote(lanePositions[1], 3, lanePositions, multiNotePrefab, multiNoteChildPrefab);
+        // Dictionary<float, List<MidiNote>> songMap = _GetSongData(song);
+        // Debug.Log($"Spawned {songMap.Count} notes");
+        
+        SingleNote note = new SingleNote(lanePositions[0], notePrefab);
+        Dictionary<float, INote> songMap = new Dictionary<float, INote>{
+            {0f, note},
+            {0.5f, mNote}
+        };
+        StartCoroutine(_SpawnNotes_v2(songMap));
     }
 
     private void _InitializeLanePositions(List<float> lanePositions)
@@ -74,6 +86,33 @@ public class NoteSpawner : MonoBehaviour
         {
             newNote.GetComponent<NoteLong>().Initialize(numChildren);
         }
+    }
+
+    private IEnumerator _SpawnNotes_v2(Dictionary<float, INote> noteMap)
+    {   
+        _Spawn(_centerLaneIndex, isStart: true);
+        float prevTime = 0;
+        foreach(float timestamp in noteMap.Keys)
+        {
+            
+
+            if(timestamp - prevTime != 0)
+            {
+                yield return new WaitForSeconds(timestamp - prevTime);
+            }
+            prevTime = timestamp;
+            noteMap[timestamp].Spawn(gameObject.transform);
+
+            // GameObject newNote = Instantiate(multiNotePrefab, gameObject.transform);
+            // // Align note position with lane
+            // newNote.transform.position = new Vector3(_laneHorizPositions[_centerLaneIndex], 
+            //         newNote.transform.position.y, newNote.transform.position.z);
+            // MultiNote idk = newNote.GetComponent<MultiNote>();
+            // idk.Initialize(new List<float>{_laneHorizPositions[0], _laneHorizPositions[1], _laneHorizPositions[2]}, 3);
+          
+        }
+        yield return new WaitForSeconds(3f);
+        _Spawn(_centerLaneIndex, isEnd: true);
     }
 
     private IEnumerator _SpawnNotes(Dictionary<float, List<MidiNote>> noteMap)
