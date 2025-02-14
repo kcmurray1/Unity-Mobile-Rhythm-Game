@@ -1,38 +1,32 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public abstract class MyNote
-{
-    GameObject _notePrefab;
-    public MyNote(float lanePosition, GameObject notePrefab)
-    {
-        _notePrefab = notePrefab;
-    }
-    public abstract void Spawn(Transform parent);
-}
 
 public interface INote
 {
     // Spawn note
     void Spawn(Transform parent);
 
+    /// <summary>
+    /// The time in (float)seconds that this note will be spawned
+    /// </summary>
+    float Timestamp {get; set;}
+    int NumQuarterNotes {get; set;}
+
+    
 }
 
-[CreateAssetMenu(fileName = "SingleNote", menuName = "Notes/SingleNote")]
+[Serializable]
 public class SingleNote : INote
 {
+    public float Timestamp {get; set;}
+    public int NumQuarterNotes {get; set;}
     private GameObject _notePrefab;
     [SerializeField]
     private float _lanePosition;
-    public SingleNote(float lanePosition, GameObject notePrefab=null)
+    public SingleNote(float lanePosition, float timeToSpawn, GameObject notePrefab=null)
     {
-        _lanePosition = lanePosition;
-        _notePrefab = notePrefab;
-    }
-
-    public void Initialize(float lanePosition, GameObject notePrefab)
-    {
+        Timestamp = timeToSpawn;
         _lanePosition = lanePosition;
         _notePrefab = notePrefab;
     }

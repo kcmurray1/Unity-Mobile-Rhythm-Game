@@ -38,16 +38,13 @@ public class NoteSpawner : MonoBehaviour
         print(lanePositions);
         _InitializeLanePositions(lanePositions);
         Debug.Log(song.MidiFile);
-        MultipleNote mNote = new MultipleNote(lanePositions[1], 3, lanePositions, multiNotePrefab, multiNoteChildPrefab);
+      
         // Dictionary<float, List<MidiNote>> songMap = _GetSongData(song);
         // Debug.Log($"Spawned {songMap.Count} notes");
         
-        SingleNote note = new SingleNote(lanePositions[0], notePrefab);
-        Dictionary<float, INote> songMap = new Dictionary<float, INote>{
-            {0f, note},
-            {0.5f, mNote}
-        };
-        StartCoroutine(_SpawnNotes_v2(songMap));
+        List<INote> testMap = _GetSongData_V2(song);
+        
+        StartCoroutine(_SpawnNotes_v2(testMap));
     }
 
     private void _InitializeLanePositions(List<float> lanePositions)
@@ -88,28 +85,18 @@ public class NoteSpawner : MonoBehaviour
         }
     }
 
-    private IEnumerator _SpawnNotes_v2(Dictionary<float, INote> noteMap)
+    private IEnumerator _SpawnNotes_v2(List<INote> noteMap)
     {   
         _Spawn(_centerLaneIndex, isStart: true);
         float prevTime = 0;
-        foreach(float timestamp in noteMap.Keys)
+        foreach(INote noteToSpawn in noteMap)
         {
-            
-
-            if(timestamp - prevTime != 0)
+            if(noteToSpawn.Timestamp - prevTime != 0)
             {
-                yield return new WaitForSeconds(timestamp - prevTime);
+                yield return new WaitForSeconds(noteToSpawn.Timestamp - prevTime);
             }
-            prevTime = timestamp;
-            noteMap[timestamp].Spawn(gameObject.transform);
-
-            // GameObject newNote = Instantiate(multiNotePrefab, gameObject.transform);
-            // // Align note position with lane
-            // newNote.transform.position = new Vector3(_laneHorizPositions[_centerLaneIndex], 
-            //         newNote.transform.position.y, newNote.transform.position.z);
-            // MultiNote idk = newNote.GetComponent<MultiNote>();
-            // idk.Initialize(new List<float>{_laneHorizPositions[0], _laneHorizPositions[1], _laneHorizPositions[2]}, 3);
-          
+            prevTime = noteToSpawn.Timestamp;
+            noteToSpawn.Spawn(gameObject.transform);
         }
         yield return new WaitForSeconds(3f);
         _Spawn(_centerLaneIndex, isEnd: true);
@@ -238,6 +225,76 @@ public class NoteSpawner : MonoBehaviour
         Debug.Log($"Finished Generation for {song.MidiFile}");
 
         return song.EasyNoteMap.GetMap();
+    }
+
+    private List<INote> _GetSongData_V2(SongDataScriptableObject song)
+    {      
+        // Notemap Already exists
+        // if (song.EasyNoteMap.map.Count > 0)
+        // {
+        //     return song.EasyNoteMap.GetMap();
+        // }
+        // // Create a new note map
+        MidiFile midiFile = MidiFile.Read(song.MidiFile);
+
+        float midiTempo = (float)midiFile.GetTempoMap().GetTempoAtTime((MidiTimeSpan)0).BeatsPerMinute;
+        TempoMap newTempoMap;
+        //Set tempo if they do not match
+        if(midiTempo != song.Bpm)
+        {
+            //Standard 96 ticks per quarter note
+            var timeDivision = new TicksPerQuarterNoteTimeDivision(96);
+            //Create tempo based on song tempo
+            newTempoMap = TempoMap.Create(timeDivision, Tempo.FromBeatsPerMinute(song.Bpm));
+        }
+        else
+        {
+            newTempoMap = midiFile.GetTempoMap();
+        }
+        // Generate new map
+        // Use Dictionary to store timestamps as keys and lanes as values
+        // The purpose is to check if there is a note in a lane at noteTimeDict[timestamp]
+        // and avoid collisions by placing a new note in a different lane
+        Dictionary<float, INote> midiNoteMap = new Dictionary<float, INote>();
+        // Get Note timings from midiFile
+        var notes = midiFile.GetNotes().ToList();
+        // Build initial map
+        foreach(var note in notes)
+        {
+            // Get the timestamp of when a note is played
+            float spawnTime = (float)note.TimeAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
+            double noteLength = note.LengthAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
+            SingleNote newNote = new SingleNote(_laneHorizPositions[_AssignRandomLane()], spawnTime, notePrefab);
+            // Each timestamp holds a list of MidiNotes
+            if(!midiNoteMap.ContainsKey(spawnTime))
+            {
+                midiNoteMap[spawnTime] = newNote;
+            }
+            else
+            {
+                if(midiNoteMap[spawnTime] is MultipleNote multiNote)
+                {
+                    multiNote.AddNote(newNote);
+                }
+                else
+                {
+                    MultipleNote newMultiNote = new MultipleNote(0f, spawnTime, _laneHorizPositions, multiNotePrefab, multiNoteChildPrefab);
+                    newMultiNote.AddNote(midiNoteMap[spawnTime]);
+                    newMultiNote.AddNote(newNote);
+                    midiNoteMap[spawnTime] = newMultiNote;
+                }
+                
+            }  
+        }
+        List<INote> testNotes = new List<INote>();
+        foreach(float timestamp in midiNoteMap.Keys)
+        {
+            testNotes.Add(midiNoteMap[timestamp]);
+        }
+        song.test = testNotes;
+        Debug.Log($"Finished Generation for {song.MidiFile}");
+
+        return song.test;
     }
 
 }

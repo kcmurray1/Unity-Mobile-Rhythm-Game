@@ -264,8 +264,260 @@ MonoBehaviour:
     map: []
     TopScore: 0
     _noteCount: 0
-  GeneralMap: {fileID: 0}
+  test:
+  - rid: 1207151939427500576
+  - rid: 1207151939427500577
+  - rid: 1207151939427500578
+  - rid: 1207151939427500579
+  - rid: 1207151939427500580
+  - rid: 1207151939427500581
+  - rid: 1207151939427500582
+  - rid: 1207151939427500583
+  - rid: 1207151939427500584
+  - rid: 1207151939427500585
+  - rid: 1207151939427500586
+  - rid: 1207151939427500587
+  - rid: 1207151939427500588
+  - rid: 1207151939427500589
+  - rid: 1207151939427500590
+  - rid: 1207151939427500591
+  - rid: 1207151939427500592
+  - rid: 1207151939427500593
+  - rid: 1207151939427500594
+  - rid: 1207151939427500595
+  - rid: 1207151939427500596
   Name: Twelve
   Bpm: 95
   MidiFile: Assets/Songs/Twelve/Test_Twelve.mid
   SongClip: {fileID: 8300000, guid: 11a09f6ebcff22a4bae00f6dfcd2a16c, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 1207151939427500576
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _numNotes: 0
+        _noteSpawnLocations: []
+        _notes:
+        - rid: 1207151939427500597
+        - rid: 1207151939427500598
+    - rid: 1207151939427500577
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _numNotes: 0
+        _noteSpawnLocations: []
+        _notes:
+        - rid: 1207151939427500599
+        - rid: 1207151939427500600
+    - rid: 1207151939427500578
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 0
+    - rid: 1207151939427500579
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: -7
+    - rid: 1207151939427500580
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _numNotes: 0
+        _noteSpawnLocations: []
+        _notes:
+        - rid: 1207151939427500601
+        - rid: 1207151939427500602
+    - rid: 1207151939427500581
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _numNotes: 0
+        _noteSpawnLocations: []
+        _notes:
+        - rid: 1207151939427500603
+        - rid: 1207151939427500604
+    - rid: 1207151939427500582
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _numNotes: 0
+        _noteSpawnLocations: []
+        _notes:
+        - rid: 1207151939427500605
+        - rid: 1207151939427500606
+    - rid: 1207151939427500583
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: -7
+    - rid: 1207151939427500584
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 7
+    - rid: 1207151939427500585
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _numNotes: 0
+        _noteSpawnLocations: []
+        _notes:
+        - rid: 1207151939427500607
+        - rid: 1207151939427500608
+    - rid: 1207151939427500586
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: -3.5
+    - rid: 1207151939427500587
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _numNotes: 0
+        _noteSpawnLocations: []
+        _notes:
+        - rid: 1207151939427500609
+        - rid: 1207151939427500610
+    - rid: 1207151939427500588
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 7
+    - rid: 1207151939427500589
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _numNotes: 0
+        _noteSpawnLocations: []
+        _notes:
+        - rid: 1207151939427500611
+        - rid: 1207151939427500612
+    - rid: 1207151939427500590
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 0
+    - rid: 1207151939427500591
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _numNotes: 0
+        _noteSpawnLocations: []
+        _notes:
+        - rid: 1207151939427500613
+        - rid: 1207151939427500614
+    - rid: 1207151939427500592
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _numNotes: 0
+        _noteSpawnLocations: []
+        _notes:
+        - rid: 1207151939427500615
+        - rid: 1207151939427500616
+    - rid: 1207151939427500593
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 3.5
+    - rid: 1207151939427500594
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _numNotes: 0
+        _noteSpawnLocations: []
+        _notes:
+        - rid: 1207151939427500617
+        - rid: 1207151939427500618
+    - rid: 1207151939427500595
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 0
+    - rid: 1207151939427500596
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _numNotes: 0
+        _noteSpawnLocations: []
+        _notes:
+        - rid: 1207151939427500619
+        - rid: 1207151939427500620
+    - rid: 1207151939427500597
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 0
+    - rid: 1207151939427500598
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 0
+    - rid: 1207151939427500599
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 0
+    - rid: 1207151939427500600
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: -7
+    - rid: 1207151939427500601
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 0
+    - rid: 1207151939427500602
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: -3.5
+    - rid: 1207151939427500603
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: -3.5
+    - rid: 1207151939427500604
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 7
+    - rid: 1207151939427500605
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 0
+    - rid: 1207151939427500606
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: -7
+    - rid: 1207151939427500607
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 7
+    - rid: 1207151939427500608
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: -3.5
+    - rid: 1207151939427500609
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 0
+    - rid: 1207151939427500610
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 7
+    - rid: 1207151939427500611
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 7
+    - rid: 1207151939427500612
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 0
+    - rid: 1207151939427500613
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: -3.5
+    - rid: 1207151939427500614
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 3.5
+    - rid: 1207151939427500615
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 7
+    - rid: 1207151939427500616
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: -7
+    - rid: 1207151939427500617
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: -7
+    - rid: 1207151939427500618
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 7
+    - rid: 1207151939427500619
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: -7
+    - rid: 1207151939427500620
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: -3.5

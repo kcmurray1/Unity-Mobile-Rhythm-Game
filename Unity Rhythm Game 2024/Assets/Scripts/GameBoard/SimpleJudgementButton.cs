@@ -88,7 +88,6 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
 
       // if(!other.CompareTag("end") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
       // {
-      //   print(other.tag);
       //   _scoreManager.OnNoteHit(yDifference);
       //   _effectCallback(yDifference);
       //   OnSoundEffect?.Invoke();

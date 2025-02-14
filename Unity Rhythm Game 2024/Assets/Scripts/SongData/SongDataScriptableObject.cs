@@ -22,21 +22,6 @@ public class SongDataScriptableObject : ScriptableObject
 }
 
 
-public class test : ISerializationCallbackReceiver {
-
-
-    public void OnBeforeSerialize()
-    {
-        Debug.Log("serial");
-    }
-
-    public void OnAfterDeserialize()
-    {
-        Debug.Log("deserial");
-    }
-}
-
-
 
 /// <summary>
 /// Class <c>SpawnData</c> stores a list of MidiNotes to spawn at a specific timestamp.
@@ -66,33 +51,6 @@ public class SpawnData
     }
 }
 
-
-public interface ISerializeNoteData 
-{
-    void Spawn();
-}
-
-[Serializable]
-public class SerializableMultiNote : ISerializeNoteData
-{
-    [SerializeField]
-    private int _numNotes;
-    [SerializeField]
-    private List<float> _noteSpawnLocations;
-    public void Spawn()
-    {
-
-    }
-}
-
-public class SerializableSingleNote : ISerializeNoteData
-{
-    public bool isAwesome = false;
-    public void Spawn()
-    {
-
-    }
-}
 
 /// <summary>
 /// Class <c>SpawnMap</c> stores information required for gameplay such as the location, 

@@ -1,16 +1,21 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 [Serializable]
 public class MultipleNote : INote
 {
+    public float Timestamp {get; set;}
+    public int NumQuarterNotes {get; set;}
     private float _lanePosition;
     [SerializeField]
     private int _numNotes;
     [SerializeField]
     private List<float> _noteSpawnLocations;
+
+    private Dictionary<int, float> noteLocations;
+    [SerializeReference]
+    private List<INote> _notes;
 
     private GameObject _childNotePrefab;
     
@@ -18,8 +23,9 @@ public class MultipleNote : INote
 
     // public void Initialize(float spawnPosition, int numNotes, List<float> noteLocations, GameObject parentNotePrefab, GameObject childNotePrefab)
     
-    public MultipleNote(float spawnPosition, int numNotes, List<float> noteLocations, GameObject parentNotePrefab, GameObject childNotePrefab)
+    public MultipleNote(float spawnPosition, float timeToSpawn, int numNotes, List<float> noteLocations, GameObject parentNotePrefab, GameObject childNotePrefab)
     {
+        Timestamp = timeToSpawn;
         _childNotePrefab = childNotePrefab;
         _parentNotePrefab = parentNotePrefab;
         _noteSpawnLocations = noteLocations;
@@ -27,7 +33,25 @@ public class MultipleNote : INote
         _numNotes = numNotes;
     }
 
+    public MultipleNote(float spawnPosition, float timeToSpawn, Dictionary<int, float> noteSpawnLocations, GameObject parentNotePrefab, GameObject childNotePrefab)
+    {
+        _lanePosition = spawnPosition;
+        Timestamp = timeToSpawn;
+        _parentNotePrefab = parentNotePrefab;
+        _childNotePrefab = childNotePrefab;
+        _notes = new List<INote>();
+        noteLocations = noteSpawnLocations;
+    }
 
+    public void AddNote(INote noteToAdd)
+    {
+        //FIXME: debug limit
+        int limit = 2;
+        if(_notes.Count >= limit) return;
+
+        _notes.Add(noteToAdd);
+
+    }
 
     public void Spawn(Transform parent)
     {
@@ -36,11 +60,11 @@ public class MultipleNote : INote
         newNote.transform.position = new Vector3(_lanePosition, newNote.transform.position.y, newNote.transform.position.z);
 
         // Create children
-        for(int i = 0; i < _numNotes; i++)
+        for(int i = 0; i < _notes.Count; i++)
         {
             GameObject newChildNote = GameObject.Instantiate(_childNotePrefab, newNote.transform);
             newChildNote.transform.position = new Vector3(
-                _noteSpawnLocations[i], 
+                noteLocations[i], 
                 newNote.transform.position.y, 
                 newNote.transform.position.z
                 );
