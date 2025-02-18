@@ -48,5 +48,7 @@ MonoBehaviour:
   _longNotePrefab: {fileID: 8157745921619344236, guid: 73049cda21846e44e860d9b04936beab, type: 3}
   multiNotePrefab: {fileID: 3920882964874863339, guid: 0123e10ca62077445a303ee67aec0507, type: 3}
   multiNoteChildPrefab: {fileID: 4773202059355220782, guid: b23b2763fe83499408c8efffec0a5b9e, type: 3}
+  LongNotePrefab: {fileID: 7580546800134367377, guid: 0660dc3583238a941b8e0674f1d68314, type: 3}
+  LongNoteChildPrefab: {fileID: 2591041993781848836, guid: d72209ca1ba686743b87ec86d9f77368, type: 3}
   _centerLaneIndex: 0
   _spawnerObject: {fileID: 1856548311554283032}

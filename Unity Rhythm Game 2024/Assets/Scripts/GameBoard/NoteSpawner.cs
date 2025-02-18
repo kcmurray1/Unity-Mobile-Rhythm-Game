@@ -20,12 +20,19 @@ public class NoteSpawner : MonoBehaviour
 
     public GameObject multiNoteChildPrefab;
 
+    public GameObject LongNotePrefab;
+    public GameObject LongNoteChildPrefab;
+
     // Dict containing where lane number is the key and lane position is the value
     private Dictionary<int, float> _laneHorizPositions;
     [SerializeField] private int _centerLaneIndex;
     // Spawner Object(itself)
     [SerializeField] private GameObject _spawnerObject;
 
+    // void Awake()
+    // {
+    //     Initialize(new List<float>{0});
+    // }
     /// <summary>
     ///  Set the spawn boundaries <br/>
     ///  Ex): Receiving three lane positions [-4,0,4] will update _laneHorizPositions to <br/>
@@ -33,15 +40,17 @@ public class NoteSpawner : MonoBehaviour
     ///  where lane 0 is located at x = -4 and lane 1 is located at x = 0
     /// </summary>
     /// <param name="lanePositions">The x-coordinate for each lane</param>   
-    public void Initialize(List<float> lanePositions, SongDataScriptableObject song)
+    public void Initialize(List<float> lanePositions, SongDataScriptableObject song=null)
     {
         print(lanePositions);
         _InitializeLanePositions(lanePositions);
-        Debug.Log(song.MidiFile);
+        // Debug.Log(song.MidiFile);
       
         // Dictionary<float, List<MidiNote>> songMap = _GetSongData(song);
         // Debug.Log($"Spawned {songMap.Count} notes");
-        
+        List<INote> debugMap = new List<INote>{
+            new LongNote(lanePositions[0], 5, 0f, LongNotePrefab, LongNoteChildPrefab),
+        };
         List<INote> testMap = _GetSongData_V2(song);
         
         StartCoroutine(_SpawnNotes_v2(testMap));
