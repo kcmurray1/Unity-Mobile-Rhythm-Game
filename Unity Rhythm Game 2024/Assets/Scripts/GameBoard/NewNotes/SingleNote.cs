@@ -7,6 +7,8 @@ public interface INote
     // Spawn note
     void Spawn(Transform parent);
 
+    void Spawn(Transform parent, float speed);
+
     /// <summary>
     /// The time in (float)seconds that this note will be spawned
     /// </summary>
@@ -36,6 +38,14 @@ public class SingleNote : INote
     {
         GameObject newNote = GameObject.Instantiate(_notePrefab, parent);
         newNote.transform.position = new Vector3(_lanePosition, newNote.transform.position.y, newNote.transform.position.z);
+    }
+
+    public void Spawn(Transform parent, float speed)
+    {
+        GameObject newNote = GameObject.Instantiate(_notePrefab, parent);
+        Note n = newNote.GetComponent<Note>();
+        n.NoteSpeed = speed;
+        newNote.transform.position = new Vector3(_lanePosition, parent.position.y, parent.position.z);
     }
 
 }

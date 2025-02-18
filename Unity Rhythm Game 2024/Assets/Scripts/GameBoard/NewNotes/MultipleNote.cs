@@ -62,12 +62,18 @@ public class MultipleNote : INote
         // Create children
         for(int i = 0; i < _notes.Count; i++)
         {
-            GameObject newChildNote = GameObject.Instantiate(_childNotePrefab, newNote.transform);
-            newChildNote.transform.position = new Vector3(
-                noteLocations[i], 
-                newNote.transform.position.y, 
-                newNote.transform.position.z
-                );
+            _notes[i].Spawn(newNote.transform, 0f);
+            // GameObject newChildNote = GameObject.Instantiate(_childNotePrefab, newNote.transform);
+            // newChildNote.transform.position = new Vector3(
+            //     noteLocations[i], 
+            //     newNote.transform.position.y, 
+            //     newNote.transform.position.z
+            //     );
         }
+    }
+
+    public void Spawn(Transform parent, float speed)
+    {
+
     }
 }

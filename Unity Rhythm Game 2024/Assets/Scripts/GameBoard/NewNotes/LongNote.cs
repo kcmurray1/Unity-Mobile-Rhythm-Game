@@ -39,4 +39,9 @@ public class LongNote : INote
 
         }
     }
+
+    public void Spawn(Transform parent, float speed)
+    {
+        
+    }
 }

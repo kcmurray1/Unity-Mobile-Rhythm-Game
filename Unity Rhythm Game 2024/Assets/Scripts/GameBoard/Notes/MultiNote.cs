@@ -8,10 +8,6 @@ public class MultiNote : Note
 {
     public GameObject notePrefab;
 
-    void Awake()
-    {
-        print("hi");
-    }
     // Create note(s)
     public void Initialize(List<float> positions, int numNotes)
     {

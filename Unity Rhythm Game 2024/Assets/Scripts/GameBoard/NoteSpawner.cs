@@ -111,25 +111,6 @@ public class NoteSpawner : MonoBehaviour
         _Spawn(_centerLaneIndex, isEnd: true);
     }
 
-    private IEnumerator _SpawnNotes(Dictionary<float, List<MidiNote>> noteMap)
-    {   
-        _Spawn(_centerLaneIndex, isStart: true);
-        float prevTime = 0;
-        foreach(float timestamp in noteMap.Keys)
-        {
-            foreach(MidiNote note in noteMap[timestamp])
-            {
-                if(timestamp - prevTime != 0)
-                {   
-                    yield return new WaitForSeconds(timestamp - prevTime);
-                }     
-                prevTime = timestamp;
-                _Spawn(laneIndex: note.LaneIndex, isLongNote: note.IsLongNote, numChildren: note.NumQuarterNotes);
-            }
-        }
-        yield return new WaitForSeconds(3f);
-        _Spawn(_centerLaneIndex, isEnd: true);
-    }
     
     // Reduce number of notes to be <= number of lanes and to <= maxNotes
     // Ex: A Gameboard with 4 lanes can have at most 4 notes in each lane at the same timestamp.
@@ -176,66 +157,7 @@ public class NoteSpawner : MonoBehaviour
         System.Random rnd = new System.Random();
         return rnd.Next(0, _laneHorizPositions.Count);
     }
-    // Retrieve note map from song
-    private Dictionary<float, List<MidiNote>> _GetSongData(SongDataScriptableObject song)
-    {      
-        // Notemap Already exists
-        if (song.EasyNoteMap.map.Count > 0)
-        {
-            return song.EasyNoteMap.GetMap();
-        }
-        // // Create a new note map
-        MidiFile midiFile = MidiFile.Read(song.MidiFile);
-
-        float midiTempo = (float)midiFile.GetTempoMap().GetTempoAtTime((MidiTimeSpan)0).BeatsPerMinute;
-        TempoMap newTempoMap;
-        //Set tempo if they do not match
-        if(midiTempo != song.Bpm)
-        {
-            //Standard 96 ticks per quarter note
-            var timeDivision = new TicksPerQuarterNoteTimeDivision((Int16)96);
-            //Create tempo based on song tempo
-            newTempoMap = TempoMap.Create(timeDivision, Tempo.FromBeatsPerMinute((double)song.Bpm));
-        }
-        else
-        {
-            newTempoMap = midiFile.GetTempoMap();
-        }
-        // Generate new map
-        // Use Dictionary to store timestamps as keys and lanes as values
-        // The purpose is to check if there is a note in a lane at noteTimeDict[timestamp]
-        // and avoid collisions by placing a new note in a different lane
-        Dictionary<float, List<MidiNote>> midiNoteMap = new Dictionary<float, List<MidiNote>>();
-        // Get Note timings from midiFile
-        var notes = midiFile.GetNotes().ToList();
-        int noteId = 0;
-        // Build initial map
-        foreach(var note in notes)
-        {
-            // Get the timestamp of when a note is played
-            float spawnTime = (float)note.TimeAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
-            double noteLength = note.LengthAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
-            MidiNote newNote = new MidiNote(noteLength, _AssignRandomLane(), spawnTime, noteId);
-            // Each timestamp holds a list of MidiNotes
-            if(!midiNoteMap.ContainsKey(spawnTime))
-            {
-                midiNoteMap[spawnTime] = new List<MidiNote>();
-            }
-            midiNoteMap[spawnTime].Add(newNote);
-            noteId++;     
-        }
-        // Resolve any spawning collisions
-        foreach(float timestamp in midiNoteMap.Keys)
-        {
-            _RemoveMidiNoteCollisions(midiNoteMap[timestamp]);
-        }
-        // Set song map
-        song.EasyNoteMap = new SpawnMap(midiNoteMap);
-        Debug.Log($"Finished Generation for {song.MidiFile}");
-
-        return song.EasyNoteMap.GetMap();
-    }
-
+    
     private List<INote> _GetSongData_V2(SongDataScriptableObject song)
     {      
         // Notemap Already exists

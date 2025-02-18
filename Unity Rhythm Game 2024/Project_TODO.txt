@@ -1,7 +1,8 @@
-1) Experiment with the passing method signatures as parameters
-	- Line 173 GameBoard.cs: PlayEffect may not be necessary
+1) Experiment with the passing method signatures as parameters [x]
+	- Line 173 GameBoard.cs: PlayEffect may not be necessary 
 	- Maybe adjust JudgementButton Initialize() parameter SoundManager to Action 
 
-2) Add StartSpawner() in NoteSpawner class
+2) Add StartSpawner() in NoteSpawner class [x]
 	- Currently, creating an instance will start the spawner. May want to treat 
     Initialize() as the setup method and then trigger StartSpawner from the GameManager
+

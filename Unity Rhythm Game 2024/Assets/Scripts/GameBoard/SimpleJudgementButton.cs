@@ -26,8 +26,6 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
 
   [SerializeField] private TextMeshProUGUI status_text;
 
-
-  
   public void Initialize(Vector3 position, ScoreManager scoreManager, Action<float> effectCallback)
   {
     _timePressed = 0f;
@@ -57,16 +55,10 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
     isPressed = false;  
   }
 
-  public void onHold()
-  {
-    print("holding~!0");
-  }
-
   public void _ManageTouch()
   {
     if(isPressed)
     {
-      print("yay");
       _timePressed += Time.deltaTime;
     }
     else
@@ -81,9 +73,29 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
     }
   }
 
-  private bool _IsNote(Collider2D other)
+  private void _HandleAutoPlay(GameObject other, float yDifference)
   {
-      return other.CompareTag("Note") || other.CompareTag("Note_Long_Start");
+    if(other.layer == LayerMask.NameToLayer("HoldableNote"))
+    {
+      _HandleNoteHit(yDifference, other.gameObject, playSoundEffect: false);
+    }
+    else if(other.layer == LayerMask.NameToLayer("Note"))
+    {
+      _HandleNoteHit(yDifference, other.gameObject);
+    }
+  }
+
+  private void _Foo(GameObject other, float yDifference)
+  {
+    if(isHolding && other.layer == LayerMask.NameToLayer("HoldableNote") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
+      {
+        _HandleNoteHit(yDifference, other, playSoundEffect: false);
+      }
+      else if(!isHolding && isPressed && other.layer == LayerMask.NameToLayer("Note"))
+      {        
+        _HandleNoteHit(yDifference, other);
+        isPressed = false;
+      }
   }
 
   private void _HandleNoteHit(float hitDifference, GameObject objectToDestory, bool playSoundEffect=true)
@@ -96,6 +108,8 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
     }
     Destroy(objectToDestory);
   }
+
+
 
   private void OnTriggerStay2D(Collider2D other) {
       float yDifference = other.transform.position.y - transform.position.y;
@@ -115,35 +129,14 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
         return;
       }
 
-      if(other.gameObject.layer == LayerMask.NameToLayer("Default") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
-      {
-        if(other.gameObject.layer == LayerMask.NameToLayer("HoldableNote"))
-        {
-          _HandleNoteHit(yDifference, other.gameObject, playSoundEffect: false);
-        }
-        else
-        {
-          _HandleNoteHit(yDifference, other.gameObject);
-        }
-        
-        return;
-      }
+      // if(yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
+      // {
+      //   _HandleAutoPlay(other.gameObject, yDifference);
+      //   return;
+      // }
 
-      if(isHolding && other.gameObject.layer == LayerMask.NameToLayer("HoldableNote") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
-      {
-        _scoreManager.OnNoteHit(yDifference);
-        _effectCallback(yDifference);
-        OnSoundEffect?.Invoke();
-        Destroy(other.gameObject);
-      }
-      else if(!isHolding && isPressed)
-      {
-        _scoreManager.OnNoteHit(yDifference);
-        _effectCallback(yDifference);
-        OnSoundEffect?.Invoke();
-        Destroy(other.gameObject);
-        isPressed = false;
-      }
+      _Foo(other.gameObject, yDifference);
+
   }
 
   private void OnTriggerExit2D(Collider2D other)
@@ -151,7 +144,7 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
     float yDifference = other.transform.position.y - transform.position.y;
     Destroy(other.gameObject);
   
-    if(other.gameObject.layer == LayerMask.NameToLayer("Default") && math.abs(yDifference) > 1f)
+    if(other.gameObject.layer == LayerMask.NameToLayer("Note") && math.abs(yDifference) > 1f)
     {
       print($"missed {other.tag}");
       _scoreManager.OnNoteMiss();
