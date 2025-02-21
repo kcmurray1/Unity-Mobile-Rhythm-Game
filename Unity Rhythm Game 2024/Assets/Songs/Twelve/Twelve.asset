@@ -265,27 +265,27 @@ MonoBehaviour:
     TopScore: 0
     _noteCount: 0
   test:
-  - rid: 1207152028523692823
-  - rid: 1207152028523692824
-  - rid: 1207152028523692825
-  - rid: 1207152028523692826
-  - rid: 1207152028523692827
-  - rid: 1207152028523692828
-  - rid: 1207152028523692829
-  - rid: 1207152028523692830
-  - rid: 1207152028523692831
-  - rid: 1207152028523692832
-  - rid: 1207152028523692833
-  - rid: 1207152028523692834
-  - rid: 1207152028523692835
-  - rid: 1207152028523692836
-  - rid: 1207152028523692837
-  - rid: 1207152028523692838
-  - rid: 1207152028523692839
-  - rid: 1207152028523692840
-  - rid: 1207152028523692841
-  - rid: 1207152028523692842
-  - rid: 1207152028523692843
+  - rid: 1207152093146382676
+  - rid: 1207152093146382677
+  - rid: 1207152093146382678
+  - rid: 1207152093146382679
+  - rid: 1207152093146382680
+  - rid: 1207152093146382681
+  - rid: 1207152093146382682
+  - rid: 1207152093146382683
+  - rid: 1207152093146382684
+  - rid: 1207152093146382685
+  - rid: 1207152093146382686
+  - rid: 1207152093146382687
+  - rid: 1207152093146382688
+  - rid: 1207152093146382689
+  - rid: 1207152093146382690
+  - rid: 1207152093146382691
+  - rid: 1207152093146382692
+  - rid: 1207152093146382693
+  - rid: 1207152093146382694
+  - rid: 1207152093146382695
+  - rid: 1207152093146382696
   Name: Twelve
   Bpm: 95
   MidiFile: Assets/Songs/Twelve/Test_Twelve.mid
@@ -293,231 +293,393 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1207152028523692823
+    - rid: 1207152093146382676
       type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _numNotes: 0
-        _noteSpawnLocations: []
-        _notes:
-        - rid: 1207152028523692844
-        - rid: 1207152028523692845
-    - rid: 1207152028523692824
-      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _numNotes: 0
-        _noteSpawnLocations: []
-        _notes:
-        - rid: 1207152028523692846
-        - rid: 1207152028523692847
-    - rid: 1207152028523692825
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
       data:
         _lanePosition: 0
-    - rid: 1207152028523692826
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _lanePosition: 7
-    - rid: 1207152028523692827
+        _numNotes: 0
+        _noteSpawnLocations:
+        - -7
+        - -3.5
+        - 0
+        - 3.5
+        - 7
+        _notes:
+        - rid: 1207152093146382697
+        - rid: 1207152093146382698
+        timestamp: 0
+        _parentNotePrefab: {fileID: 3920882964874863339, guid: 0123e10ca62077445a303ee67aec0507, type: 3}
+    - rid: 1207152093146382677
       type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
       data:
+        _lanePosition: 0
         _numNotes: 0
-        _noteSpawnLocations: []
+        _noteSpawnLocations:
+        - -7
+        - -3.5
+        - 0
+        - 3.5
+        - 7
         _notes:
-        - rid: 1207152028523692848
-        - rid: 1207152028523692849
-    - rid: 1207152028523692828
-      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _numNotes: 0
-        _noteSpawnLocations: []
-        _notes:
-        - rid: 1207152028523692850
-        - rid: 1207152028523692851
-    - rid: 1207152028523692829
-      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _numNotes: 0
-        _noteSpawnLocations: []
-        _notes:
-        - rid: 1207152028523692852
-        - rid: 1207152028523692853
-    - rid: 1207152028523692830
+        - rid: 1207152093146382699
+        - rid: 1207152093146382700
+        timestamp: 0.473684
+        _parentNotePrefab: {fileID: 3920882964874863339, guid: 0123e10ca62077445a303ee67aec0507, type: 3}
+    - rid: 1207152093146382678
       type: {class: SingleNote, ns: , asm: Assembly-CSharp}
       data:
-        _lanePosition: -3.5
-    - rid: 1207152028523692831
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
+        timestamp: 0.631579
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
         _lanePosition: -7
-    - rid: 1207152028523692832
-      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _numNotes: 0
-        _noteSpawnLocations: []
-        _notes:
-        - rid: 1207152028523692854
-        - rid: 1207152028523692855
-    - rid: 1207152028523692833
+    - rid: 1207152093146382679
       type: {class: SingleNote, ns: , asm: Assembly-CSharp}
       data:
-        _lanePosition: 7
-    - rid: 1207152028523692834
+        timestamp: 0.789474
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: 3.5
+    - rid: 1207152093146382680
       type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _numNotes: 0
-        _noteSpawnLocations: []
-        _notes:
-        - rid: 1207152028523692856
-        - rid: 1207152028523692857
-    - rid: 1207152028523692835
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
       data:
         _lanePosition: 0
-    - rid: 1207152028523692836
-      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
-      data:
         _numNotes: 0
-        _noteSpawnLocations: []
+        _noteSpawnLocations:
+        - -7
+        - -3.5
+        - 0
+        - 3.5
+        - 7
         _notes:
-        - rid: 1207152028523692858
-        - rid: 1207152028523692859
-    - rid: 1207152028523692837
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _lanePosition: 3.5
-    - rid: 1207152028523692838
+        - rid: 1207152093146382701
+        - rid: 1207152093146382702
+        timestamp: 0.947369
+        _parentNotePrefab: {fileID: 3920882964874863339, guid: 0123e10ca62077445a303ee67aec0507, type: 3}
+    - rid: 1207152093146382681
       type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _numNotes: 0
-        _noteSpawnLocations: []
-        _notes:
-        - rid: 1207152028523692860
-        - rid: 1207152028523692861
-    - rid: 1207152028523692839
-      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _numNotes: 0
-        _noteSpawnLocations: []
-        _notes:
-        - rid: 1207152028523692862
-        - rid: 1207152028523692863
-    - rid: 1207152028523692840
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _lanePosition: 3.5
-    - rid: 1207152028523692841
-      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _numNotes: 0
-        _noteSpawnLocations: []
-        _notes:
-        - rid: 1207152028523692864
-        - rid: 1207152028523692865
-    - rid: 1207152028523692842
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
       data:
         _lanePosition: 0
-    - rid: 1207152028523692843
+        _numNotes: 0
+        _noteSpawnLocations:
+        - -7
+        - -3.5
+        - 0
+        - 3.5
+        - 7
+        _notes:
+        - rid: 1207152093146382703
+        - rid: 1207152093146382704
+        timestamp: 1.263158
+        _parentNotePrefab: {fileID: 3920882964874863339, guid: 0123e10ca62077445a303ee67aec0507, type: 3}
+    - rid: 1207152093146382682
       type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
       data:
+        _lanePosition: 0
         _numNotes: 0
-        _noteSpawnLocations: []
+        _noteSpawnLocations:
+        - -7
+        - -3.5
+        - 0
+        - 3.5
+        - 7
         _notes:
-        - rid: 1207152028523692866
-        - rid: 1207152028523692867
-    - rid: 1207152028523692844
+        - rid: 1207152093146382705
+        - rid: 1207152093146382706
+        timestamp: 1.736842
+        _parentNotePrefab: {fileID: 3920882964874863339, guid: 0123e10ca62077445a303ee67aec0507, type: 3}
+    - rid: 1207152093146382683
       type: {class: SingleNote, ns: , asm: Assembly-CSharp}
       data:
+        timestamp: 1.894737
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: 0
+    - rid: 1207152093146382684
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 2.052632
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
         _lanePosition: -3.5
-    - rid: 1207152028523692845
+    - rid: 1207152093146382685
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 0
+        _numNotes: 0
+        _noteSpawnLocations:
+        - -7
+        - -3.5
+        - 0
+        - 3.5
+        - 7
+        _notes:
+        - rid: 1207152093146382707
+        - rid: 1207152093146382708
+        timestamp: 2.210527
+        _parentNotePrefab: {fileID: 3920882964874863339, guid: 0123e10ca62077445a303ee67aec0507, type: 3}
+    - rid: 1207152093146382686
       type: {class: SingleNote, ns: , asm: Assembly-CSharp}
       data:
+        timestamp: 2.368421
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -3.5
+    - rid: 1207152093146382687
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 0
+        _numNotes: 0
+        _noteSpawnLocations:
+        - -7
+        - -3.5
+        - 0
+        - 3.5
+        - 7
+        _notes:
+        - rid: 1207152093146382709
+        - rid: 1207152093146382710
+        timestamp: 2.526316
+        _parentNotePrefab: {fileID: 3920882964874863339, guid: 0123e10ca62077445a303ee67aec0507, type: 3}
+    - rid: 1207152093146382688
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 2.842106
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: 0
+    - rid: 1207152093146382689
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 0
+        _numNotes: 0
+        _noteSpawnLocations:
+        - -7
+        - -3.5
+        - 0
+        - 3.5
+        - 7
+        _notes:
+        - rid: 1207152093146382711
+        - rid: 1207152093146382712
+        timestamp: 3
+        _parentNotePrefab: {fileID: 3920882964874863339, guid: 0123e10ca62077445a303ee67aec0507, type: 3}
+    - rid: 1207152093146382690
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 3.31579
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
         _lanePosition: -7
-    - rid: 1207152028523692846
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+    - rid: 1207152093146382691
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
       data:
         _lanePosition: 0
-    - rid: 1207152028523692847
+        _numNotes: 0
+        _noteSpawnLocations:
+        - -7
+        - -3.5
+        - 0
+        - 3.5
+        - 7
+        _notes:
+        - rid: 1207152093146382713
+        - rid: 1207152093146382714
+        timestamp: 3.473685
+        _parentNotePrefab: {fileID: 3920882964874863339, guid: 0123e10ca62077445a303ee67aec0507, type: 3}
+    - rid: 1207152093146382692
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
+      data:
+        _lanePosition: 0
+        _numNotes: 0
+        _noteSpawnLocations:
+        - -7
+        - -3.5
+        - 0
+        - 3.5
+        - 7
+        _notes:
+        - rid: 1207152093146382715
+        - rid: 1207152093146382716
+        timestamp: 3.789474
+        _parentNotePrefab: {fileID: 3920882964874863339, guid: 0123e10ca62077445a303ee67aec0507, type: 3}
+    - rid: 1207152093146382693
       type: {class: SingleNote, ns: , asm: Assembly-CSharp}
       data:
-        _lanePosition: 7
-    - rid: 1207152028523692848
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _lanePosition: 3.5
-    - rid: 1207152028523692849
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
+        timestamp: 4.105264
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
         _lanePosition: -7
-    - rid: 1207152028523692850
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+    - rid: 1207152093146382694
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
       data:
         _lanePosition: 0
-    - rid: 1207152028523692851
+        _numNotes: 0
+        _noteSpawnLocations:
+        - -7
+        - -3.5
+        - 0
+        - 3.5
+        - 7
+        _notes:
+        - rid: 1207152093146382717
+        - rid: 1207152093146382718
+        timestamp: 4.263158
+        _parentNotePrefab: {fileID: 3920882964874863339, guid: 0123e10ca62077445a303ee67aec0507, type: 3}
+    - rid: 1207152093146382695
       type: {class: SingleNote, ns: , asm: Assembly-CSharp}
       data:
-        _lanePosition: -3.5
-    - rid: 1207152028523692852
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
+        timestamp: 4.578948
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
         _lanePosition: 3.5
-    - rid: 1207152028523692853
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+    - rid: 1207152093146382696
+      type: {class: MultipleNote, ns: , asm: Assembly-CSharp}
       data:
         _lanePosition: 0
-    - rid: 1207152028523692854
+        _numNotes: 0
+        _noteSpawnLocations:
+        - -7
+        - -3.5
+        - 0
+        - 3.5
+        - 7
+        _notes:
+        - rid: 1207152093146382719
+        - rid: 1207152093146382720
+        timestamp: 4.736843
+        _parentNotePrefab: {fileID: 3920882964874863339, guid: 0123e10ca62077445a303ee67aec0507, type: 3}
+    - rid: 1207152093146382697
       type: {class: SingleNote, ns: , asm: Assembly-CSharp}
       data:
-        _lanePosition: 7
-    - rid: 1207152028523692855
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _lanePosition: 0
-    - rid: 1207152028523692856
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _lanePosition: 0
-    - rid: 1207152028523692857
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _lanePosition: -3.5
-    - rid: 1207152028523692858
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _lanePosition: -3.5
-    - rid: 1207152028523692859
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
+        timestamp: 0
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
         _lanePosition: -7
-    - rid: 1207152028523692860
+    - rid: 1207152093146382698
       type: {class: SingleNote, ns: , asm: Assembly-CSharp}
       data:
-        _lanePosition: 7
-    - rid: 1207152028523692861
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _lanePosition: 3.5
-    - rid: 1207152028523692862
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _lanePosition: 0
-    - rid: 1207152028523692863
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
-        _lanePosition: 7
-    - rid: 1207152028523692864
-      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
-      data:
+        timestamp: 0
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
         _lanePosition: -3.5
-    - rid: 1207152028523692865
+    - rid: 1207152093146382699
       type: {class: SingleNote, ns: , asm: Assembly-CSharp}
       data:
+        timestamp: 0.473684
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
         _lanePosition: -7
-    - rid: 1207152028523692866
+    - rid: 1207152093146382700
       type: {class: SingleNote, ns: , asm: Assembly-CSharp}
       data:
+        timestamp: 0.473684
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
         _lanePosition: -3.5
-    - rid: 1207152028523692867
+    - rid: 1207152093146382701
       type: {class: SingleNote, ns: , asm: Assembly-CSharp}
       data:
-        _lanePosition: 3.5
+        timestamp: 0.947369
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -7
+    - rid: 1207152093146382702
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 0.947369
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -3.5
+    - rid: 1207152093146382703
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 1.263158
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -7
+    - rid: 1207152093146382704
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 1.263158
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -3.5
+    - rid: 1207152093146382705
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 1.736842
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -7
+    - rid: 1207152093146382706
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 1.736842
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -3.5
+    - rid: 1207152093146382707
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 2.210527
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -7
+    - rid: 1207152093146382708
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 2.210527
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -3.5
+    - rid: 1207152093146382709
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 2.526316
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -7
+    - rid: 1207152093146382710
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 2.526316
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -3.5
+    - rid: 1207152093146382711
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 3
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -7
+    - rid: 1207152093146382712
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 3
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -3.5
+    - rid: 1207152093146382713
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 3.473685
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -7
+    - rid: 1207152093146382714
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 3.473685
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -3.5
+    - rid: 1207152093146382715
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 3.789474
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -7
+    - rid: 1207152093146382716
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 3.789474
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -3.5
+    - rid: 1207152093146382717
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 4.263158
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -7
+    - rid: 1207152093146382718
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 4.263158
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -3.5
+    - rid: 1207152093146382719
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 4.736843
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -7
+    - rid: 1207152093146382720
+      type: {class: SingleNote, ns: , asm: Assembly-CSharp}
+      data:
+        timestamp: 4.736843
+        _notePrefab: {fileID: 4773202059355220782, guid: a6b7b05308b059c41976959394f7d38e, type: 3}
+        _lanePosition: -3.5

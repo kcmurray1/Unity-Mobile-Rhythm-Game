@@ -5,6 +5,7 @@ using System.Linq; //ToList()
 using System;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
+using System.IO;
 /// <summary>
 /// Class <c> NoteSpawner </c> reads a midi file to generate a noteMaps used <br/>
 /// to spawn notes for the game.
@@ -15,9 +16,8 @@ public class NoteSpawner : MonoBehaviour
     // Object to spawn
     public GameObject notePrefab;
     public GameObject _longNotePrefab;
-
     public GameObject multiNotePrefab;
-
+ 
     public GameObject multiNoteChildPrefab;
 
     public GameObject LongNotePrefab;
@@ -25,6 +25,7 @@ public class NoteSpawner : MonoBehaviour
 
     // Dict containing where lane number is the key and lane position is the value
     private Dictionary<int, float> _laneHorizPositions;
+    public List<float> LanePosition;
     [SerializeField] private int _centerLaneIndex;
     // Spawner Object(itself)
     [SerializeField] private GameObject _spawnerObject;
@@ -42,7 +43,7 @@ public class NoteSpawner : MonoBehaviour
     /// <param name="lanePositions">The x-coordinate for each lane</param>   
     public void Initialize(List<float> lanePositions, SongDataScriptableObject song=null)
     {
-        print(lanePositions);
+        LanePosition = lanePositions;
         _InitializeLanePositions(lanePositions);
         // Debug.Log(song.MidiFile);
       
@@ -52,6 +53,11 @@ public class NoteSpawner : MonoBehaviour
             new LongNote(lanePositions[0], 5, 0f, LongNotePrefab, LongNoteChildPrefab),
         };
         List<INote> testMap = _GetSongData_V2(song);
+
+        foreach(var item in testMap)
+        {
+            print(item);
+        }
         
         StartCoroutine(_SpawnNotes_v2(testMap));
     }
@@ -86,6 +92,7 @@ public class NoteSpawner : MonoBehaviour
             newNote.gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
             newNote.gameObject.GetComponent<SpriteRenderer>().enabled = false;
             newNote.tag = isStart ? "start" : "end";
+            newNote.layer = LayerMask.NameToLayer("SoundTrigger");
         }
         
         if (isLongNote)
@@ -100,11 +107,12 @@ public class NoteSpawner : MonoBehaviour
         float prevTime = 0;
         foreach(INote noteToSpawn in noteMap)
         {
-            if(noteToSpawn.Timestamp - prevTime != 0)
+            if(noteToSpawn.Timestamp() - prevTime != 0)
             {
-                yield return new WaitForSeconds(noteToSpawn.Timestamp - prevTime);
+                yield return new WaitForSeconds(noteToSpawn.Timestamp() - prevTime);
             }
-            prevTime = noteToSpawn.Timestamp;
+            prevTime = noteToSpawn.Timestamp();
+            
             noteToSpawn.Spawn(gameObject.transform);
         }
         yield return new WaitForSeconds(3f);
@@ -164,8 +172,13 @@ public class NoteSpawner : MonoBehaviour
         // if (song.EasyNoteMap.map.Count > 0)
         // {
         //     return song.EasyNoteMap.GetMap();
-        // }
+        // // }
+        if(song.test.Count > 0)
+        {
+            return song.test;
+        }
         // // Create a new note map
+        // Path.GetFileName()
         MidiFile midiFile = MidiFile.Read(song.MidiFile);
 
         float midiTempo = (float)midiFile.GetTempoMap().GetTempoAtTime((MidiTimeSpan)0).BeatsPerMinute;
@@ -209,7 +222,7 @@ public class NoteSpawner : MonoBehaviour
                 }
                 else
                 {
-                    MultipleNote newMultiNote = new MultipleNote(0f, spawnTime, _laneHorizPositions, multiNotePrefab, multiNoteChildPrefab);
+                    MultipleNote newMultiNote = new MultipleNote(0f, spawnTime, LanePosition, multiNotePrefab, multiNoteChildPrefab);
                     newMultiNote.AddNote(midiNoteMap[spawnTime]);
                     newMultiNote.AddNote(newNote);
                     midiNoteMap[spawnTime] = newMultiNote;

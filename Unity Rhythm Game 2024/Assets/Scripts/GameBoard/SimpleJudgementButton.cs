@@ -115,19 +115,29 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
       float yDifference = other.transform.position.y - transform.position.y;
 
       // Start playing music
-      if(other.CompareTag("start") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
+      if(other.gameObject.layer == LayerMask.NameToLayer("SoundTrigger") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
       {
           _ToggleGameSong(other.tag);
           Destroy(other.gameObject);
+          if(other.CompareTag("end"))
+          {
+            _EndGame();
+          }
           return;
       }
-      if(other.CompareTag("end") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
-      {
-        Destroy(other.gameObject);
-        _ToggleGameSong(other.tag);
-        _EndGame();
-        return;
-      }
+      // if(other.CompareTag("start") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
+      // {
+      //     _ToggleGameSong(other.tag);
+      //     Destroy(other.gameObject);
+      //     return;
+      // }
+      // if(other.CompareTag("end") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
+      // {
+      //   Destroy(other.gameObject);
+      //   _ToggleGameSong(other.tag);
+      //   _EndGame();
+      //   return;
+      // }
 
       // if(yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
       // {
@@ -146,7 +156,7 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
   
     if(other.gameObject.layer == LayerMask.NameToLayer("Note") && math.abs(yDifference) > 1f)
     {
-      print($"missed {other.tag}");
+      // print($"missed {other.gameObject}");
       _scoreManager.OnNoteMiss();
     }
   }

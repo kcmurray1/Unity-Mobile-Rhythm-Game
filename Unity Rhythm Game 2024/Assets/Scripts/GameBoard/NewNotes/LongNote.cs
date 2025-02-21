@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class LongNote : INote
 {
-    public float Timestamp {get; set;}
+    // public float Timestamp {get; set;}
     public int NumQuarterNotes {get; set;}
+
+    [SerializeField] public float timestamp;
 
     private int _numChildren;
 
@@ -15,7 +17,7 @@ public class LongNote : INote
     public LongNote(float spawnPosition, int numChildren, float timeToSpawn, GameObject parentPrefab, GameObject childPrefab)
     {
         _lanePosition = spawnPosition;
-        Timestamp = timeToSpawn;
+        timestamp = timeToSpawn;
         _numChildren = numChildren;
         _parentPrefab = parentPrefab;
         _childPrefab = childPrefab;
@@ -38,6 +40,15 @@ public class LongNote : INote
             );
 
         }
+    }
+
+    public float Timestamp()
+    {
+        return timestamp;
+    }
+    public void SetLane(float lane)
+    {
+        _lanePosition = lane;
     }
 
     public void Spawn(Transform parent, float speed)

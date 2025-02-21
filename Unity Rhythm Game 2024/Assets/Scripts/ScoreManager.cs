@@ -77,7 +77,7 @@ public class ScoreManager : MonoBehaviour
     {
         _counts["Miss"]++;
         _multiplier = 0;
-        Debug.Log(_counts["Miss"] + "Misses");
+        Debug.Log($"{_counts["Miss"]} Misses");
     }
 
     public override string ToString()
