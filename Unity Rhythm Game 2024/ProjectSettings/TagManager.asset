@@ -54,14 +54,14 @@ TagManager:
   - name: GameBoard_lane
     uniqueID: 4027622691
     locked: 0
+  - name: Note
+    uniqueID: 2703356663
+    locked: 0
   - name: GameBoard_UI
     uniqueID: 1027501971
     locked: 0
   - name: GameBoard_buttons
     uniqueID: 2343413323
-    locked: 0
-  - name: Note
-    uniqueID: 2703356663
     locked: 0
   m_RenderingLayers:
   - Default

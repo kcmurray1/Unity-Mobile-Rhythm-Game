@@ -1,7 +1,7 @@
 public static class ScoreConstants
 {
     // Accuracy thresholds
-    public const float ACCURACY_PERFECT_THRESHHOLD = 0.5f;
+    public const float ACCURACY_PERFECT_THRESHHOLD = 0.3f;
     public const float ACCURACY_GREAT_THRESHHOLD = 0.8f;
     public const float ACCURACY_GOOD_THRESHHOLD = 1f;
     // Score multipliers

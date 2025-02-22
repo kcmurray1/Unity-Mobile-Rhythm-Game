@@ -27,7 +27,6 @@ public class LongNote : INote
     {
         //Spawn parent
         GameObject newParent = GameObject.Instantiate(_parentPrefab, parent);
-        Debug.Log(parent.transform.position);
         newParent.transform.position = new Vector3(_lanePosition, newParent.transform.position.y + _numChildren, newParent.transform.position.z);
         //Spawn children
         for(int i = 0; i < _numChildren; i++)
@@ -38,7 +37,6 @@ public class LongNote : INote
                 newParent.transform.position.y - i - 1, 
                 newParent.transform.position.z
             );
-
         }
     }
 
@@ -53,6 +51,6 @@ public class LongNote : INote
 
     public void Spawn(Transform parent, float speed)
     {
-        
+        throw new NotImplementedException();
     }
 }

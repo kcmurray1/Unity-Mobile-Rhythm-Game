@@ -6,6 +6,7 @@ using System;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
 using System.IO;
+using Unity.VisualScripting;
 /// <summary>
 /// Class <c> NoteSpawner </c> reads a midi file to generate a noteMaps used <br/>
 /// to spawn notes for the game.
@@ -17,6 +18,8 @@ public class NoteSpawner : MonoBehaviour
     public GameObject notePrefab;
     public GameObject _longNotePrefab;
     public GameObject multiNotePrefab;
+
+    public GameObject ShortNotePrefab;
  
     public GameObject multiNoteChildPrefab;
 
@@ -52,13 +55,7 @@ public class NoteSpawner : MonoBehaviour
         List<INote> debugMap = new List<INote>{
             new LongNote(lanePositions[0], 5, 0f, LongNotePrefab, LongNoteChildPrefab),
         };
-        List<INote> testMap = _GetSongData_V2(song);
-
-        foreach(var item in testMap)
-        {
-            print(item);
-        }
-        
+        List<INote> testMap = _GetSongData_V2(song);  
         StartCoroutine(_SpawnNotes_v2(testMap));
     }
 
@@ -165,18 +162,33 @@ public class NoteSpawner : MonoBehaviour
         System.Random rnd = new System.Random();
         return rnd.Next(0, _laneHorizPositions.Count);
     }
+
     
+    private INote _ChooseNote(float noteLength, float secondsPerQuarterNote, float spawnTime)
+    {
+
+        float spawnPosition = _laneHorizPositions[_AssignRandomLane()];
+        if(noteLength <=  secondsPerQuarterNote / 4)
+        {
+            return new ShortNote(spawnPosition, 5, spawnTime, ShortNotePrefab);
+        }
+        if(noteLength >= secondsPerQuarterNote * 2)
+        {
+            int numChildren = (int)Math.Ceiling(noteLength / secondsPerQuarterNote);
+            return new LongNote(spawnPosition, numChildren, spawnTime, LongNotePrefab, LongNoteChildPrefab);
+        }
+        return new SingleNote(spawnPosition, spawnTime, notePrefab);
+
+
+
+    }
     private List<INote> _GetSongData_V2(SongDataScriptableObject song)
     {      
         // Notemap Already exists
-        // if (song.EasyNoteMap.map.Count > 0)
+        // if(song.test.Count > 0)
         // {
-        //     return song.EasyNoteMap.GetMap();
-        // // }
-        if(song.test.Count > 0)
-        {
-            return song.test;
-        }
+        //     return song.test;
+        // }
         // // Create a new note map
         // Path.GetFileName()
         MidiFile midiFile = MidiFile.Read(song.MidiFile);
@@ -187,7 +199,7 @@ public class NoteSpawner : MonoBehaviour
         if(midiTempo != song.Bpm)
         {
             //Standard 96 ticks per quarter note
-            var timeDivision = new TicksPerQuarterNoteTimeDivision(96);
+            TicksPerQuarterNoteTimeDivision timeDivision = new TicksPerQuarterNoteTimeDivision(96);
             //Create tempo based on song tempo
             newTempoMap = TempoMap.Create(timeDivision, Tempo.FromBeatsPerMinute(song.Bpm));
         }
@@ -202,13 +214,24 @@ public class NoteSpawner : MonoBehaviour
         Dictionary<float, INote> midiNoteMap = new Dictionary<float, INote>();
         // Get Note timings from midiFile
         var notes = midiFile.GetNotes().ToList();
+
         // Build initial map
         foreach(var note in notes)
         {
-            // Get the timestamp of when a note is played
             float spawnTime = (float)note.TimeAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
-            double noteLength = note.LengthAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
-            SingleNote newNote = new SingleNote(_laneHorizPositions[_AssignRandomLane()], spawnTime, notePrefab);
+            float bpm = (float)newTempoMap.GetTempoAtTime(new MidiTimeSpan(note.Time)).BeatsPerMinute;
+            float secondsPerQuarterNote = 60f / bpm;
+            float noteLength = (float)note.LengthAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
+            // float noteLengthInQuarterNotes = (float)note.LengthAs<MetricTimeSpan>(newTempoMap).TotalSeconds / secondsPerQuarterNote;
+
+            // print($"Note {note.NoteName}: {noteLengthInQuarterNotes} quarter notes");
+            // print($"{noteLengthInQuarterNotes / 4} note length:  {(float)note.LengthAs<MetricTimeSpan>(newTempoMap).TotalSeconds}");
+            // Get the timestamp of when a note is played
+            // float spawnTime = (float)note.TimeAs<MetricTimeSpan>(newTempoMap).TotalSeconds;
+            // print($"Note is {noteLength} quarter notes {note.GetMusicTheoryNote()}");
+            // SingleNote newNote = new SingleNote(_laneHorizPositions[_AssignRandomLane()], spawnTime, notePrefab);
+
+            INote newNote = _ChooseNote(noteLength, secondsPerQuarterNote, spawnTime);
             // Each timestamp holds a list of MidiNotes
             if(!midiNoteMap.ContainsKey(spawnTime))
             {

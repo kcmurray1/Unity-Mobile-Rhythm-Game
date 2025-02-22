@@ -1,12 +1,8 @@
 using System;
 using UnityEngine;
 using TMPro;
-
-
-
 using UnityEngine.EventSystems;
 using Unity.Mathematics;
-using UnityEngine.SocialPlatforms.Impl;
 
 
 public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
@@ -87,7 +83,7 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
 
   private void _Foo(GameObject other, float yDifference)
   {
-    if(isHolding && other.layer == LayerMask.NameToLayer("HoldableNote") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
+    if((isHolding || isPressed) && other.layer == LayerMask.NameToLayer("HoldableNote") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
       {
         _HandleNoteHit(yDifference, other, playSoundEffect: false);
       }
@@ -100,12 +96,12 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
 
   private void _HandleNoteHit(float hitDifference, GameObject objectToDestory, bool playSoundEffect=true)
   {
-    _scoreManager.OnNoteHit(hitDifference);
-    _effectCallback(hitDifference);
-    if(playSoundEffect)
+     if(playSoundEffect)
     {
       OnSoundEffect?.Invoke();
     }
+    _scoreManager.OnNoteHit(hitDifference);
+    _effectCallback(hitDifference);
     Destroy(objectToDestory);
   }
 
@@ -114,7 +110,7 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
   private void OnTriggerStay2D(Collider2D other) {
       float yDifference = other.transform.position.y - transform.position.y;
 
-      // Start playing music
+      // Start/Stop playing music
       if(other.gameObject.layer == LayerMask.NameToLayer("SoundTrigger") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
       {
           _ToggleGameSong(other.tag);
@@ -125,27 +121,14 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
           }
           return;
       }
-      // if(other.CompareTag("start") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
-      // {
-      //     _ToggleGameSong(other.tag);
-      //     Destroy(other.gameObject);
-      //     return;
-      // }
-      // if(other.CompareTag("end") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
-      // {
-      //   Destroy(other.gameObject);
-      //   _ToggleGameSong(other.tag);
-      //   _EndGame();
-      //   return;
-      // }
 
-      // if(yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
-      // {
-      //   _HandleAutoPlay(other.gameObject, yDifference);
-      //   return;
-      // }
+      if(yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
+      {
+        _HandleAutoPlay(other.gameObject, yDifference);
+        return;
+      }
 
-      _Foo(other.gameObject, yDifference);
+      // _Foo(other.gameObject, yDifference);
 
   }
 
@@ -154,9 +137,8 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
     float yDifference = other.transform.position.y - transform.position.y;
     Destroy(other.gameObject);
   
-    if(other.gameObject.layer == LayerMask.NameToLayer("Note") && math.abs(yDifference) > 1f)
+    if(other.gameObject.layer != LayerMask.NameToLayer("SoundTrigger") && math.abs(yDifference) > 1f)
     {
-      // print($"missed {other.gameObject}");
       _scoreManager.OnNoteMiss();
     }
   }
