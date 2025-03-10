@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+using System.Collections;
 
 public class SoundManager : MonoBehaviour
 {
@@ -8,6 +10,11 @@ public class SoundManager : MonoBehaviour
 
     // Song to be played in the game
     [SerializeField] private AudioSource _gameSong;
+
+
+    [SerializeField] private AudioSource _TuneSound;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +37,7 @@ public class SoundManager : MonoBehaviour
     {
         if (!_gameSong.isPlaying && state == "start")
         {
+            StartCoroutine(_Tune());
             _gameSong.Play();
         } 
         if (state == "end")
@@ -43,5 +51,20 @@ public class SoundManager : MonoBehaviour
         if (!_generalSoundSource) {return;}
         _generalSoundSource.Play();
    
+    }
+
+    public event Action OnQuarterNote;
+
+    private IEnumerator _Tune()
+    {
+        int bpm = 95;
+        float qtrNote = 60f / bpm; 
+        while(true)
+        {
+            yield return new WaitForSeconds(qtrNote);
+            OnQuarterNote?.Invoke();
+            _TuneSound.Play(delay: 50);
+         
+        }
     }
 }

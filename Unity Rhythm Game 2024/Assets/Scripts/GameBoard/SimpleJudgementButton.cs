@@ -3,6 +3,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
 using Unity.Mathematics;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 
 
 public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
@@ -11,19 +13,35 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
 
   public bool isPressed = false;
 
+  public bool IsAutoPlay;
+
   private float _timePressed;
 
   // Callbacks
   public event Action OnGameEnd;
   public event Action<string> OnToggleGameSong;
   public event Action OnSoundEffect;
-  private ScoreManager _scoreManager;
   private Action<float> _effectCallback;
 
+  private ScoreManager _scoreManager;
+
+  [SerializeField] private BoxCollider2D _hitBox;
+
+  public Vector2 offset;
+
+  private HashSet<int> idk;
+
+  // FIXME: used to debug touch status
   [SerializeField] private TextMeshProUGUI status_text;
 
-  public void Initialize(Vector3 position, ScoreManager scoreManager, Action<float> effectCallback)
+  public void Initialize(Vector3 position, ScoreManager scoreManager, Action<float> effectCallback, bool isAutoPlay=false)
   {
+    IsAutoPlay = isAutoPlay;
+    offset = _hitBox.offset;
+    idk =  new HashSet<int> {
+    LayerMask.NameToLayer("Note"),
+    LayerMask.NameToLayer("HoldableNote")
+    };
     _timePressed = 0f;
     gameObject.transform.position = position;
     _scoreManager = scoreManager;
@@ -83,6 +101,14 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
 
   private void _Foo(GameObject other, float yDifference)
   {
+    // if(Math.Abs(yDifference) >= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
+    // {
+    //   print(yDifference);
+    //   Vector2 offset = gameObject.GetComponent<BoxCollider2D>().offset;
+    //   gameObject.GetComponent<BoxCollider2D>().offset = new Vector2(offset.x, offset.x + yDifference);
+
+    // }
+    
     if((isHolding || isPressed) && other.layer == LayerMask.NameToLayer("HoldableNote") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
       {
         _HandleNoteHit(yDifference, other, playSoundEffect: false);
@@ -122,13 +148,13 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
           return;
       }
 
-      if(yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
+      if(IsAutoPlay && (yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD))
       {
         _HandleAutoPlay(other.gameObject, yDifference);
         return;
       }
 
-      // _Foo(other.gameObject, yDifference);
+      _Foo(other.gameObject, yDifference);
 
   }
 
@@ -137,7 +163,7 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
     float yDifference = other.transform.position.y - transform.position.y;
     Destroy(other.gameObject);
   
-    if(other.gameObject.layer != LayerMask.NameToLayer("SoundTrigger") && math.abs(yDifference) > 1f)
+    if(idk.Contains(other.gameObject.layer) && math.abs(yDifference) > 1f)
     {
       _scoreManager.OnNoteMiss();
     }
