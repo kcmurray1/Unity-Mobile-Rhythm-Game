@@ -19,7 +19,6 @@ public class GameManager: MonoBehaviour
 
 
 
-
     public bool autoPlay;
 
     void Awake()

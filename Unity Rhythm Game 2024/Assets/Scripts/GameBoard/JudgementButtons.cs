@@ -14,7 +14,7 @@ public class JudgementButton : MonoBehaviour {
 
     [SerializeField] private SoundManager _soundManager;
 
-
+    
     // Song Events
     public event Action OnSoundEffect;
     public event Action<string> OnToggleGameSong;

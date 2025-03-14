@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine.EventSystems;
 using Unity.Mathematics;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 
 
 public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
@@ -39,8 +38,8 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
     IsAutoPlay = isAutoPlay;
     offset = _hitBox.offset;
     idk =  new HashSet<int> {
-    LayerMask.NameToLayer("Note"),
-    LayerMask.NameToLayer("HoldableNote")
+      LayerMask.NameToLayer("Note"),
+      LayerMask.NameToLayer("HoldableNote")
     };
     _timePressed = 0f;
     gameObject.transform.position = position;
@@ -139,7 +138,7 @@ public class SimpleJudgementButton : MonoBehaviour, IPointerDownHandler, IPointe
       // Start/Stop playing music
       if(other.gameObject.layer == LayerMask.NameToLayer("SoundTrigger") && yDifference <= ScoreConstants.ACCURACY_PERFECT_THRESHHOLD)
       {
-          _ToggleGameSong(other.tag);
+          // _ToggleGameSong(other.tag);
           Destroy(other.gameObject);
           if(other.CompareTag("end"))
           {

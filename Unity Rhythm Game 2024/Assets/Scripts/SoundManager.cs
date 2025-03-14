@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using NUnit.Framework.Internal;
 
 public class SoundManager : MonoBehaviour
 {
@@ -14,11 +15,21 @@ public class SoundManager : MonoBehaviour
 
     [SerializeField] private AudioSource _TuneSound;
 
+    [SerializeField] private BeatManager _beatManager;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        // play any default audio
+        _beatManager = GameObject.FindAnyObjectByType<BeatManager>();
+
+        _beatManager.OnQuarterBeat += test;
+    }
+
+    private void test()
+    {
+        if(!_gameSong.isPlaying)
+            _gameSong.Play();
     }
 
     public void SetGameSong(AudioClip songClip)
@@ -37,7 +48,7 @@ public class SoundManager : MonoBehaviour
     {
         if (!_gameSong.isPlaying && state == "start")
         {
-            StartCoroutine(_Tune());
+            // StartCoroutine(_Tune());
             _gameSong.Play();
         } 
         if (state == "end")

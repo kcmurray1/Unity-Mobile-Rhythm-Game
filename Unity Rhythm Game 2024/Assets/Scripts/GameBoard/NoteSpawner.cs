@@ -33,6 +33,8 @@ public class NoteSpawner : MonoBehaviour
 
      [SerializeField] private AudioSource _TuneSound;
 
+    [SerializeField] private BeatManager _beatManager;
+
     // void Awake()
     // {
     //     Initialize(new List<float>{0});
@@ -46,6 +48,9 @@ public class NoteSpawner : MonoBehaviour
     /// <param name="lanePositions">The x-coordinate for each lane</param>   
     public void Initialize(List<float> lanePositions, SongDataScriptableObject song=null)
     {
+        _beatManager = GameObject.FindAnyObjectByType<BeatManager>();
+        _beatManager.Initialize(song.Bpm);
+        _beatManager.OnQuarterBeat += test;
         LanePosition = lanePositions;
         _InitializeLanePositions(lanePositions);
         // Debug.Log(song.MidiFile);
@@ -98,6 +103,12 @@ public class NoteSpawner : MonoBehaviour
         {
             newNote.GetComponent<NoteLong>().Initialize(numChildren);
         }
+    }
+
+    private void test()
+    {
+        print("sjkdw");
+        _TuneSound.Play();
     }
     // public event Action OnQuarterNote;
     // private IEnumerator _Tune()

@@ -2369,6 +2369,53 @@ MonoBehaviour:
   _scoreManager: {fileID: 0}
   _soundManager: {fileID: 0}
   Id: 0
+--- !u!1 &1346407290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1346407292}
+  - component: {fileID: 1346407291}
+  m_Layer: 0
+  m_Name: BeatManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1346407291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346407290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7f6b9eee07a3fd498f50dd1e19e61ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Bpm: 0
+  QuarterNoteLength: 0
+  NextBeatTime: 0
+--- !u!4 &1346407292
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1346407290}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.6220016, y: 4.3574758, z: 85.157715}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1385932625
 GameObject:
   m_ObjectHideFlags: 0
@@ -2591,6 +2638,7 @@ MonoBehaviour:
   _generalSoundSource: {fileID: 1391340881}
   _gameSong: {fileID: 1391340878}
   _TuneSound: {fileID: 1391340882}
+  _beatManager: {fileID: 0}
 --- !u!4 &1391340880
 Transform:
   m_ObjectHideFlags: 0
@@ -3366,3 +3414,4 @@ SceneRoots:
   - {fileID: 948372205}
   - {fileID: 1391340880}
   - {fileID: 1877146968}
+  - {fileID: 1346407292}
